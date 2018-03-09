@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using UXI.Common;
+using UXI.GazeFilter.Common;
 
-namespace UXI.Data.Serialization.Json
+namespace UXI.GazeFilter.Serialization.Json
 {
     public class JsonDataReader : DisposableBase, IDataReader, IDisposable
     {

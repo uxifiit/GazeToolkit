@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
-using FixationFilter.Extensions;
+using UXI.GazeFilter.Extensions;
 
 namespace UXI.GazeFilter
 {
@@ -18,6 +18,7 @@ namespace UXI.GazeFilter
         Type OptionsType { get; } 
         IObservable<TResult> Process(IObservable<TSource> data, object options);
     }
+
 
     public class Filter<TSource, TResult, TOptions> : IFilter<TSource, TResult>
         where TOptions : BaseOptions
@@ -50,6 +51,7 @@ namespace UXI.GazeFilter
         }
     }
 
+
     internal static class FilterEx
     {
         internal static IObservable<TResult> Process<TSource, TResult>(this IObservable<TSource> data, IFilter<TSource, TResult> filter, object options)
@@ -57,6 +59,7 @@ namespace UXI.GazeFilter
             return filter.Process(data, options); 
         }
     }
+
 
     public class FilterTool<TSource, TResult>
     {
@@ -95,7 +98,7 @@ namespace UXI.GazeFilter
         {
             using (var cts = new CancellationTokenSource())
             {
-                var execution = ExecuteAsync(args, cts.Token); // TaskCreationOptions.LongRunning?
+                var execution = ExecuteAsync(args, cts.Token);
 
                 Console.CancelKeyPress += (_, __) => cts.Cancel();
 

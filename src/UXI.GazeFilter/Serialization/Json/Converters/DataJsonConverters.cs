@@ -8,9 +8,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using UXI.GazeToolkit;
-using UXI.GazeFilter.Serialization.Extensions;
+using UXI.GazeFilter.Serialization.Json.Extensions;
 
-namespace UXI.Data.Serialization.Json.Converters
+namespace UXI.GazeFilter.Serialization.Json.Converters
 {
     public class DataJsonConverters : IEnumerable<JsonConverter>
     {

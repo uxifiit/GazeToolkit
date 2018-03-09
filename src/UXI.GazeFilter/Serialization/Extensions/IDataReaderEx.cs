@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UXI.Data.Serialization.Extensions
+namespace UXI.GazeFilter.Serialization.Extensions
 {
     public static class IDataReaderEx
     {

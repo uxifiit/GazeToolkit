@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace UXI.GazeFilter.Serialization.Extensions
+namespace UXI.GazeFilter.Serialization.Json.Extensions
 {
     internal static class JObjectEx
     {

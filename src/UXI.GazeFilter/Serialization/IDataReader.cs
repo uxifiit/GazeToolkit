@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UXI.Data.Serialization
+namespace UXI.GazeFilter.Serialization
 {
     public interface IDataReader : IDisposable
     {

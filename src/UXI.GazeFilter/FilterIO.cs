@@ -6,10 +6,10 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UXI.Data.Serialization;
-using UXI.Data.Serialization.Extensions;
-using UXI.Data.Serialization.Json;
-using UXI.Data.Serialization.Json.Converters;
+using UXI.GazeFilter.Serialization;
+using UXI.GazeFilter.Serialization.Extensions;
+using UXI.GazeFilter.Serialization.Json;
+using UXI.GazeFilter.Serialization.Json.Converters;
 using UXI.GazeToolkit;
 
 namespace UXI.GazeFilter
@@ -19,6 +19,7 @@ namespace UXI.GazeFilter
         JSON,
         CSV,  // not supported yet
     }
+
 
 
     public enum OutputFileType
@@ -38,7 +39,6 @@ namespace UXI.GazeFilter
         };
 
 
-
         private static TextReader CreateInputReader(string targetPath)
         {
             TextReader reader;
@@ -54,6 +54,7 @@ namespace UXI.GazeFilter
 
             return reader;
         }
+
 
         private static IDataReader GetInputDataReader<TResult>(TextReader reader, InputFileType fileType)
         {
@@ -73,8 +74,6 @@ namespace UXI.GazeFilter
 
             return format.CreateReaderForType(reader, typeof(TResult));
         }
-
-
 
 
         private static IDataWriter GetOutputDataWriter<TResult>(TextWriter writer, OutputFileType fileType)
@@ -132,12 +131,14 @@ namespace UXI.GazeFilter
             return WriteOutput<T>(data, options.OutputFile, options.OutputFileType);
         }
 
+
         public static IObservable<T> WriteOutput<T>(this IObservable<T> data, string outputFile, OutputFileType outputFileType)
         {
             return Observable.Using(() => CreateOutputWriter(outputFile),
                 (writer) => Observable.Using(() => GetOutputDataWriter<T>(writer, outputFileType),
                     (dataWriter) => data.Finally(dataWriter.Close).Do(d => dataWriter.Write(d))));
         }
+
 
         private static TextWriter CreateOutputWriter(string targetPath)
         {

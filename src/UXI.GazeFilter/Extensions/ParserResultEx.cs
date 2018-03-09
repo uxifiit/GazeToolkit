@@ -1,4 +1,4 @@
-using System;
+    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
 
-namespace FixationFilter.Extensions
+namespace UXI.GazeFilter.Extensions
 {
     [Obsolete]
     static class ParserResultEx

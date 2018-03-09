@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace UXI.Data.Serialization.Json.Converters
+namespace UXI.GazeFilter.Serialization.Json.Converters
 {
     public abstract class InheritedObjectJsonConverter<T> : JsonConverter
     {

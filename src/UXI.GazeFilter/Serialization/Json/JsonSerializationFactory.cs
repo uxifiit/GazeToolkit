@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace UXI.Data.Serialization.Json
+namespace UXI.GazeFilter.Serialization.Json
 {
     public class JsonSerializationFactory : IDataSerializationFactory
     {
