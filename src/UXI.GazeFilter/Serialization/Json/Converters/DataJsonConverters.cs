@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using UXI.GazeToolkit;
+using UXI.GazeFilter.Serialization.Extensions;
 
 namespace UXI.Data.Serialization.Json.Converters
 {
@@ -42,8 +43,8 @@ namespace UXI.Data.Serialization.Json.Converters
     {
         protected override Point2 Convert(JObject jObject, JsonSerializer serializer)
         {
-            var x = jObject[nameof(Point2.X)].ToObject<double>(serializer);
-            var y = jObject[nameof(Point2.Y)].ToObject<double>(serializer);
+            var x = jObject.GetObject<double>(nameof(Point2.X), serializer);
+            var y = jObject.GetObject<double>(nameof(Point2.Y), serializer);
 
             return new Point2(x, y);
         }
@@ -54,9 +55,9 @@ namespace UXI.Data.Serialization.Json.Converters
     {
         protected override Point3 Convert(JObject jObject, JsonSerializer serializer)
         {
-            var x = jObject[nameof(Point3.X)].ToObject<double>(serializer);
-            var y = jObject[nameof(Point3.Y)].ToObject<double>(serializer);
-            var z = jObject[nameof(Point3.Z)].ToObject<double>(serializer);
+            var x = jObject.GetObject<double>(nameof(Point3.X), serializer);
+            var y = jObject.GetObject<double>(nameof(Point3.Y), serializer);
+            var z = jObject.GetObject<double>(nameof(Point3.Z), serializer);
 
             return new Point3(x, y, z);
         }
@@ -67,12 +68,12 @@ namespace UXI.Data.Serialization.Json.Converters
     {
         protected override EyeGazeData Convert(JObject jObject, JsonSerializer serializer)
         {
-            var validity = jObject[nameof(EyeGazeData.Validity)].ToObject<EyeGazeDataValidity>(serializer);
-            var gazePoint2D = jObject[nameof(EyeGazeData.GazePoint2D)].ToObject<Point2>(serializer);
-            var gazePoint3D = jObject[nameof(EyeGazeData.GazePoint3D)].ToObject<Point3>(serializer);
-            var eyePosition3D = jObject[nameof(EyeGazeData.EyePosition3D)].ToObject<Point3>(serializer);
-            var eyePosition3DRelative = jObject[nameof(EyeGazeData.EyePosition3DRelative)].ToObject<Point3>(serializer);
-            var pupilDiameter = jObject[nameof(EyeGazeData.PupilDiameter)].ToObject<double>(serializer);
+            var validity = jObject.GetObject<EyeGazeDataValidity>(nameof(EyeGazeData.Validity), serializer);
+            var gazePoint2D = jObject.GetObject<Point2>(nameof(EyeGazeData.GazePoint2D), serializer);
+            var gazePoint3D = jObject.GetObject<Point3>(nameof(EyeGazeData.GazePoint3D), serializer);
+            var eyePosition3D = jObject.GetObject<Point3>(nameof(EyeGazeData.EyePosition3D), serializer);
+            var eyePosition3DRelative = jObject.GetObject<Point3>(nameof(EyeGazeData.EyePosition3DRelative), serializer);
+            var pupilDiameter = jObject.GetObject<double>(nameof(EyeGazeData.PupilDiameter), serializer);
 
 
             return new EyeGazeData
@@ -92,11 +93,11 @@ namespace UXI.Data.Serialization.Json.Converters
     {
         protected override GazeData Convert(JObject jObject, JsonSerializer serializer)
         {
-            var validity = jObject[nameof(GazeData.Validity)].ToObject<GazeDataValidity>(serializer);
-            var trackerTicks = jObject[nameof(GazeData.TrackerTicks)].ToObject<long>(serializer);
-            var leftEye = jObject[nameof(GazeData.LeftEye)].ToObject<EyeGazeData>(serializer);
-            var rightEye = jObject[nameof(GazeData.RightEye)].ToObject<EyeGazeData>(serializer);
-            var timestamp = jObject[nameof(GazeData.Timestamp)].ToObject<TimeSpan>(serializer);
+            var validity = jObject.GetObject<GazeDataValidity>(nameof(GazeData.Validity), serializer);
+            var trackerTicks = jObject.GetObject<long>(nameof(GazeData.TrackerTicks), serializer);
+            var leftEye = jObject.GetObject<EyeGazeData>(nameof(GazeData.LeftEye), serializer);
+            var rightEye = jObject.GetObject<EyeGazeData>(nameof(GazeData.RightEye), serializer);
+            var timestamp = jObject.GetObject<TimeSpan>(nameof(GazeData.Timestamp), serializer);
 
             return new GazeData(validity, leftEye, rightEye, trackerTicks, timestamp);
         }
@@ -111,8 +112,8 @@ namespace UXI.Data.Serialization.Json.Converters
             var eyeGazeData = jObject.ToObject<EyeGazeData>(serializer);
 
             // Then we take other members of SingleEyeGazeData
-            var trackerTicks = jObject[nameof(SingleEyeGazeData.TrackerTicks)].ToObject<long>(serializer);
-            var timestamp = jObject[nameof(SingleEyeGazeData.Timestamp)].ToObject<TimeSpan>(serializer);
+            var trackerTicks = jObject.GetObject<long>(nameof(SingleEyeGazeData.TrackerTicks), serializer);
+            var timestamp = jObject.GetObject<TimeSpan>(nameof(SingleEyeGazeData.Timestamp), serializer);
 
             // And construct the SingleEyeGazeData instance
             return new SingleEyeGazeData(eyeGazeData, trackerTicks, timestamp);
@@ -124,8 +125,8 @@ namespace UXI.Data.Serialization.Json.Converters
     {
         protected override EyeVelocity Convert(JObject jObject, JsonSerializer serializer)
         {
-            var velocity = jObject[nameof(EyeVelocity.Velocity)].ToObject<double>(serializer);
-            var eyeGazeData = jObject[nameof(EyeVelocity.EyeGazeData)].ToObject<SingleEyeGazeData>(serializer);
+            var velocity = jObject.GetObject<double>(nameof(EyeVelocity.Velocity), serializer);
+            var eyeGazeData = jObject.GetObject<SingleEyeGazeData>(nameof(EyeVelocity.EyeGazeData), serializer);
 
             return new EyeVelocity(velocity, eyeGazeData);
         }
@@ -137,9 +138,9 @@ namespace UXI.Data.Serialization.Json.Converters
         protected override EyeMovement Convert(JObject jObject, JsonSerializer serializer)
         {
             var samples = jObject[nameof(EyeMovement.Samples)].ToObject<List<EyeVelocity>>(serializer);
-            var type = jObject[nameof(EyeMovement.MovementType)].ToObject<EyeMovementType>(serializer);
-            var startTime = jObject[nameof(EyeMovement.StartTime)].ToObject<TimeSpan>(serializer);
-            var startTrackerTicks = jObject[nameof(EyeMovement.StartTrackerTicks)].ToObject<long>(serializer);
+            var type = jObject.GetObject<EyeMovementType>(nameof(EyeMovement.MovementType), serializer);
+            var startTime = jObject.GetObject<TimeSpan>(nameof(EyeMovement.StartTime), serializer);
+            var startTrackerTicks = jObject.GetObject<long>(nameof(EyeMovement.StartTrackerTicks), serializer);
 
             return new EyeMovement(samples, type, startTime, startTrackerTicks);
         }
@@ -150,7 +151,7 @@ namespace UXI.Data.Serialization.Json.Converters
     {
         protected override Timestamped Convert(JObject jObject, JsonSerializer serializer)
         {
-            var timestamp = jObject[nameof(GazeData.Timestamp)].ToObject<TimeSpan>(serializer);
+            var timestamp = jObject.GetObject<TimeSpan>(nameof(GazeData.Timestamp), serializer);
 
             return new Timestamped(timestamp);
         }
