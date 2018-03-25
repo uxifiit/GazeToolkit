@@ -10,6 +10,7 @@ if not "%PackageVersion%" == "" (
    set version=-Version %PackageVersion%
 )
 
+REM Restore packages
 call "%nuget%" restore UXI.GazeToolkit.sln -NonInteractive
 
 REM Build

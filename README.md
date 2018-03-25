@@ -1,5 +1,8 @@
 # UXIsk GazeToolkit
 
+[![uxifiit MyGet Build Status](https://www.myget.org/BuildSource/Badge/uxifiit?identifier=8eb25074-a922-45ea-8b90-564eedbc1125)](https://www.myget.org/) 
+[![NuGet Package](https://img.shields.io/myget/uxifiit/v/UXI.GazeToolkit.svg)](https://www.myget.org/feed/uxifiit/package/nuget/UXI.GazeToolkit)
+
 Toolkit for stream processing of eye movement data in C#/.NET.
 Contains gaze data filtering, mostly for eye movement classification into fixation/saccades, smoothing, eye selection, filling-in gaps, etc.
 Gaze data filters are available as separate console applications for detailed data analysis and tuning parameters of fixation filtering. 
@@ -25,7 +28,7 @@ Main features:
 
 Projects in these repository:
 
-* `UXI.GazeToolkit` - class library with gaze data classes, filters and utilities, including implementation of I-VT fixation filter. 
+* `UXI.GazeToolkit` - class library with gaze data classes, filters and utilities, including implementation of the I-VT fixation filter. 
 * Set of `UXI.GazeFilter.*` console applications, each for single gaze data filter. Multiple filters may be chained together using pipes. 
 
 
