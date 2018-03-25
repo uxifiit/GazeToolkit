@@ -1,1 +1,0 @@
-nuget.exe pack ..\src\%1 -Prop Configuration=Release -IncludeReferencedProjects

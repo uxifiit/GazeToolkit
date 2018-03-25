@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("UXI.GazeToolkit")]
 [assembly: AssemblyDescription("Toolkit for stream processing eye movement data, fixation filtering, smoothing, etc., using Reactive Extensions.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("FIIT STUBA")]
+[assembly: AssemblyCompany("UXI FIIT STUBA")]
 [assembly: AssemblyProduct("UXI.GazeToolkit")]
-[assembly: AssemblyCopyright("Copyright © FIIT STUBA 2018")]
+[assembly: AssemblyCopyright("Copyright © 2018 UXI FIIT STUBA")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.5.0.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

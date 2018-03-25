@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("UXI.GazeFilter")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Base library for creating gaze data filter applications")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("UXI FIIT STUBA")]
 [assembly: AssemblyProduct("UXI.GazeFilter")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright © 2018 UXI FIIT STUBA")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

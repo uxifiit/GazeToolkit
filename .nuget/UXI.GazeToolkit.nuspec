@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>UXI.GazeToolkit</id>
+    <version>1.0.0</version>
+    <title>UXI.GazeToolkit</title>
+    <authors>UXI Dev</authors>
+    <owners>UXI FIIT STUBA</owners>
+    <projectUrl>https://github.com/uxifiit/UXI.GazeToolkit</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Toolkit for stream processing eye movement data, fixation filtering, smoothing, etc., using Reactive Extensions.</description>
+    <releaseNotes>Initial release of the UXI.GazeToolkit.</releaseNotes>
+    <copyright>Copyright &#x00A9; 2018 UXI FIIT STUBA</copyright>
+    <tags>gaze toolkit fixations filter rx</tags>
+    <dependencies>
+      <dependency id="System.Reactive" version="3.1.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\src\UXI.GazeToolkit\bin\Release\UXI.GazeToolkit.dll" target="lib\net45" />
+  </files>
+</package>
