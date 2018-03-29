@@ -50,13 +50,13 @@ fillingaps -g 75 < dataset.json | select -s Average | denoise exponential -a 0.3
    3. `denoise exponential -a 0.3` - Reduces noise in the data with *exponential* smoothing with *alpha* parameter set to 0.3.
    4. `velocity -f 60` - Measures angular velocity of eyes in data with *frequency* of 60 Hz (adjust based on your tracker device).
    5. `vt-classify -t 30` - Classifies each eye movement sample into:
-      * `Saccade`, if the velocity was higher than *threshold* speed of 30°/s;
+      * `Saccade`, if the velocity was higher than *threshold* speed of 30Â°/s;
       * `Fixation`, if the velocity was lower than the *threshold*;
       * `Unknown`, if the sample is invalid. 
    6. `merge -g 75` - Merges adjacent fixations if the time gap between each fixation is lower or equal than the 75ms.
    7. `discard -d 60` - Discards fixations with duration shorter than 60ms. Such fixations are reclassified as `Unknown` movements. 
 
-6. Output file `fixations.json` contains JSON array of `UXI.GazeToolkit.EyeMovement` objects - either `Fixation`, `Saccade`, or `Unknown` movements.
+6. Output file `fixations.json` contains JSON array of [EyeMovement](src/UXI.GazeToolkit/EyeMovement.cs) objects - each containing either a `Fixation`, `Saccade`, or an `Unknown` movement.
 7. You can omit certain steps in the pipeline, or save intermediate results of each filter for analysis or visualization.
 
 
