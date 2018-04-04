@@ -4,7 +4,7 @@
 [![NuGet Package](https://img.shields.io/myget/uxifiit/v/UXI.GazeToolkit.svg)](https://www.myget.org/feed/uxifiit/package/nuget/UXI.GazeToolkit)
 
 Toolkit for stream processing of eye movement data in C#/.NET.
-Contains gaze data filtering, mostly for eye movement classification into fixation/saccades, smoothing, eye selection, filling-in gaps, etc.
+Contains gaze data filtering, mostly for eye movement classification into fixations/saccades, smoothing, eye selection, filling-in gaps, etc.
 Gaze data filters are available as separate console applications for detailed data analysis and tuning parameters of fixation filtering. 
 
 UXI GazeToolkit does not directly depend on any SDK from eye tracker vendors.
@@ -39,7 +39,7 @@ Fixations filtering of gaze data with `UXI.GazeFilters.*`:
 1. Build `UXI.GazeFilter.*` applications with Microsoft Visual Studio 2015. 
 2. Convert your data into JSON array of `UXI.GazeToolkit.GazeData` objects (`dataset.json`).
 3. In `/build/[Debug|Release]/` folder find executable filters
-4. Run the following command to classify fixations with these filters:
+4. Run the following command to classify fixations for input file `dataset.json` with these filters:
 
 ```
 fillingaps -g 75 < dataset.json | select -s Average | denoise exponential -a 0.3 | velocity -f 60 | vt-classify -t 30 | merge -g 75 | discard -d 60 > fixations.json
