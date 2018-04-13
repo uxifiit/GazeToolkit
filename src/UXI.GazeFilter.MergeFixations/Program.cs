@@ -38,7 +38,7 @@ namespace UXI.GazeFilter.MergeFixations
         {
             new FilterTool<EyeMovement, EyeMovement>
             (
-                new Filter<EyeMovement, EyeMovement, FixationsMergingOptions>((s, o) => s.MergeAdjacentFixations(o))
+                new Filter<EyeMovement, EyeMovement, FixationsMergingOptions>("Merge adjacent fixations", (s, o) => s.MergeAdjacentFixations(o))
             ).Execute(args);
         }
     }

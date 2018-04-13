@@ -40,7 +40,7 @@ namespace UXI.GazeFilter.VelocityCalculation
         {
             new FilterTool<SingleEyeGazeData, EyeVelocity>
             (
-                new Filter<SingleEyeGazeData, EyeVelocity, VelocityCalculationOptions>((s, o) => s.CalculateVelocities(o))
+                new Filter<SingleEyeGazeData, EyeVelocity, VelocityCalculationOptions>("Eye velocity calculation", (s, o) => s.CalculateVelocities(o))
             ).Execute(args);
         }
     }

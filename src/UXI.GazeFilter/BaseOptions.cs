@@ -9,7 +9,7 @@ namespace UXI.GazeFilter
 {
     public abstract class BaseOptions
     {
-        [Value(0, HelpText = "Path to the input file with gaze data.", MetaName = "input file", MetaValue = "FILE", Required = false)]
+        [Value(0, HelpText = "Path to the input file.", MetaName = "input file", MetaValue = "FILE", Required = false)]
         public string InputFile { get; set; }
 
         [Option("format", Default = InputFileType.JSON, HelpText = "Data source format of the input file.")]
@@ -18,7 +18,10 @@ namespace UXI.GazeFilter
         [Option("output-format", Default = OutputFileType.JSON, HelpText = "Data format of the output.", Required = false)]
         public OutputFileType OutputFileType { get; set; }
 
-        [Option('o', "output", Default = null, HelpText = "Path to the file for the output.", Required = false)]
+        [Option('o', "output", Default = null, HelpText = "Path to the output file.", Required = false)]
         public string OutputFile { get; set; }
+
+        [Option('q', "quiet", Default = false, HelpText = "Suppress messages.", Required = false)]
+        public bool SuppressMessages { get; set; }
     }
 }

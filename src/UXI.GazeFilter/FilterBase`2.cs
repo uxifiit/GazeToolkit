@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reactive.Concurrency;
@@ -20,18 +21,61 @@ namespace UXI.GazeFilter
     }
 
 
+    public class FilterStatistics<TSource, TResult>
+    {
+        private readonly Stopwatch _stopwatch = new Stopwatch();
+        public FilterStatistics(string filterName)
+        {
+            FilterName = filterName;
+            InputObserver = System.Reactive.Observer.Create<TSource>(_ => { _stopwatch.Start(); InputSamplesCount += 1; });
+            OutputObserver = System.Reactive.Observer.Create<TResult>(_ => OutputSamplesCount += 1, ex => Error(ex), () => Stop());
+        }
+
+        public string FilterName { get; }
+
+        public int InputSamplesCount { get; private set; } = 0;
+
+        public IObserver<TSource> InputObserver { get; }
+
+        public int OutputSamplesCount { get; private set; } = 0;
+
+        public IObserver<TResult> OutputObserver { get; }
+
+        private void Stop()
+        {
+            _stopwatch.Stop();
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"{FilterName}");
+            sb.AppendLine($"- Input samples: {InputSamplesCount}");
+            sb.AppendLine($"- Output samples: {OutputSamplesCount}");
+            sb.AppendLine($"- Runtime: {_stopwatch.Elapsed.ToString()}");
+
+            Console.Error.WriteLine(sb.ToString());
+        }
+
+        private void Error(Exception ex)
+        {
+            Stop();
+            Console.Error.WriteLine(ex);
+        }
+    }
+
+
     public class Filter<TSource, TResult, TOptions> : IFilter<TSource, TResult>
         where TOptions : BaseOptions
     {
         private readonly Func<IObservable<TSource>, TOptions, IObservable<TResult>> _filter;
+        private readonly FilterStatistics<TSource, TResult> _statistics;
 
         protected Filter()
         {
             _filter = (_, __) => Observable.Empty<TResult>();
         }
 
-        public Filter(Func<IObservable<TSource>, TOptions, IObservable<TResult>> filter)
+        public Filter(string name, Func<IObservable<TSource>, TOptions, IObservable<TResult>> filter)
         {
+            _statistics = new FilterStatistics<TSource, TResult>(name);
             _filter = filter;
         }
 
@@ -47,7 +91,19 @@ namespace UXI.GazeFilter
 
         protected virtual IObservable<TResult> Process(IObservable<TSource> data, TOptions options)
         {
-            return _filter.Invoke(data, options);
+            if (options.SuppressMessages == false && _statistics != null)
+            {
+                data = data.Do(_statistics.InputObserver);
+            }
+
+            var result = _filter.Invoke(data, options);
+
+            if (options.SuppressMessages == false && _statistics != null)
+            {
+                result = result.Do(_statistics.OutputObserver);
+            }
+
+            return result;
         }
     }
 
