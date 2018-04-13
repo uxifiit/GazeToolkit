@@ -23,7 +23,7 @@ namespace UXI.GazeFilter.Selection
         {
             new FilterTool<GazeData, SingleEyeGazeData>
             (
-                new Filter<GazeData, SingleEyeGazeData, EyeSelectionOptions>((s, o) => s.SelectEye(o))
+                new Filter<GazeData, SingleEyeGazeData, EyeSelectionOptions>("Eye selection", (s, o) => s.SelectEye(o))
             ).Execute(args);
         }
     }

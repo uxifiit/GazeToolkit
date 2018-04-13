@@ -38,7 +38,7 @@ namespace UXI.GazeFilter.Frequency
         {
             new FilterTool<Timestamped, int>
             (
-                new Filter<Timestamped, int, FrequencyMeasureOptions>((s, o) => s.MeasureFrequency(o))
+                new Filter<Timestamped, int, FrequencyMeasureOptions>("Frequency measure", (s, o) => s.MeasureFrequency(o))
             ).Execute(args);
         }
     }

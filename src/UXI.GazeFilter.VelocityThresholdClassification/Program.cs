@@ -23,7 +23,7 @@ namespace UXI.GazeFilter.VelocityThresholdClassification
         {
             new FilterTool<EyeVelocity, EyeMovement>
             (
-                new Filter<EyeVelocity, EyeMovement, VelocityThresholdClassificationOptions>((s, o) => s.ClassifyByVelocity(o))
+                new Filter<EyeVelocity, EyeMovement, VelocityThresholdClassificationOptions>("Velocity threshold classification", (s, o) => s.ClassifyByVelocity(o))
             ).Execute(args);
         }
     }

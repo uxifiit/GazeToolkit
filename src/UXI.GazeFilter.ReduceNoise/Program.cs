@@ -37,8 +37,8 @@ namespace UXI.GazeFilter.ReduceNoise
             new FilterTool<SingleEyeGazeData, SingleEyeGazeData>
             (
                 true,
-                new Filter<SingleEyeGazeData, SingleEyeGazeData, MovingAverageSmoothingOptions>((s, o) => s.ReduceNoise(o)),
-                new Filter<SingleEyeGazeData, SingleEyeGazeData, ExponentialSmoothingOptions>((s, o) => s.ReduceNoise(o))
+                new Filter<SingleEyeGazeData, SingleEyeGazeData, MovingAverageSmoothingOptions>("Reduce noise - Moving average smoothing", (s, o) => s.ReduceNoise(o)),
+                new Filter<SingleEyeGazeData, SingleEyeGazeData, ExponentialSmoothingOptions>("Reduce noise - Exponential smoothing", (s, o) => s.ReduceNoise(o))
             ).Execute(args);
         }
     }

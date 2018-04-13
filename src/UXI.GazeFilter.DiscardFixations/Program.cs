@@ -36,7 +36,7 @@ namespace UXI.GazeFilter.DiscardFixations
         {
             new FilterTool<EyeMovement, EyeMovement>
             (
-                new Filter<EyeMovement, EyeMovement, FixationsDiscardingOptions>((s, o) => s.DiscardShortFixations(o))
+                new Filter<EyeMovement, EyeMovement, FixationsDiscardingOptions>("Discard short fixations", (s, o) => s.DiscardShortFixations(o))
             ).Execute(args);
         }
     }
