@@ -96,7 +96,9 @@ namespace UXI.GazeFilter
                 data = data.Do(_statistics.InputObserver);
             }
 
-            var result = _filter.Invoke(data, options);
+            var publishedData = data.Publish().RefCount();
+
+            var result = _filter.Invoke(publishedData, options);
 
             if (options.SuppressMessages == false && _statistics != null)
             {
@@ -176,7 +178,6 @@ namespace UXI.GazeFilter
                 TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
 
                 FilterIO.ReadInput<TSource>((BaseOptions)options)
-                        .Publish().RefCount()
                         .SubscribeOn(NewThreadScheduler.Default)
                         .Process(filter, options)
                         .WriteOutput((BaseOptions)options)
