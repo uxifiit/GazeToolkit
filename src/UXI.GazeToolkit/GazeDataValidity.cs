@@ -24,11 +24,22 @@ namespace UXI.GazeToolkit
 
     public static class GazeDataValidityEx
     {
+        /// <summary>
+        /// Checks the validity code for left eye, if it was seen or probably seen.
+        /// </summary>
+        /// <param name="validity"></param>
+        /// <returns>True if the validity code has <seealso cref="GazeDataValidity.Left"/> or <seealso cref="GazeDataValidity.ProbablyLeft"/> flags; otherwise, false.</returns>
         public static bool HasLeftEye(this GazeDataValidity validity)
         {
             return (validity & GazeDataValidity.LeftEyeMask) != GazeDataValidity.None;
         }
 
+
+        /// <summary>
+        /// Checks the validity code for right eye, if it was seen or probably seen.
+        /// </summary>
+        /// <param name="validity"></param>
+        /// <returns>True if the validity code has <seealso cref="GazeDataValidity.Right"/> or <seealso cref="GazeDataValidity.ProbablyRight"/> flags; otherwise, false.</returns>
         public static bool HasRightEye(this GazeDataValidity validity)
         {
             return (validity & GazeDataValidity.RightEyeMask) != GazeDataValidity.None;

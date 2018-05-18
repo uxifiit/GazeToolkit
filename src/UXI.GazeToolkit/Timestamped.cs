@@ -8,11 +8,11 @@ namespace UXI.GazeToolkit
 {
     public class Timestamped : ITimestamped
     {
-        public Timestamped(TimeSpan timestamp)
+        public Timestamped(long timestamp)
         {
             Timestamp = timestamp;
         }
 
-        public TimeSpan Timestamp { get; }
+        public long Timestamp { get; }
     }
 }

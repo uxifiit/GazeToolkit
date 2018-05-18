@@ -8,6 +8,6 @@ namespace UXI.GazeToolkit
 {
     public interface ITimestamped
     {
-        TimeSpan Timestamp { get; }
+        long Timestamp { get; }
     }
 }

@@ -27,6 +27,7 @@ namespace UXI.GazeFilter.MergeFixations
 
         public TimeSpan MaxTimeBetweenFixations { get; private set; }
 
+
         [Option('a', "max-angle", Default = 0.5, HelpText = "Max angle between fixations used when merging adjacent fixations.")]
         public double MaxAngleBetweenFixations { get; set; }
     }

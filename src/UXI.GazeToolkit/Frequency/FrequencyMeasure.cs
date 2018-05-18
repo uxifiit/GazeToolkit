@@ -19,7 +19,7 @@ namespace UXI.GazeToolkit.Frequency
         public static readonly TimeSpan DefaultWindow = TimeSpan.FromSeconds(1d);
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<TimeSpan> data)
+        public static IObservable<int> MeasureFrequency(this IObservable<long> data)
         {
             return MeasureFrequency(data, DefaultWindow);
         }
@@ -31,9 +31,9 @@ namespace UXI.GazeToolkit.Frequency
         }
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<TimeSpan> data, TimeSpan timeWindow)
+        public static IObservable<int> MeasureFrequency(this IObservable<long> data, TimeSpan timeWindow)
         {
-            return data.Buffer((first, current) => (current - first) >= timeWindow)
+            return data.Buffer((first, current) => (current - first) * 10 >= timeWindow.Ticks)
                        .Select(buffer => buffer.Count);
         }
 
@@ -44,7 +44,7 @@ namespace UXI.GazeToolkit.Frequency
         }
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<TimeSpan> data, IFrequencyMeasureOptions options)
+        public static IObservable<int> MeasureFrequency(this IObservable<long> data, IFrequencyMeasureOptions options)
         {
             return MeasureFrequency(data, options.TimeWindow);
         }

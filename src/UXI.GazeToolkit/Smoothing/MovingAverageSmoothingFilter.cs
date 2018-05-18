@@ -42,7 +42,6 @@ namespace UXI.GazeToolkit.Smoothing
                     accumulate.EyePosition3D / count,
                     accumulate.EyePosition3DRelative / count,
                     current.PupilDiameter,
-                    current.TrackerTicks,
                     current.Timestamp
                 ));
 

@@ -26,7 +26,6 @@ namespace UXI.GazeFilter.Frequency
             }
         }
 
-
         public TimeSpan TimeWindow { get; private set; }
     }
 

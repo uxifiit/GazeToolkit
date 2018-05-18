@@ -33,8 +33,8 @@ namespace UXI.GazeToolkit.Fixations
 
                                     if (lastFixation != null && nextFixation != null)
                                     {
-                                        var timeBetweenFixations = (nextFixation.StartTrackerTicks - lastFixation.EndTrackerTicks) / 1000d;
-                                        if (timeBetweenFixations <= maxTimeBetweenFixations.TotalMilliseconds)
+                                        var timeBetweenFixations = (nextFixation.StartTime - lastFixation.EndTime);
+                                        if (timeBetweenFixations <= (maxTimeBetweenFixations.Ticks / 10))
                                         {
                                             var lastSample = lastFixation.Samples.Last().EyeGazeData;
                                             var nextSample = nextFixation.Samples.First().EyeGazeData;
@@ -52,12 +52,10 @@ namespace UXI.GazeToolkit.Fixations
                                                     (
                                                         aggregate.SelectMany(m => m.Samples).Concat(nextFixation.Samples),
                                                         EyeMovementType.Fixation,
-                                                        lastFixation.StartTime,
-                                                        lastFixation.StartTrackerTicks
+                                                        lastFixation.StartTime
                                                     )
                                                     {
-                                                        EndTime = nextFixation.EndTime,
-                                                        EndTrackerTicks = nextFixation.EndTrackerTicks
+                                                        EndTime = nextFixation.EndTime
                                                     }
                                                 };
 
@@ -73,7 +71,7 @@ namespace UXI.GazeToolkit.Fixations
                                 return buffer;
                             })
                             .Where(b => b.Any())
-                            .Buffer((first, current) => first.First().StartTrackerTicks != current.First().StartTrackerTicks)
+                            .Buffer((first, current) => first.First().StartTime != current.First().StartTime)
                             .Where(b => b.Any())
                             .Select(b => b.Last())
                             .SelectMany(b => b);

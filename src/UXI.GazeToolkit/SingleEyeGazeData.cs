@@ -17,17 +17,15 @@ namespace UXI.GazeToolkit
             Point3 eyePosition3D,
             Point3 eyePosition3DRelative,
             double pupilDiameter,
-            long trackerTicks,
-            TimeSpan timestamp
+            long timestamp
         )
             : base(validity, gazePoint2D, gazePoint3D, eyePosition3D, eyePosition3DRelative, pupilDiameter)
         {
-            TrackerTicks = trackerTicks;
             Timestamp = timestamp;
         }
 
 
-        public SingleEyeGazeData(EyeGazeData eyeGazeData, long trackerTicks, TimeSpan timestamp)
+        public SingleEyeGazeData(EyeGazeData eyeGazeData, long timestamp)
             : this
             (
                 eyeGazeData.Validity,
@@ -36,17 +34,13 @@ namespace UXI.GazeToolkit
                 eyeGazeData.EyePosition3D,
                 eyeGazeData.EyePosition3DRelative,
                 eyeGazeData.PupilDiameter,
-                trackerTicks,
                 timestamp
             )
         {
         }
 
 
-        public long TrackerTicks { get; }
-
-
-        public TimeSpan Timestamp { get; }
+        public long Timestamp { get; }
 
 
         public static SingleEyeGazeData Average(params SingleEyeGazeData[] data)

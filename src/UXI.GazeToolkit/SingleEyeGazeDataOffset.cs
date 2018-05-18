@@ -10,7 +10,7 @@ namespace UXI.GazeToolkit
     public class SingleEyeGazeDataOffset : EyeGazeData
     {
         public SingleEyeGazeDataOffset()
-            : this(EyeGazeDataValidity.Invalid, Point2.Default, Point3.Default, Point3.Default, Point3.Default, 0d, 0L, TimeSpan.FromMilliseconds(0))
+            : this(EyeGazeDataValidity.Invalid, Point2.Default, Point3.Default, Point3.Default, Point3.Default, 0d, 0L)
         { }
 
 
@@ -22,17 +22,15 @@ namespace UXI.GazeToolkit
             Point3 eyePosition3D,
             Point3 eyePosition3DRelative,
             double pupilDiameter,
-            long trackerTicks,
-            TimeSpan timestampOffset
+            long timestampOffset
         )
             : base(validity, gazePoint2D, gazePoint3D, eyePosition3D, eyePosition3DRelative, pupilDiameter)
         {
-            TrackerTicks = trackerTicks;
             TimestampOffset = timestampOffset;
         }
 
 
-        public SingleEyeGazeDataOffset(EyeGazeData data, long trackerTicks, TimeSpan timestamp)
+        public SingleEyeGazeDataOffset(EyeGazeData data, long timestamp)
             : this
         (
             data.Validity,
@@ -41,23 +39,21 @@ namespace UXI.GazeToolkit
             data.EyePosition3D,
             data.EyePosition3DRelative,
             data.PupilDiameter,
-            trackerTicks,
-            new TimeSpan(timestamp.Ticks)
+            timestamp
         )
         {
         }
 
 
         public SingleEyeGazeDataOffset(SingleEyeGazeData data)
-            : this(data, data.TrackerTicks, data.Timestamp)
+            : this(data, data.Timestamp)
         {
         }
 
 
-        public long TrackerTicks { get; }
 
 
-        public TimeSpan TimestampOffset { get; }
+        public long TimestampOffset { get; }
 
 
         public SingleEyeGazeDataOffset Add(SingleEyeGazeDataOffset other)
@@ -70,7 +66,6 @@ namespace UXI.GazeToolkit
                 EyePosition3D + other.EyePosition3D,
                 EyePosition3DRelative + other.EyePosition3DRelative,
                 PupilDiameter + other.PupilDiameter,
-                TrackerTicks + other.TrackerTicks,
                 TimestampOffset + other.TimestampOffset
             );
         }
@@ -86,7 +81,6 @@ namespace UXI.GazeToolkit
                 EyePosition3D - other.EyePosition3D,
                 EyePosition3DRelative - other.EyePosition3DRelative,
                 PupilDiameter - other.PupilDiameter,
-                TrackerTicks - other.TrackerTicks,
                 TimestampOffset - other.TimestampOffset
             );
         }
@@ -102,8 +96,7 @@ namespace UXI.GazeToolkit
                 EyePosition3D / count,
                 EyePosition3DRelative / count,
                 PupilDiameter / count,
-                TrackerTicks / count,
-                TimeSpan.FromTicks(TimestampOffset.Ticks / count)
+                TimestampOffset / count
             );
         }
 
@@ -113,8 +106,7 @@ namespace UXI.GazeToolkit
             return new SingleEyeGazeData
             (
                  this,
-                 TrackerTicks,
-                 new TimeSpan(TimestampOffset.Ticks)
+                 TimestampOffset
             );
         }
 

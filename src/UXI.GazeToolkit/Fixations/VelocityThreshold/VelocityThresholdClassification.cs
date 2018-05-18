@@ -35,27 +35,22 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
                              .Where(b => b.Any())
                              .Scan(EyeMovement.Empty, (first, second) =>
                              {
-                                 var secondStartTimeTicks = second.First().EyeGazeData.Timestamp.Ticks;
-                                 var secondStartTrackerTicks = second.First().EyeGazeData.TrackerTicks;
+                                 var secondStartTimestamp = second.First().EyeGazeData.Timestamp;
 
                                  EyeMovementType movement = ClassifyVelocity(second.First(), velocityThreshold);
 
                                  if (first != EyeMovement.Empty && first.Samples.Any())
                                  {
-                                     var firstEndTimeTicks = first.EndTime.Ticks;
-                                     var firstEndTrackerTicks = first.EndTrackerTicks;
+                                     var firstEndTimestamp = first.EndTime;
 
-                                     var averageTimeTicksDiff = (secondStartTimeTicks - firstEndTimeTicks) / 2;
-                                     var averageTrackerTicksDiff = (secondStartTrackerTicks - firstEndTrackerTicks) / 2;
+                                     var averageTimeTicksDiff = (secondStartTimestamp - firstEndTimestamp) / 2;
 
-                                     first.EndTime = new TimeSpan(firstEndTimeTicks + averageTimeTicksDiff);
-                                     first.EndTrackerTicks = firstEndTrackerTicks + averageTrackerTicksDiff;
+                                     first.EndTime = firstEndTimestamp + averageTimeTicksDiff;
 
-                                     secondStartTimeTicks -= averageTimeTicksDiff;
-                                     secondStartTrackerTicks -= averageTrackerTicksDiff;
+                                     secondStartTimestamp -= averageTimeTicksDiff;
                                  }
 
-                                 return new EyeMovement(second, movement, new TimeSpan(secondStartTimeTicks), secondStartTrackerTicks);
+                                 return new EyeMovement(second, movement, secondStartTimestamp);
                              });
         }
 
