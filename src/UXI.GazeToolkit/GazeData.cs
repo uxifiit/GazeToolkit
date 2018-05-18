@@ -28,7 +28,7 @@ namespace UXI.GazeToolkit
         }
 
         /// <summary>
-        /// Time when data was sampled by the EyeTracker. Microseconds from arbitrary point in time.
+        /// Time when data was sampled by the EyeTracker in microseconds from arbitrary point in time.
         /// </summary>
         public long Timestamp { get; }
 

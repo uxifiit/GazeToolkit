@@ -66,7 +66,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\EyeGazeDataEx.cs" />
-    <Compile Include="Extensions\GazeDataEx.cs" />
     <Compile Include="EyeGazeData.cs" />
     <Compile Include="EyeGazeDataAggregate.cs" />
     <Compile Include="EyeMovement.cs" />
