@@ -23,7 +23,7 @@ namespace UXI.GazeToolkit.Fixations
                 // if fixation duration is shorter than minimumFixationDuration
                 if (m.MovementType == EyeMovementType.Fixation && m.Duration <= minimumFixationDuration)
                 {
-                    // we reclassify it as Unknown movement
+                    // we reclassify it as an Unknown movement
                     return new EyeMovement(m.Samples, EyeMovementType.Unknown, m.StartTime, m.StartTrackerTicks)
                     {
                         EndTime = m.EndTime,
