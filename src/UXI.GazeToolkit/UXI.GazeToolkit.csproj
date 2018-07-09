@@ -71,7 +71,6 @@
     <Compile Include="EyeMovement.cs" />
     <Compile Include="EyeMovementType.cs" />
     <Compile Include="EyeVelocity.cs" />
-    <Compile Include="Fixations\VelocityThreshold\IVelocityThresholdFilterOptions.cs" />
     <Compile Include="Fixations\VelocityThreshold\VelocityThresholdClassification.cs" />
     <Compile Include="GazeData.cs" />
     <Compile Include="GazeDataValidity.cs" />
@@ -88,7 +87,6 @@
     <Compile Include="SingleEyeValidity.cs" />
     <Compile Include="Smoothing\Rx\SmoothingRx.cs" />
     <Compile Include="Fixations\VelocityThreshold\VelocityCalculation.cs" />
-    <Compile Include="Fixations\VelocityThreshold\VelocityThresholdFilter.cs" />
     <Compile Include="Extensions\IObservableEx.cs" />
     <Compile Include="Selection\ISingleEyeGazeDataSelectorRx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

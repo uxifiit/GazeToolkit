@@ -27,7 +27,6 @@ namespace UXI.GazeToolkit.Extensions
                                  .Buffer(() => closings)
                                  .Subscribe(observer);
                 });
-
         }
 
 
