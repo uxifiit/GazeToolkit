@@ -21,7 +21,7 @@ namespace UXI.GazeToolkit.Fixations
             return movements.Select(m =>
             {
                 // if fixation duration is shorter than minimumFixationDuration
-                if (m.MovementType == EyeMovementType.Fixation && m.Duration <= minimumFixationDuration)    // TODO <
+                if (m.MovementType == EyeMovementType.Fixation && m.Duration < minimumFixationDuration)
                 {
                     // we reclassify it as Unknown movement
                     return new EyeMovement(m.Samples, EyeMovementType.Unknown, m.AverageSample, m.StartTrackerTicks, m.StartTime)
