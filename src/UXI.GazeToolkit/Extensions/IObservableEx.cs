@@ -18,7 +18,7 @@ namespace UXI.GazeToolkit.Extensions
                 {
                     var closings = new Subject<Unit>();
                     return source.Do(v =>
-                                 {                                   // TODO MAX_GAP_LENGTH
+                                 {
                                      if (closeBufferPredicate.Invoke(v))
                                      {
                                          closings.OnNext(Unit.Default);

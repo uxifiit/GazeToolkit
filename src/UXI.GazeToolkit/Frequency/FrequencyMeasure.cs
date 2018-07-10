@@ -25,9 +25,9 @@ namespace UXI.GazeToolkit.Frequency
         }
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<ITimestamped> data)
+        public static IObservable<int> MeasureFrequency(this IObservable<ITimestampedData> data)
         {
-            return MeasureFrequency(data.Select(d => d.Timestamp));
+            return MeasureFrequency(data.Select(d => d.TrackerTicks));
         }
 
 
@@ -38,9 +38,9 @@ namespace UXI.GazeToolkit.Frequency
         }
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<ITimestamped> data, TimeSpan timeWindow)
+        public static IObservable<int> MeasureFrequency(this IObservable<ITimestampedData> data, TimeSpan timeWindow)
         {
-            return MeasureFrequency(data.Select(d => d.Timestamp), timeWindow);
+            return MeasureFrequency(data.Select(d => d.TrackerTicks), timeWindow);
         }
 
 
@@ -50,9 +50,9 @@ namespace UXI.GazeToolkit.Frequency
         }
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<ITimestamped> data, IFrequencyMeasureOptions options)
+        public static IObservable<int> MeasureFrequency(this IObservable<ITimestampedData> data, IFrequencyMeasureOptions options)
         {
-            return MeasureFrequency(data.Select(d => d.Timestamp), options);
+            return MeasureFrequency(data.Select(d => d.TrackerTicks), options);
         }
     }
 }

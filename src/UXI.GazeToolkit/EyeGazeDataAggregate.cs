@@ -7,9 +7,10 @@ using UXI.GazeToolkit;
 
 namespace UXI.GazeToolkit
 {
-    internal class EyeGazeDataAggregate
+    public class EyeGazeDataAggregate
     {
         public EyeGazeDataAggregate() { }
+
         public EyeGazeDataAggregate(EyeGazeData initial)
             : this()
         {
@@ -17,18 +18,22 @@ namespace UXI.GazeToolkit
         }
 
 
-        public Point2 GazePoint2D { get; private set; } = Point2.Default;
+        public Point2 GazePoint2D { get; private set; } = Point2.Zero;
 
-        public Point3 GazePoint3D { get; private set; } = Point3.Default;
 
-        public Point3 EyePosition3D { get; private set; } = Point3.Default;
+        public Point3 GazePoint3D { get; private set; } = Point3.Zero;
 
-        public Point3 EyePosition3DRelative { get; private set; } = Point3.Default;
+
+        public Point3 EyePosition3D { get; private set; } = Point3.Zero;
+
+
+        public Point3 EyePosition3DRelative { get; private set; } = Point3.Zero;
         
+
         public double PupilDiameter { get; private set; } = 0d;
 
 
-        public EyeGazeDataAggregate Add(EyeGazeData eye)
+        public EyeGazeDataAggregate Add(EyeGazeDataAggregate eye)
         {
             GazePoint2D += eye.GazePoint2D;
             GazePoint3D += eye.GazePoint3D;
@@ -40,7 +45,7 @@ namespace UXI.GazeToolkit
         }
 
 
-        public EyeGazeDataAggregate Subtract(EyeGazeData eye)
+        public EyeGazeDataAggregate Subtract(EyeGazeDataAggregate eye)
         {
             GazePoint2D -= eye.GazePoint2D;
             GazePoint3D -= eye.GazePoint3D;
@@ -49,6 +54,24 @@ namespace UXI.GazeToolkit
             PupilDiameter -= eye.PupilDiameter;
 
             return this;
+        }
+
+
+        public EyeGazeDataAggregate Normalize(int count)
+        {
+            GazePoint2D /= count;
+            GazePoint3D /= count;
+            EyePosition3D /= count;
+            EyePosition3DRelative /= count;
+            PupilDiameter /= count;
+
+            return this;
+        }
+
+
+        public static implicit operator EyeGazeDataAggregate(EyeGazeData value)
+        {
+            return new EyeGazeDataAggregate(value);
         }
     }
 }

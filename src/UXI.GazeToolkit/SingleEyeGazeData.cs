@@ -7,7 +7,7 @@ using UXI.GazeToolkit;
 
 namespace UXI.GazeToolkit
 {
-    public class SingleEyeGazeData : EyeGazeData
+    public class SingleEyeGazeData : EyeGazeData, ITimestampedData
     {
         public SingleEyeGazeData
         (
@@ -17,15 +17,17 @@ namespace UXI.GazeToolkit
             Point3 eyePosition3D,
             Point3 eyePosition3DRelative,
             double pupilDiameter,
-            long timestamp
+            long trackerTicks,
+            TimeSpan timestamp
         )
             : base(validity, gazePoint2D, gazePoint3D, eyePosition3D, eyePosition3DRelative, pupilDiameter)
         {
+            TrackerTicks = trackerTicks;
             Timestamp = timestamp;
         }
 
 
-        public SingleEyeGazeData(EyeGazeData eyeGazeData, long timestamp)
+        public SingleEyeGazeData(EyeGazeData eyeGazeData, long trackerTicks, TimeSpan timestamp)
             : this
             (
                 eyeGazeData.Validity,
@@ -34,44 +36,17 @@ namespace UXI.GazeToolkit
                 eyeGazeData.EyePosition3D,
                 eyeGazeData.EyePosition3DRelative,
                 eyeGazeData.PupilDiameter,
+                trackerTicks,
                 timestamp
             )
         {
         }
 
 
-        public long Timestamp { get; }
+        public long TrackerTicks { get; }
 
 
-        public static SingleEyeGazeData Average(params SingleEyeGazeData[] data)
-        {
-            if (data == null || data.Any() == false)
-            {
-                throw new ArgumentException("No data to average.", nameof(data));
-            }
-
-            return AverageRange(data);
-        }
-
-
-        public static SingleEyeGazeData AverageRange(IEnumerable<SingleEyeGazeData> data)
-        {
-            var reference = new SingleEyeGazeDataOffset(data.First());
-            var aggregate = new SingleEyeGazeDataOffset();
-            var rest = data.Skip(1);
-            int count = 1;
-
-            foreach (var gaze in rest)
-            {
-                aggregate = aggregate.Add(new SingleEyeGazeDataOffset(gaze).Subtract(reference));
-                count += 1;
-            }
-
-            var referenceOffset = aggregate.Normalize(count);
-
-            var average = reference.Add(referenceOffset);
-
-            return average.ToSingleEyeGazeData();
-        }
+        // TODO Timestamp
+        public TimeSpan Timestamp { get; }
     }
 }

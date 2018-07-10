@@ -8,7 +8,7 @@ namespace UXI.GazeToolkit
 {
     public class EyeGazeData
     {
-        public static readonly EyeGazeData Empty = new EyeGazeData();
+        public static readonly EyeGazeData Empty = new EyeGazeData(EyeGazeDataValidity.Invalid, Point2.Zero, Point3.Zero, Point3.Zero, Point3.Zero, 0d);
 
         private EyeGazeData() { }
 
@@ -44,7 +44,7 @@ namespace UXI.GazeToolkit
         public Point3 GazePoint3D { get; } 
 
         public Point3 EyePosition3D { get; } 
-
+        
         public Point3 EyePosition3DRelative { get; } 
 
         public double PupilDiameter { get; } 

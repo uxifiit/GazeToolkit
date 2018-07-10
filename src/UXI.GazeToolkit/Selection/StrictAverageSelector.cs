@@ -25,7 +25,7 @@ namespace UXI.GazeToolkit.Selection
                           ? EyeGazeDataUtils.Average(gaze.LeftEye, gaze.RightEye)
                           : EyeGazeData.Empty;
 
-            return new SingleEyeGazeData(average, gaze.Timestamp);
+            return new SingleEyeGazeData(average, gaze.TrackerTicks, gaze.Timestamp);
         }
     }
 }

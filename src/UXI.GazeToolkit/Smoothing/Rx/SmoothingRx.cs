@@ -14,10 +14,12 @@ namespace UXI.GazeToolkit.Smoothing
     }
 
 
+
     public interface INoiseReductionOptions
     {
         NoiseReductionStrategy Strategy { get; } 
     }
+
 
 
     public interface IExponentialSmoothingOptions : INoiseReductionOptions
@@ -26,10 +28,12 @@ namespace UXI.GazeToolkit.Smoothing
     }
 
 
+
     public interface IMovingAverageSmoothingOptions : INoiseReductionOptions
     {
         int WindowSize { get; }
     }
+
 
 
     public static class SmoothingRx

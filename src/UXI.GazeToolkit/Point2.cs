@@ -13,7 +13,7 @@ namespace UXI.GazeToolkit
     /// </summary>
     public struct Point2
     {
-        public static readonly Point2 Default = new Point2();
+        public static readonly Point2 Zero = new Point2();
 
         /// <summary>
         /// Gets the X coordinate of the point.

@@ -11,7 +11,7 @@ namespace UXI.GazeToolkit
     /// </summary>
     public struct Point3
     {
-        public readonly static Point3 Default = new Point3();
+        public readonly static Point3 Zero = new Point3();
 
         /// <summary>
         /// Gets the X coordinate of the point.

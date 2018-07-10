@@ -115,7 +115,7 @@ namespace UXI.GazeToolkit.Interpolation
                     {
                         if (lastValidSample != null)
                         {
-                            if ((sample.Timestamp - lastValidSample.Timestamp) * 10 <= maxGapLength.Ticks) 
+                            if ((sample.TrackerTicks - lastValidSample.TrackerTicks) * 10 <= maxGapLength.Ticks) 
                             {
                                 invalidSamples++;
                             }
@@ -145,7 +145,7 @@ namespace UXI.GazeToolkit.Interpolation
 
         public static IObservable<GazeData> FillInGaps(this IObservable<GazeData> gazeData, TimeSpan maxGapLength)
         {
-            // split gaze data into 2 separate observables corresponding each eye
+            // split gaze data into 2 separate observables for each eye
             var leftEye = LeftEyeSelector.Instance.SelectSingleEye(gazeData);
             var rightEye = RightEyeSelector.Instance.SelectSingleEye(gazeData);
 
@@ -158,7 +158,7 @@ namespace UXI.GazeToolkit.Interpolation
                 gazeData,
                 leftEyeWithFilledInGaps,
                 rightEyeWithFilledInGaps,
-                (source, left, right) => new GazeData(left.Validity.MergeToEyeValidity(right.Validity), left, right, source.Timestamp)
+                (source, left, right) => new GazeData(left.Validity.MergeToEyeValidity(right.Validity), left, right, source.TrackerTicks, source.Timestamp)
             );
         }
 
