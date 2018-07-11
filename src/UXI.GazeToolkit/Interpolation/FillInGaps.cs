@@ -158,7 +158,7 @@ namespace UXI.GazeToolkit.Interpolation
                 gazeData,
                 leftEyeWithFilledInGaps,
                 rightEyeWithFilledInGaps,
-                (source, left, right) => new GazeData(left.Validity.MergeToEyeValidity(right.Validity), left, right, source.TrackerTicks, source.Timestamp)
+                (source, left, right) => new GazeData(left, right, source.TrackerTicks, source.Timestamp)
             );
         }
 

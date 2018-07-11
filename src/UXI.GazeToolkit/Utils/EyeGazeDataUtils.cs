@@ -13,7 +13,7 @@ namespace UXI.GazeToolkit.Utils
         {
             return new EyeGazeData
             (
-                EyeGazeDataValidity.Valid,
+                EyeValidity.Valid,
                 PointsUtils.Average(first.GazePoint2D, second.GazePoint2D),
                 PointsUtils.Average(first.GazePoint3D, second.GazePoint3D),
                 PointsUtils.Average(first.EyePosition3D, second.EyePosition3D),

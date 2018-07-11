@@ -31,10 +31,10 @@ namespace UXI.GazeToolkit.Smoothing
         {
             return gazeData.Scan((previous, current) =>
             {
-                return (current.Validity == EyeGazeDataValidity.Valid && previous.Validity == EyeGazeDataValidity.Valid)
+                return (current.Validity == EyeValidity.Valid && previous.Validity == EyeValidity.Valid)
                 ? new SingleEyeGazeData
                   (
-                      EyeGazeDataValidity.Valid,
+                      EyeValidity.Valid,
                       Smooth(previous.GazePoint2D, current.GazePoint2D),
                       Smooth(previous.GazePoint3D, current.GazePoint3D),
                       Smooth(previous.EyePosition3D, current.EyePosition3D),

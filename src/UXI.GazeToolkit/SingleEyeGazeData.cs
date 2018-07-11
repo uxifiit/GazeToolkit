@@ -11,7 +11,7 @@ namespace UXI.GazeToolkit
     {
         public SingleEyeGazeData
         (
-            EyeGazeDataValidity validity,
+            EyeValidity validity,
             Point2 gazePoint2D,
             Point3 gazePoint3D,
             Point3 eyePosition3D,

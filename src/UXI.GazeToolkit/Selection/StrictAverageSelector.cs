@@ -21,7 +21,7 @@ namespace UXI.GazeToolkit.Selection
 
         public SingleEyeGazeData SelectSingleEye(GazeData gaze)
         {
-            var average = gaze.Validity == GazeDataValidity.Both
+            var average = (gaze.LeftEye.Validity == EyeValidity.Valid && gaze.RightEye.Validity == EyeValidity.Valid)
                           ? EyeGazeDataUtils.Average(gaze.LeftEye, gaze.RightEye)
                           : EyeGazeData.Empty;
 

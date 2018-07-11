@@ -36,7 +36,7 @@ namespace UXI.GazeToolkit.Smoothing
                 (accumulate, eye) => accumulate.Subtract(eye),
                 (accumulate, count, current) => new SingleEyeGazeData
                 (
-                    EyeGazeDataValidity.Valid,
+                    EyeValidity.Valid,
                     accumulate.GazePoint2D / count,
                     accumulate.GazePoint3D / count,
                     accumulate.EyePosition3D / count,

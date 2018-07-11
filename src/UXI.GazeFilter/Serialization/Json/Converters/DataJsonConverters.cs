@@ -122,7 +122,7 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
     {
         protected override EyeGazeData Convert(JObject obj, JsonSerializer serializer)
         {
-            var validity = obj.GetObject<EyeGazeDataValidity>(nameof(EyeGazeData.Validity), serializer);
+            var validity = obj.GetObject<EyeValidity>(nameof(EyeGazeData.Validity), serializer);
             var gazePoint2D = obj.GetObject<Point2>(nameof(EyeGazeData.GazePoint2D), serializer);
             var gazePoint3D = obj.GetObject<Point3>(nameof(EyeGazeData.GazePoint3D), serializer);
             var eyePosition3D = obj.GetObject<Point3>(nameof(EyeGazeData.EyePosition3D), serializer);
@@ -151,11 +151,10 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             // GazeData implements the ITimestampedData interface, we use conversion to the TimestampedData object
             var timestampedData = obj.ToObject<TimestampedData>(serializer);
 
-            var validity = obj.GetObject<GazeDataValidity>(nameof(GazeData.Validity), serializer);
             var leftEye = obj.GetObject<EyeGazeData>(nameof(GazeData.LeftEye), serializer);
             var rightEye = obj.GetObject<EyeGazeData>(nameof(GazeData.RightEye), serializer);
 
-            return new GazeData(validity, leftEye, rightEye, timestampedData.TrackerTicks, timestampedData.Timestamp);
+            return new GazeData(leftEye, rightEye, timestampedData.TrackerTicks, timestampedData.Timestamp);
         }
     }
 

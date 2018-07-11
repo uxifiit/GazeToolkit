@@ -8,13 +8,13 @@ namespace UXI.GazeToolkit
 {
     public class EyeGazeData
     {
-        public static readonly EyeGazeData Empty = new EyeGazeData(EyeGazeDataValidity.Invalid, Point2.Zero, Point3.Zero, Point3.Zero, Point3.Zero, 0d);
+        public static readonly EyeGazeData Empty = new EyeGazeData(EyeValidity.Invalid, Point2.Zero, Point3.Zero, Point3.Zero, Point3.Zero, 0d);
 
         private EyeGazeData() { }
 
         public EyeGazeData
         (
-            EyeGazeDataValidity validity,
+            EyeValidity validity,
             Point2 gazePoint2D, 
             Point3 gazePoint3D, 
             Point3 eyePosition3D, 
@@ -37,7 +37,7 @@ namespace UXI.GazeToolkit
         }
 
 
-        public EyeGazeDataValidity Validity { get; } = EyeGazeDataValidity.Invalid;
+        public EyeValidity Validity { get; } = EyeValidity.Invalid;
 
         public Point2 GazePoint2D { get; }
 

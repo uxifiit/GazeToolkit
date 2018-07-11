@@ -73,7 +73,6 @@
     <Compile Include="EyeVelocity.cs" />
     <Compile Include="Fixations\VelocityThreshold\VelocityThresholdClassificationRx.cs" />
     <Compile Include="GazeData.cs" />
-    <Compile Include="GazeDataValidity.cs" />
     <Compile Include="ITimestampedData.cs" />
     <Compile Include="Point2.cs" />
     <Compile Include="Point3.cs" />
@@ -83,7 +82,7 @@
     <Compile Include="Frequency\FrequencyMeasure.cs" />
     <Compile Include="Interpolation\FillInGaps.cs" />
     <Compile Include="SingleEyeGazeData.cs" />
-    <Compile Include="SingleEyeValidity.cs" />
+    <Compile Include="EyeValidity.cs" />
     <Compile Include="Smoothing\Rx\SmoothingRx.cs" />
     <Compile Include="Fixations\VelocityThreshold\VelocityCalculationRx.cs" />
     <Compile Include="Extensions\IObservableEx.cs" />

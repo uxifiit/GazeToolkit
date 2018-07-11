@@ -45,7 +45,7 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
 
                                  EyeMovementType movement = ClassifyMovement(secondStart, velocityThreshold);
 
-                                 EyeGazeData averageSample = EyeGazeData.Empty;
+                                 EyeGazeData averageSample = null;
 
                                  if (first != EyeMovement.Empty && first.Samples.Any())
                                  {
