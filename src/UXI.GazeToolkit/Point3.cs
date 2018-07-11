@@ -158,7 +158,7 @@ namespace UXI.GazeToolkit
         /// <returns>String representation of the point coordinates split by a semicolon</returns>
         public override string ToString()
         {
-            return $"{X};{Y}";
+            return $"{X};{Y};{Z}";
         }
     }
 }

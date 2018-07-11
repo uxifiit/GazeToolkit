@@ -8,9 +8,9 @@ using UXI.GazeToolkit.Utils;
 
 namespace UXI.GazeToolkit.Extensions
 {
-    public static class EyeGazeDataEx
+    public static class EyeSampleEx
     {
-        public static double GetVisualAngle(this EyeGazeData sample, EyeGazeData from, EyeGazeData to)
+        public static double GetVisualAngle(this EyeSample sample, EyeSample from, EyeSample to)
         {
             return GetAngle(sample.EyePosition3D, from.GazePoint3D, to.GazePoint3D);
         }
@@ -36,11 +36,10 @@ namespace UXI.GazeToolkit.Extensions
         }
 
 
-        public static EyeGazeData Add(this EyeGazeData current, EyeGazeDataAggregate aggregate)
+        public static EyeSample Add(this EyeSample current, EyeSampleAggregate aggregate)
         {
-            return new EyeGazeData
+            return new EyeSample
             (
-                current.Validity,
                 current.GazePoint2D + aggregate.GazePoint2D,
                 current.GazePoint3D + aggregate.GazePoint3D,
                 current.EyePosition3D + aggregate.EyePosition3D,
@@ -50,11 +49,10 @@ namespace UXI.GazeToolkit.Extensions
         }
 
 
-        public static EyeGazeData Subtract(this EyeGazeData current, EyeGazeDataAggregate aggregate)
+        public static EyeSample Subtract(this EyeSample current, EyeSampleAggregate aggregate)
         {
-            return new EyeGazeData
+            return new EyeSample
             (
-                current.Validity,
                 current.GazePoint2D - aggregate.GazePoint2D,
                 current.GazePoint3D - aggregate.GazePoint3D,
                 current.EyePosition3D - aggregate.EyePosition3D,

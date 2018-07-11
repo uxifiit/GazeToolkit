@@ -26,7 +26,7 @@ namespace UXI.GazeToolkit.Interpolation
     // .................................
     public static class FillInGapsInterpolation
     {
-        private static IEnumerable<EyeGazeData> Interpolate(EyeGazeData start, EyeGazeData end, int interpolatedSteps)
+        private static IEnumerable<EyeSample> Interpolate(EyeSample start, EyeSample end, int interpolatedSteps)
         {
             int steps = interpolatedSteps + 1;
 
@@ -38,9 +38,8 @@ namespace UXI.GazeToolkit.Interpolation
 
             foreach (var step in Enumerable.Range(1, interpolatedSteps))
             {
-                yield return new EyeGazeData
+                yield return new EyeSample
                 (
-                    start.Validity,
                     stepGazePoint2D * step + start.GazePoint2D,
                     stepGazePoint3D * step + start.GazePoint3D,
                     stepEyePosition3D * step + start.EyePosition3D,
@@ -86,9 +85,9 @@ namespace UXI.GazeToolkit.Interpolation
         //}
 
 
-        public static IObservable<EyeGazeData> FillInGaps(this IObservable<SingleEyeGazeData> eyeGazeData, TimeSpan maxGapLength)
+        public static IObservable<EyeSample> FillInGaps(this IObservable<SingleEyeGazeData> eyeGazeData, TimeSpan maxGapLength)
         {
-            return Observable.Create<EyeGazeData>(o =>
+            return Observable.Create<EyeSample>(o =>
             {
                 SingleEyeGazeData lastValidSample = null;
                 int invalidSamples = 0;
@@ -125,7 +124,7 @@ namespace UXI.GazeToolkit.Interpolation
 
                                 while (invalidSamples-- > 0)
                                 {
-                                    o.OnNext(EyeGazeData.Empty);
+                                    o.OnNext(EyeSample.Empty);
                                 }
 
                                 invalidSamples = 0;
@@ -149,8 +148,8 @@ namespace UXI.GazeToolkit.Interpolation
             var leftEye = LeftEyeSelector.Instance.SelectSingleEye(gazeData);
             var rightEye = RightEyeSelector.Instance.SelectSingleEye(gazeData);
 
-            var leftEyeWithFilledInGaps = FillInGaps(leftEye, maxGapLength).Select(e => new EyeGazeData(e));
-            var rightEyeWithFilledInGaps = FillInGaps(rightEye, maxGapLength).Select(e => new EyeGazeData(e));
+            var leftEyeWithFilledInGaps = FillInGaps(leftEye, maxGapLength).Select(e => new EyeSample(e));
+            var rightEyeWithFilledInGaps = FillInGaps(rightEye, maxGapLength).Select(e => new EyeSample(e));
 
             // combine separated samples for each eye into single sample with both eyes.
             return Observable.Zip
@@ -158,8 +157,8 @@ namespace UXI.GazeToolkit.Interpolation
                 gazeData,
                 leftEyeWithFilledInGaps,
                 rightEyeWithFilledInGaps,
-                (source, left, right) => new GazeData(left, right, source.TrackerTicks, source.Timestamp)
-            );
+                (source, left, right) => new GazeData(new EyeData(source.LeftEye.Validity, left), new EyeData(source.RightEye.Validity, right), source.TrackerTicks, source.Timestamp)
+            ); // TODO check validity codes for consistency
         }
 
 

@@ -22,7 +22,7 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
     {
         private static EyeMovementType ClassifyMovement(EyeVelocity velocity, double threshold)
         {
-            if (velocity.EyeGazeData.Validity.HasEye() 
+            if (velocity.Eye.Validity.HasEye() 
                 && Double.IsInfinity(velocity.Velocity) == false)
             {
                 return velocity.Velocity > threshold ? EyeMovementType.Saccade : EyeMovementType.Fixation;
@@ -40,12 +40,12 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
                              {
                                  EyeVelocity secondStart = second.First();
 
-                                 var secondStartTrackerTicks = secondStart.EyeGazeData.TrackerTicks;
-                                 var secondStartTimestamp = secondStart.EyeGazeData.Timestamp;
+                                 var secondStartTrackerTicks = secondStart.Eye.TrackerTicks;
+                                 var secondStartTimestamp = secondStart.Eye.Timestamp;
 
                                  EyeMovementType movement = ClassifyMovement(secondStart, velocityThreshold);
 
-                                 EyeGazeData averageSample = null;
+                                 EyeSample averageSample = null;
 
                                  if (first != EyeMovement.Empty && first.Samples.Any())
                                  {
@@ -61,7 +61,7 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
                                      secondStartTrackerTicks -= averageTicksDiff;
                                      secondStartTimestamp = secondStartTimestamp.Subtract(averageTimestampDiff);
 
-                                     averageSample = EyeGazeDataUtils.Average(first.Samples.Select(s => s.EyeGazeData));
+                                     averageSample = EyeSampleUtils.Average(first.Samples.Select(s => s.Eye));
                                  }
 
                                  return new EyeMovement(second, movement, averageSample, secondStartTrackerTicks, secondStartTimestamp);

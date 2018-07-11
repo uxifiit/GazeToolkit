@@ -10,7 +10,7 @@ namespace UXI.GazeToolkit
     {
         public static readonly EyeMovement Empty = new EyeMovement(Enumerable.Empty<EyeVelocity>(), EyeMovementType.Unknown, null, 0L, TimeSpan.Zero);
 
-        public EyeMovement(IEnumerable<EyeVelocity> samples, EyeMovementType type, EyeGazeData averageSample, long startTrackerTicks, TimeSpan startTime)
+        public EyeMovement(IEnumerable<EyeVelocity> samples, EyeMovementType type, EyeSample averageSample, long startTrackerTicks, TimeSpan startTime)
         {
             Samples = samples?.ToList() ?? new List<EyeVelocity>();
 
@@ -24,8 +24,8 @@ namespace UXI.GazeToolkit
             {
                 var lastSample = Samples.Last();
 
-                EndTrackerTicks = lastSample.EyeGazeData.TrackerTicks;
-                EndTime = lastSample.EyeGazeData.Timestamp;
+                EndTrackerTicks = lastSample.Eye.TrackerTicks;
+                EndTime = lastSample.Eye.Timestamp;
             }
             else
             {
@@ -49,7 +49,7 @@ namespace UXI.GazeToolkit
 
         public Point2 Position => AverageSample?.GazePoint2D ?? Point2.Zero;
 
-        public EyeGazeData AverageSample { get; }
+        public EyeSample AverageSample { get; }
 
         public EyeMovementType MovementType { get; }
     }

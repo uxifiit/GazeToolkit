@@ -163,18 +163,5 @@ namespace UXI.GazeToolkit
         {                 
             return X.GetHashCode() ^ Y.GetHashCode();
         }
-
-
-        /// <summary>
-        /// Returns distance between this and another point.
-        /// </summary>
-        /// <param name="?"></param>
-        [Obsolete]
-        public double DistanceFrom(Point2 other)
-        {
-            double difx = this.X - other.X;
-            double dify = this.Y - other.Y;
-            return Math.Sqrt(difx * difx + dify * dify);
-        }
     }
 }

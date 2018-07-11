@@ -7,11 +7,11 @@ using UXI.GazeToolkit;
 
 namespace UXI.GazeToolkit
 {
-    public class EyeGazeDataAggregate
+    public class EyeSampleAggregate
     {
-        public EyeGazeDataAggregate() { }
+        public EyeSampleAggregate() { }
 
-        public EyeGazeDataAggregate(EyeGazeData initial)
+        public EyeSampleAggregate(EyeSample initial)
             : this()
         {
             Add(initial);
@@ -33,7 +33,7 @@ namespace UXI.GazeToolkit
         public double PupilDiameter { get; private set; } = 0d;
 
 
-        public EyeGazeDataAggregate Add(EyeGazeDataAggregate eye)
+        public EyeSampleAggregate Add(EyeSampleAggregate eye)
         {
             GazePoint2D += eye.GazePoint2D;
             GazePoint3D += eye.GazePoint3D;
@@ -45,7 +45,7 @@ namespace UXI.GazeToolkit
         }
 
 
-        public EyeGazeDataAggregate Subtract(EyeGazeDataAggregate eye)
+        public EyeSampleAggregate Subtract(EyeSampleAggregate eye)
         {
             GazePoint2D -= eye.GazePoint2D;
             GazePoint3D -= eye.GazePoint3D;
@@ -57,7 +57,7 @@ namespace UXI.GazeToolkit
         }
 
 
-        public EyeGazeDataAggregate Normalize(int count)
+        public EyeSampleAggregate Normalize(int count)
         {
             GazePoint2D /= count;
             GazePoint3D /= count;
@@ -69,9 +69,9 @@ namespace UXI.GazeToolkit
         }
 
 
-        public static implicit operator EyeGazeDataAggregate(EyeGazeData value)
+        public static implicit operator EyeSampleAggregate(EyeSample value)
         {
-            return new EyeGazeDataAggregate(value);
+            return new EyeSampleAggregate(value);
         }
     }
 }

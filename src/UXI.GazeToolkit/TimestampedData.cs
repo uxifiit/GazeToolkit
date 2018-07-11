@@ -14,7 +14,9 @@ namespace UXI.GazeToolkit
             Timestamp = timestamp;
         }
 
+
         public long TrackerTicks { get; }
+
 
         public TimeSpan Timestamp { get; }
     }

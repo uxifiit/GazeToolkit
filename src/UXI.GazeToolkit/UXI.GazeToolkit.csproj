@@ -66,8 +66,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\EyeGazeDataEx.cs" />
-    <Compile Include="EyeGazeData.cs" />
-    <Compile Include="EyeGazeDataAggregate.cs" />
+    <Compile Include="EyeSample.cs" />
+    <Compile Include="EyeSampleAggregate.cs" />
+    <Compile Include="EyeData.cs" />
     <Compile Include="EyeMovement.cs" />
     <Compile Include="EyeMovementType.cs" />
     <Compile Include="EyeVelocity.cs" />
@@ -99,7 +100,7 @@
     <Compile Include="Smoothing\ISmoothingFilter.cs" />
     <Compile Include="Smoothing\MovingAverageSmoothingFilter.cs" />
     <Compile Include="TimestampedData.cs" />
-    <Compile Include="Utils\EyeGazeDataUtils.cs" />
+    <Compile Include="Utils\EyeSampleUtils.cs" />
     <Compile Include="Utils\PointsUtils.cs" />
     <Compile Include="Utils\MathUtils.cs" />
   </ItemGroup>

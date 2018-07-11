@@ -30,7 +30,7 @@ namespace UXI.GazeToolkit.Smoothing
         public IObservable<SingleEyeGazeData> Smooth(IObservable<SingleEyeGazeData> gazeData)
         {
             return gazeData.MovingAverageWithBuffer(
-                new EyeGazeDataAggregate(),
+                new EyeSampleAggregate(),
                 WindowSize,
                 (accumulate, eye) => accumulate.Add(eye),
                 (accumulate, eye) => accumulate.Subtract(eye),

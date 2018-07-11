@@ -36,17 +36,17 @@ namespace UXI.GazeToolkit.Fixations
                                         var timeBetweenFixations = (nextFixation.StartTrackerTicks - lastFixation.EndTrackerTicks);
                                         if (timeBetweenFixations <= (maxTimeBetweenFixations.Ticks / 10))
                                         {
-                                            var lastSample = lastFixation.Samples.Last().EyeGazeData;
-                                            var nextSample = nextFixation.Samples.First().EyeGazeData;
+                                            var lastSample = lastFixation.Samples.Last().Eye;
+                                            var nextSample = nextFixation.Samples.First().Eye;
 
-                                            var averageSample = EyeGazeDataUtils.Average(lastSample, nextSample);
+                                            var averageSample = EyeSampleUtils.Average(lastSample, nextSample);
 
                                             double angle = averageSample.GetVisualAngle(lastFixation.AverageSample, nextFixation.AverageSample);
 
                                             if (angle <= maxAngleBetweenFixations)
                                             {
                                                 var mergedSamples = aggregate.SelectMany(m => m.Samples).Concat(nextFixation.Samples);
-                                                var newAverageSample = EyeGazeDataUtils.Average(lastFixation.Samples.Concat(nextFixation.Samples).Select(s => s.EyeGazeData));
+                                                var newAverageSample = EyeSampleUtils.Average(lastFixation.Samples.Concat(nextFixation.Samples).Select(s => s.Eye));
 
                                                 // merge
                                                 var mergedFixation = new List<EyeMovement>()

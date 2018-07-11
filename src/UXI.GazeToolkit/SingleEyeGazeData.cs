@@ -7,7 +7,7 @@ using UXI.GazeToolkit;
 
 namespace UXI.GazeToolkit
 {
-    public class SingleEyeGazeData : EyeGazeData, ITimestampedData
+    public class SingleEyeGazeData : EyeData, ITimestampedData
     {
         public SingleEyeGazeData
         (
@@ -27,26 +27,18 @@ namespace UXI.GazeToolkit
         }
 
 
-        public SingleEyeGazeData(EyeGazeData eyeGazeData, long trackerTicks, TimeSpan timestamp)
-            : this
-            (
-                eyeGazeData.Validity,
-                eyeGazeData.GazePoint2D,
-                eyeGazeData.GazePoint3D,
-                eyeGazeData.EyePosition3D,
-                eyeGazeData.EyePosition3DRelative,
-                eyeGazeData.PupilDiameter,
-                trackerTicks,
-                timestamp
-            )
+        public SingleEyeGazeData(EyeData other, long trackerTicks, TimeSpan timestamp)
+            : base(other)
         {
+            TrackerTicks = trackerTicks;
+            Timestamp = timestamp;
+
         }
 
 
         public long TrackerTicks { get; }
 
 
-        // TODO Timestamp
         public TimeSpan Timestamp { get; }
     }
 }

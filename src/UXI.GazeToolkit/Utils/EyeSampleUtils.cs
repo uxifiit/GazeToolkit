@@ -7,13 +7,12 @@ using UXI.GazeToolkit.Extensions;
 
 namespace UXI.GazeToolkit.Utils
 {
-    public static class EyeGazeDataUtils
+    public static class EyeSampleUtils
     {
-        public static EyeGazeData Average(EyeGazeData first, EyeGazeData second)
+        public static EyeSample Average(EyeSample first, EyeSample second)
         {
-            return new EyeGazeData
+            return new EyeSample
             (
-                EyeValidity.Valid,
                 PointsUtils.Average(first.GazePoint2D, second.GazePoint2D),
                 PointsUtils.Average(first.GazePoint3D, second.GazePoint3D),
                 PointsUtils.Average(first.EyePosition3D, second.EyePosition3D),
@@ -23,10 +22,10 @@ namespace UXI.GazeToolkit.Utils
         }
 
     
-        public static EyeGazeData Average(IEnumerable<EyeGazeData> data)
+        public static EyeSample Average(IEnumerable<EyeSample> data)
         {
             var reference = data.First();
-            var aggregate = new EyeGazeDataAggregate();
+            var aggregate = new EyeSampleAggregate();
 
             var rest = data.Skip(1);
             int count = 1;
@@ -39,7 +38,7 @@ namespace UXI.GazeToolkit.Utils
 
             aggregate.Normalize(count);
 
-            EyeGazeData average = reference.Add(aggregate);
+            EyeSample average = reference.Add(aggregate);
 
             return average;
         }

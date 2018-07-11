@@ -8,14 +8,14 @@ namespace UXI.GazeToolkit
 {
     public class EyeVelocity
     {
-        public EyeVelocity(double velocity, SingleEyeGazeData eyeGazeData)
+        public EyeVelocity(double velocity, SingleEyeGazeData eye)
         {
             Velocity = velocity;
-            EyeGazeData = eyeGazeData;
+            Eye = eye;
         }
 
         public double Velocity { get; }
 
-        public SingleEyeGazeData EyeGazeData { get; }
+        public SingleEyeGazeData Eye { get; }
     }
 }

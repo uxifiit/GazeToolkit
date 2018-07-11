@@ -12,9 +12,9 @@ namespace UXI.GazeToolkit
     /// </summary>
     public class GazeData : ITimestampedData
     {
-        public static readonly GazeData Empty = new GazeData(EyeGazeData.Empty, EyeGazeData.Empty, 0, TimeSpan.Zero);
+        public static readonly GazeData Empty = new GazeData(EyeData.Default, EyeData.Default, 0, TimeSpan.Zero);
 
-        public GazeData(EyeGazeData leftEye, EyeGazeData rightEye, long trackerTicks, TimeSpan timestamp)
+        public GazeData(EyeData leftEye, EyeData rightEye, long trackerTicks, TimeSpan timestamp)
         {
             LeftEye = leftEye;
             RightEye = rightEye;
@@ -33,8 +33,8 @@ namespace UXI.GazeToolkit
         /// </summary>
         public TimeSpan Timestamp { get; }
 
-        public EyeGazeData LeftEye { get; }
+        public EyeData LeftEye { get; }
 
-        public EyeGazeData RightEye { get; }
+        public EyeData RightEye { get; }
     }
 }
