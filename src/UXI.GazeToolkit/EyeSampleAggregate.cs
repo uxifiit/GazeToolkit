@@ -33,7 +33,7 @@ namespace UXI.GazeToolkit
         public double PupilDiameter { get; private set; } = 0d;
 
 
-        public EyeSampleAggregate Add(EyeSampleAggregate eye)
+        public EyeSampleAggregate Add(EyeSample eye)
         {
             GazePoint2D += eye.GazePoint2D;
             GazePoint3D += eye.GazePoint3D;
@@ -45,7 +45,7 @@ namespace UXI.GazeToolkit
         }
 
 
-        public EyeSampleAggregate Subtract(EyeSampleAggregate eye)
+        public EyeSampleAggregate Subtract(EyeSample eye)
         {
             GazePoint2D -= eye.GazePoint2D;
             GazePoint3D -= eye.GazePoint3D;

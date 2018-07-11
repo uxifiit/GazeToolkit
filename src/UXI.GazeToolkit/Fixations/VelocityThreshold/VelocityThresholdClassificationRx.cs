@@ -36,35 +36,36 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
         {
             return velocities.Buffer((first, current) => ClassifyMovement(first, velocityThreshold) != ClassifyMovement(current, velocityThreshold))
                              .Where(b => b.Any())
-                             .Scan(EyeMovement.Empty, (first, second) =>
+                             .Scan(EyeMovement.Empty, (last, current) =>
                              {
-                                 EyeVelocity secondStart = second.First();
+                                 EyeVelocity start = current.First();
+                                 EyeVelocity end = current.Last();
 
-                                 var secondStartTrackerTicks = secondStart.Eye.TrackerTicks;
-                                 var secondStartTimestamp = secondStart.Eye.Timestamp;
+                                 long startTrackerTicks = start.Eye.TrackerTicks;
+                                 TimeSpan startTime = start.Eye.Timestamp;
 
-                                 EyeMovementType movement = ClassifyMovement(secondStart, velocityThreshold);
+                                 long endTrackerTicks = end.Eye.TrackerTicks;
+                                 TimeSpan endTime = end.Eye.Timestamp;
+
+                                 EyeMovementType movement = ClassifyMovement(start, velocityThreshold);
 
                                  EyeSample averageSample = null;
 
-                                 if (first != EyeMovement.Empty && first.Samples.Any())
+                                 if (last != EyeMovement.Empty && last.Samples.Any())
                                  {
-                                     var firstEndTrackerTicks = first.EndTrackerTicks;
-                                     var firstEndTimestamp = first.EndTime;
+                                     long averageTicksDiff = Math.Max(0, (startTrackerTicks - last.EndTrackerTicks) / 2);
+                                     TimeSpan averageTimestampDiff = TimeSpan.FromTicks(Math.Max(0, (startTime.Ticks - last.EndTime.Ticks) / 2));
 
-                                     var averageTicksDiff = Math.Max(0, (secondStartTrackerTicks - firstEndTrackerTicks) / 2);
-                                     var averageTimestampDiff = TimeSpan.FromTicks(Math.Max(0, (secondStartTimestamp.Ticks - firstEndTimestamp.Ticks) / 2));
+                                     last.EndTrackerTicks += averageTicksDiff;
+                                     last.EndTime = last.EndTime.Add(averageTimestampDiff);
 
-                                     first.EndTrackerTicks += averageTicksDiff;
-                                     first.EndTime = first.EndTime.Add(averageTimestampDiff);
+                                     startTrackerTicks -= averageTicksDiff;
+                                     startTime = startTime.Subtract(averageTimestampDiff);
 
-                                     secondStartTrackerTicks -= averageTicksDiff;
-                                     secondStartTimestamp = secondStartTimestamp.Subtract(averageTimestampDiff);
-
-                                     averageSample = EyeSampleUtils.Average(first.Samples.Select(s => s.Eye));
+                                     averageSample = EyeSampleUtils.Average(last.Samples.Select(s => s.Eye));
                                  }
 
-                                 return new EyeMovement(second, movement, averageSample, secondStartTrackerTicks, secondStartTimestamp);
+                                 return new EyeMovement(movement, current, averageSample, startTrackerTicks, startTime, endTrackerTicks, endTime);
                              });
         }
 

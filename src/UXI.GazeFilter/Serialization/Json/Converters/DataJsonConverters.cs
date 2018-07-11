@@ -25,7 +25,7 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             new GazeDataConverter(),
             new SingleEyeGazeDataJsonConverter(),
             new EyeVelocityJsonConverter(),
-            //new EyeMovementJsonConverter()
+            new EyeMovementJsonConverter()
         };
 
         public IEnumerator<JsonConverter> GetEnumerator()
@@ -204,16 +204,21 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
 
 
 
-    //class EyeMovementJsonConverter : JsonConverter<EyeMovement>
-    //{
-    //    protected override EyeMovement Convert(JObject obj, JsonSerializer serializer)
-    //    {
-    //        var samples = obj[nameof(EyeMovement.Samples)].ToObject<List<EyeVelocity>>(serializer);
-    //        var type = obj.GetObject<EyeMovementType>(nameof(EyeMovement.MovementType), serializer);
+    class EyeMovementJsonConverter : JsonConverter<EyeMovement>
+    {
+        protected override EyeMovement Convert(JObject obj, JsonSerializer serializer)
+        {
+            var type = obj.GetObject<EyeMovementType>(nameof(EyeMovement.MovementType), serializer);
+            var samples = obj.GetObject<List<EyeVelocity>>(nameof(EyeMovement.Samples), serializer);
 
-    //        var startTime = obj.GetObject<long>(nameof(EyeMovement.StartTrackerTicks), serializer);
+            var averageSample = obj.GetObject<EyeSample>(nameof(EyeMovement.AverageSample), serializer);
 
-    //        return new EyeMovement(samples, type, startTime);
-    //    }
-    //}
+            var timestampedData = obj.ToObject<TimestampedData>(serializer);
+
+            var endTrackerTicks = obj.GetObject<long>(nameof(EyeMovement.EndTrackerTicks), serializer);
+            var endTime = obj.GetObject<TimeSpan>(nameof(EyeMovement.EndTime), serializer);
+
+            return new EyeMovement(type, samples, averageSample, timestampedData.TrackerTicks, timestampedData.Timestamp, endTrackerTicks, endTime);
+        }
+    }
 }

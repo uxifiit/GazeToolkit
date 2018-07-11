@@ -12,27 +12,21 @@ namespace UXI.GazeToolkit.Extensions
     {
         public static double GetVisualAngle(this EyeSample sample, EyeSample from, EyeSample to)
         {
-            return GetAngle(sample.EyePosition3D, from.GazePoint3D, to.GazePoint3D);
-        }
+            // create gaze vectors with the origin in eye position of the sample
+            var fromVector = PointsUtils.Vectors.GetVector(sample.EyePosition3D, from.GazePoint3D);
+            var toVector = PointsUtils.Vectors.GetVector(sample.EyePosition3D, to.GazePoint3D);
 
+            // visual angle in radians
+            var angleRad = PointsUtils.Vectors.GetAngle(fromVector, toVector);
 
-        public static double GetAngle(this Point3 origin, Point3 from, Point3 to)
-        {
-            var euclidianDistance = PointsUtils.EuclidianDistance(from, to);
-            var eyeToGazeDistanceFirst = PointsUtils.EuclidianDistance(from, origin);
-            var eyeToGazeDistanceLast = PointsUtils.EuclidianDistance(to, origin);
+            // clamp to <-1,1> interval
+            angleRad = Math.Min(1, Math.Max(-1, angleRad));
 
-            var visualAngle = MathUtils.RadianToDegree
-                              (
-                                  Math.Acos
-                                  (
-                                      (Math.Pow(eyeToGazeDistanceLast, 2) + Math.Pow(eyeToGazeDistanceFirst, 2) - Math.Pow(euclidianDistance, 2))
-                                      /
-                                      (2 * eyeToGazeDistanceFirst * eyeToGazeDistanceLast)
-                                  )
-                              );
+            // convert radians to degrees
+            var angleDeg = MathUtils.RadianToDegree(angleRad);
 
-            return visualAngle;
+            // convert to positive angle
+            return (angleDeg + 360) % 360;
         }
 
 

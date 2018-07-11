@@ -6,46 +6,37 @@ using System.Threading.Tasks;
 
 namespace UXI.GazeToolkit
 {
-    public class EyeMovement
+    public class EyeMovement : ITimestampedData
     {
-        public static readonly EyeMovement Empty = new EyeMovement(Enumerable.Empty<EyeVelocity>(), EyeMovementType.Unknown, null, 0L, TimeSpan.Zero);
+        public static readonly EyeMovement Empty = new EyeMovement(EyeMovementType.Unknown, Enumerable.Empty<EyeVelocity>(), null, 0L, TimeSpan.Zero, 0L, TimeSpan.Zero);
 
-        public EyeMovement(IEnumerable<EyeVelocity> samples, EyeMovementType type, EyeSample averageSample, long startTrackerTicks, TimeSpan startTime)
+        public EyeMovement(EyeMovementType type, IEnumerable<EyeVelocity> samples, EyeSample averageSample, long trackerTicks, TimeSpan timestamp, long endTrackerTicks, TimeSpan endTime)
         {
             Samples = samples?.ToList() ?? new List<EyeVelocity>();
 
-            StartTrackerTicks = startTrackerTicks;
-            StartTime = startTime;
+            TrackerTicks = trackerTicks;
+            Timestamp = timestamp;
 
             MovementType = type;
             AverageSample = averageSample;
 
-            if (Samples.Any())
-            {
-                var lastSample = Samples.Last();
-
-                EndTrackerTicks = lastSample.Eye.TrackerTicks;
-                EndTime = lastSample.Eye.Timestamp;
-            }
-            else
-            {
-                EndTrackerTicks = startTrackerTicks;
-                EndTime = startTime;
-            }
+            EndTrackerTicks = endTrackerTicks;
+            EndTime = endTime;
         }
+
 
 
         public List<EyeVelocity> Samples { get; }
 
-        public TimeSpan StartTime { get; }
+        public TimeSpan Timestamp { get; }
 
-        public long StartTrackerTicks { get; }
+        public long TrackerTicks { get; }
 
         public TimeSpan EndTime { get; set; }
 
         public long EndTrackerTicks { get; set; }
 
-        public TimeSpan Duration => TimeSpan.FromTicks((EndTrackerTicks - StartTrackerTicks) * 10);
+        public TimeSpan Duration => TimeSpan.FromTicks((EndTrackerTicks - TrackerTicks) * 10);
 
         public Point2 Position => AverageSample?.GazePoint2D ?? Point2.Zero;
 

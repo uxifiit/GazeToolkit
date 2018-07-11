@@ -32,7 +32,6 @@ namespace UXI.GazeToolkit
         {
             TrackerTicks = trackerTicks;
             Timestamp = timestamp;
-
         }
 
 

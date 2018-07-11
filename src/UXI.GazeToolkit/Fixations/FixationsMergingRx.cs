@@ -33,7 +33,7 @@ namespace UXI.GazeToolkit.Fixations
 
                                     if (lastFixation != null && nextFixation != null)
                                     {
-                                        var timeBetweenFixations = (nextFixation.StartTrackerTicks - lastFixation.EndTrackerTicks);
+                                        var timeBetweenFixations = (nextFixation.TrackerTicks - lastFixation.EndTrackerTicks);
                                         if (timeBetweenFixations <= (maxTimeBetweenFixations.Ticks / 10))
                                         {
                                             var lastSample = lastFixation.Samples.Last().Eye;
@@ -53,16 +53,14 @@ namespace UXI.GazeToolkit.Fixations
                                                 {
                                                     new EyeMovement
                                                     (
-                                                        mergedSamples,
                                                         EyeMovementType.Fixation,
+                                                        mergedSamples,
                                                         newAverageSample,
-                                                        lastFixation.StartTrackerTicks,
-                                                        lastFixation.StartTime
+                                                        lastFixation.TrackerTicks,
+                                                        lastFixation.Timestamp,
+                                                        nextFixation.EndTrackerTicks,
+                                                        nextFixation.EndTime
                                                     )
-                                                    {
-                                                        EndTrackerTicks = nextFixation.EndTrackerTicks,
-                                                        EndTime = nextFixation.EndTime
-                                                    }
                                                 };
 
                                                 if (nextMovements != null && nextMovements.Any())
@@ -77,7 +75,7 @@ namespace UXI.GazeToolkit.Fixations
                                 return buffer;
                             })
                             .Where(b => b.Any())
-                            .Buffer((first, current) => first.First().StartTrackerTicks != current.First().StartTrackerTicks)
+                            .Buffer((first, current) => first.First().TrackerTicks != current.First().TrackerTicks)
                             .Where(b => b.Any())
                             .Select(b => b.Last())
                             .SelectMany(b => b);

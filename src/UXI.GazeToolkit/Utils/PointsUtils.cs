@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UXI.GazeToolkit.Utils
 {
-    public static class PointsUtils
+    public static partial class PointsUtils
     {
         public static Point2 Interpolate(int index, Point2 start, Point2 end, int count)
         {

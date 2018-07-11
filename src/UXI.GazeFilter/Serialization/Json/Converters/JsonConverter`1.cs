@@ -10,6 +10,8 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
 {
     public abstract class JsonConverter<T> : JsonConverter
     {
+        private readonly bool _canBeNull = (typeof(T).IsValueType == false) || (Nullable.GetUnderlyingType(typeof(T)) != null);
+
         public override bool CanConvert(Type objectType)
         {
             return (objectType == typeof(T));
@@ -19,14 +21,21 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            // Load the JSON for the Result into a JObject
-            JObject jObject = JObject.Load(reader);
+            if (reader.TokenType == JsonToken.Null && _canBeNull)
+            {
+                return null;
+            }
+            else
+            {
+                // Load the JSON for the Result into a JObject
+                JObject jObject = JObject.Load(reader);
                
-            // Construct the Result object using the conversion function
-            T result = Convert(jObject, serializer);
+                // Construct the Result object using the conversion function
+                T result = Convert(jObject, serializer);
 
-            // Return the result
-            return result;
+                // Return the result
+                return result;
+            }
         }
 
         public override bool CanWrite

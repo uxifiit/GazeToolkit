@@ -24,11 +24,7 @@ namespace UXI.GazeToolkit.Fixations
                 if (m.MovementType == EyeMovementType.Fixation && m.Duration < minimumFixationDuration)
                 {
                     // we reclassify it as Unknown movement
-                    return new EyeMovement(m.Samples, EyeMovementType.Unknown, null, m.StartTrackerTicks, m.StartTime)
-                    {
-                        EndTrackerTicks = m.EndTrackerTicks,
-                        EndTime = m.EndTime
-                    };
+                    return new EyeMovement(EyeMovementType.Unknown, m.Samples, null, m.TrackerTicks, m.Timestamp, m.EndTrackerTicks, m.EndTime);
                 }
                 return m;
             });
