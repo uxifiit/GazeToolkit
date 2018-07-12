@@ -14,6 +14,7 @@ namespace UXI.GazeToolkit
             Eye = eye;
         }
 
+
         public double Velocity { get; }
 
         public SingleEyeGazeData Eye { get; }

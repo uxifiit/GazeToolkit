@@ -36,6 +36,13 @@ namespace UXI.GazeToolkit.Smoothing
 
 
 
+    public interface IMedianSmoothingOptions : INoiseReductionOptions
+    {
+        int WindowSize { get; }
+    }
+
+
+
     public static class SmoothingRx
     {
         private static ISingleEyeGazeDataSmoothingFilter ResolveSmoothingFilter(INoiseReductionOptions options)

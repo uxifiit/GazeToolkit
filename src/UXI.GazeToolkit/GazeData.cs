@@ -27,7 +27,6 @@ namespace UXI.GazeToolkit
         /// </summary>
         public long TrackerTicks { get; }
 
-        // TODO TIMESTAMP
         /// <summary>
         /// Time when the data was received from or sampled by the Eye Tracker. 
         /// </summary>

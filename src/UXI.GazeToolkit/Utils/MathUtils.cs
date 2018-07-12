@@ -8,6 +8,7 @@ namespace UXI.GazeToolkit.Utils
 {
     public static class MathUtils
     {
+        // TODO following two methods belong to linear interpolation, consider taking them out of this class
         private static double GetStepSize(double start, double end, int totalSteps)
         {
             return (end - start) / totalSteps; 

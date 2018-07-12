@@ -16,6 +16,7 @@ namespace UXI.GazeToolkit
     }
 
 
+
     public static class EyeValidityEx
     {
         private const EyeValidity HasEyeMask = EyeValidity.Valid | EyeValidity.Probably;

@@ -32,7 +32,7 @@ namespace UXI.GazeToolkit
         }
 
 
-        public EyeData(EyeData other) 
+        public EyeData(EyeData other)
             : this(other.Validity, other)
         {
         }

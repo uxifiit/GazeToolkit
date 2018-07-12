@@ -109,6 +109,7 @@ namespace UXI.GazeToolkit.Extensions
             return Observable.Zip(windowsBegin, windowsEnd, itemsToAverage, (begin, end, item) => average(begin, end, windowSize * 2 + 1, item));  
         }
 
+
         // TODO refactor with single scan, without buffer
         [Obsolete("Do not use, current implementation is not optimal and possibly buggy.")]
         public static IObservable<TResult> MovingAverageWithBuffer<TItem, TAccumulate, TResult>
@@ -183,7 +184,9 @@ namespace UXI.GazeToolkit.Extensions
                 _subtract = subtract;
             }
 
+
             public TAccumulate Accumulate { get; private set; }
+
 
             public bool IsInitialized { get; private set; } = false;
             public void Initialize(IEnumerable<TItem> items)
@@ -202,6 +205,7 @@ namespace UXI.GazeToolkit.Extensions
 
             public int Count { get; private set; } = 0;
 
+
             private TItem last;
             public TItem Last
             {
@@ -219,6 +223,7 @@ namespace UXI.GazeToolkit.Extensions
                     Count += 1;
                 }
             }
+
 
             private TItem first;
             public TItem First

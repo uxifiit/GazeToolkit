@@ -25,7 +25,6 @@ namespace UXI.GazeToolkit
         }
 
 
-
         public List<EyeVelocity> Samples { get; }
 
         public TimeSpan Timestamp { get; }

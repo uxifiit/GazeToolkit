@@ -51,10 +51,10 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
 
         public static IObservable<EyeVelocity> CalculateVelocities(this IObservable<SingleEyeGazeData> gazeData, TimeSpan timeWindowSide, int frequency)
         {
-            // how many samples are in 1 second
+            // average time of 1 sample in 1 second in milliseconds (frequency is in samples per sec)
             double averagedTime = 1000d / frequency;
 
-            // get number of samples in one side of the window
+            // get the number of samples in one side of the window
             int sampleWindowSide = Math.Max(1, (int)Math.Round(timeWindowSide.TotalMilliseconds / averagedTime));
 
             // create window with two sides
@@ -80,10 +80,8 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
                 return CalculateVelocities(gazeData, options.TimeWindowSide, options.DataFrequency.Value);
             }
 
-
             // TODO calc frequency as IObservable
-
-            throw new NotImplementedException("Online frequency calculation has not been implemented for the velocity calculation.");
+            throw new NotImplementedException("Data frequency was not specified, unable to calculate velocity. Online frequency calculation has not been implemented for the velocity calculation.");
         }
     }
 }
