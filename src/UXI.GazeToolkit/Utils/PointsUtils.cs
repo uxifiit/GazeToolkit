@@ -46,9 +46,24 @@ namespace UXI.GazeToolkit.Utils
         }
 
 
+        public static double EuclidianDistance(Point2 pointA, Point2 pointB)
+        {
+            return Math.Sqrt
+            (
+                Math.Pow(pointB.X - pointA.X, 2)
+              + Math.Pow(pointB.Y - pointA.Y, 2)
+            );
+        }
+
+
         public static double EuclidianDistance(Point3 pointA, Point3 pointB)
         {
-            return Math.Sqrt(Math.Pow(pointB.X - pointA.X, 2) + Math.Pow(pointB.Y - pointA.Y, 2) + Math.Pow(pointB.Z - pointA.Z, 2));
+            return Math.Sqrt
+            (
+                Math.Pow(pointB.X - pointA.X, 2)
+              + Math.Pow(pointB.Y - pointA.Y, 2)
+              + Math.Pow(pointB.Z - pointA.Z, 2)
+            );
         }
     }
 }

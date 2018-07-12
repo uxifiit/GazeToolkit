@@ -31,5 +31,12 @@ namespace UXI.GazeToolkit.Utils
         {
             return angle * (180d / Math.PI);
         }
+
+        public static double? RMS(IEnumerable<double> values)
+        {
+            return values.Count() > 1
+                 ? (double?)Math.Sqrt(values.Sum(v => Math.Pow(v, 2)) / values.Count()) 
+                 : null;
+        }
     }
 }
