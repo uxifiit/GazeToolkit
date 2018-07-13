@@ -65,5 +65,25 @@ namespace UXI.GazeToolkit.Utils
               + Math.Pow(pointB.Z - pointA.Z, 2)
             );
         }
+
+
+        public static Point3 Average(IEnumerable<Point3> points)
+        {
+            var reference = points.First();
+            var aggregate = new Point3();
+
+            var rest = points.Skip(1);
+            int count = 1;
+
+            foreach (var point in rest)
+            {
+                aggregate += point - reference;
+                count++;
+            }
+
+            Point3 average = reference + aggregate / count;
+
+            return average;
+        }
     }
 }

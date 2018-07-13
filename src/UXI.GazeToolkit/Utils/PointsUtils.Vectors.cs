@@ -46,6 +46,18 @@ namespace UXI.GazeToolkit.Utils
 
 
             /// <summary>
+            /// Returns a vector from the starting point to the end point normalized by its length.
+            /// </summary>
+            /// <param name="startPoint"></param>
+            /// <param name="endPoint"></param>
+            /// <returns></returns>
+            public static Point3 GetNormalizedVector(Point3 startPoint, Point3 endPoint)
+            {
+                return Normalize(GetVector(startPoint, endPoint));
+            }
+
+
+            /// <summary>
             /// Gets the dot product of two vectors.
             /// </summary>
             /// <param name="left"></param>

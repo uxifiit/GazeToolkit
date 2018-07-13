@@ -35,7 +35,7 @@ namespace UXI.GazeToolkit.Utils
         public static double? RMS(IEnumerable<double> values)
         {
             return values.Count() > 1
-                 ? (double?)Math.Sqrt(values.Sum(v => Math.Pow(v, 2)) / values.Count()) 
+                 ? (double?)Math.Sqrt(values.Average(v => Math.Pow(v, 2))) 
                  : null;
         }
     }
