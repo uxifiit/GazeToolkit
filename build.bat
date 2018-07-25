@@ -22,5 +22,5 @@ mkdir Build
 for %%p in (
 	UXI.GazeToolkit
 ) do (
-	call "%nuget%" pack ".nuget\%%p.nuspec" -symbols -o Build -p Configuration=%config% 
+	call "%nuget%" pack ".nuget\%%p.nuspec" -Symbols -OutputDirectory Build -Properties Configuration=%config% 
 )
