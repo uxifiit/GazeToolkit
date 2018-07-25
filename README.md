@@ -1,6 +1,5 @@
-# UXIsk GazeToolkit
+﻿# UXIsk GazeToolkit
 
-[![uxifiit MyGet Build Status](https://www.myget.org/BuildSource/Badge/uxifiit?identifier=8eb25074-a922-45ea-8b90-564eedbc1125)](https://www.myget.org/) 
 [![NuGet Package](https://img.shields.io/myget/uxifiit/v/UXI.GazeToolkit.svg)](https://www.myget.org/feed/uxifiit/package/nuget/UXI.GazeToolkit)
 
 Toolkit for stream processing of eye movement data in C#/.NET.
