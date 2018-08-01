@@ -74,6 +74,7 @@
     <Compile Include="EyeVelocity.cs" />
     <Compile Include="Fixations\VelocityThreshold\VelocityThresholdClassificationRx.cs" />
     <Compile Include="GazeData.cs" />
+    <Compile Include="Interpolation\LinearInterpolation.cs" />
     <Compile Include="ITimestampedData.cs" />
     <Compile Include="Point2.cs" />
     <Compile Include="Point3.cs" />

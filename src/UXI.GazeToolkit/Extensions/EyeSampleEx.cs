@@ -28,31 +28,5 @@ namespace UXI.GazeToolkit.Extensions
             // convert angle to positive value
             return (angleDeg + 360) % 360;
         }
-
-
-        public static EyeSample Add(this EyeSample current, EyeSampleAggregate aggregate)
-        {
-            return new EyeSample
-            (
-                current.GazePoint2D + aggregate.GazePoint2D,
-                current.GazePoint3D + aggregate.GazePoint3D,
-                current.EyePosition3D + aggregate.EyePosition3D,
-                current.EyePosition3DRelative + aggregate.EyePosition3DRelative,
-                current.PupilDiameter + aggregate.PupilDiameter
-            );
-        }
-
-
-        public static EyeSample Subtract(this EyeSample current, EyeSampleAggregate aggregate)
-        {
-            return new EyeSample
-            (
-                current.GazePoint2D - aggregate.GazePoint2D,
-                current.GazePoint3D - aggregate.GazePoint3D,
-                current.EyePosition3D - aggregate.EyePosition3D,
-                current.EyePosition3DRelative - aggregate.EyePosition3DRelative,
-                current.PupilDiameter - aggregate.PupilDiameter
-            );
-        }
     }
 }

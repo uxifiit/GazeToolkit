@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace UXI.GazeToolkit
 {
     /// <summary>
-    /// Class representing gaze data separately for both eyes, including validity code and the timestamp, when it was recorded, in microseconds.
+    /// Class representing gaze data separately for both eyes,
+    /// including validity code and the timestamp when it was recorded (in microseconds).
     /// </summary>
     public class GazeData : ITimestampedData
     {

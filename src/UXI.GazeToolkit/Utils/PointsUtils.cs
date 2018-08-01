@@ -8,25 +8,6 @@ namespace UXI.GazeToolkit.Utils
 {
     public static partial class PointsUtils
     {
-        public static Point2 Interpolate(int index, Point2 start, Point2 end, int count)
-        {
-            var x = MathUtils.Interpolate(start.X, end.X, index, count);
-            var y = MathUtils.Interpolate(start.Y, end.Y, index, count);
-
-            return new Point2(x, y);
-        }
-
-
-        public static Point3 Interpolate(int index, Point3 start, Point3 end, int count)
-        {
-            var x = MathUtils.Interpolate(start.X, end.X, index, count);
-            var y = MathUtils.Interpolate(start.Y, end.Y, index, count);
-            var z = MathUtils.Interpolate(start.Z, end.Z, index, count);
-
-            return new Point3(x, y, z);
-        }
-
-
         public static Point2 Average(Point2 pointA, Point2 pointB)
         {
             var x = (pointA.X + pointB.X) / 2;
@@ -67,10 +48,30 @@ namespace UXI.GazeToolkit.Utils
         }
 
 
+        public static Point2 Average(IEnumerable<Point2> points)
+        {
+            var reference = points.First();
+            var aggregate = Point2.Zero;
+
+            var rest = points.Skip(1);
+            int count = 1;
+
+            foreach (var point in rest)
+            {
+                aggregate += point - reference;
+                count++;
+            }
+
+            Point2 average = reference + aggregate / count;
+
+            return average;
+        }
+
+
         public static Point3 Average(IEnumerable<Point3> points)
         {
             var reference = points.First();
-            var aggregate = new Point3();
+            var aggregate = Point3.Zero;
 
             var rest = points.Skip(1);
             int count = 1;

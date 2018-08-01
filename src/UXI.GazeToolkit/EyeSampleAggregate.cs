@@ -7,6 +7,7 @@ using UXI.GazeToolkit;
 
 namespace UXI.GazeToolkit
 {
+    [Obsolete]
     public class EyeSampleAggregate
     {
         public EyeSampleAggregate() { }

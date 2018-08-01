@@ -21,26 +21,19 @@ namespace UXI.GazeToolkit.Utils
             );
         }
 
-    
+
         public static EyeSample Average(IEnumerable<EyeSample> data)
         {
-            var reference = data.First();
-            var aggregate = new EyeSampleAggregate();
-
-            var rest = data.Skip(1);
-            int count = 1;
-
-            foreach (var gaze in rest)
-            {
-                aggregate.Add(gaze.Subtract(reference));
-                count++;
-            }
-
-            aggregate.Normalize(count);
-
-            EyeSample average = reference.Add(aggregate);
-
-            return average;
+            return data.Count() <= 1  
+                 ? data.FirstOrDefault()
+                 : new EyeSample
+                   (
+                       PointsUtils.Average(data.Select(s => s.GazePoint2D)),
+                       PointsUtils.Average(data.Select(s => s.GazePoint3D)),
+                       PointsUtils.Average(data.Select(s => s.EyePosition3D)),
+                       PointsUtils.Average(data.Select(s => s.EyePosition3DRelative)),
+                       MathUtils.Average(data.Select(s => s.PupilDiameter))
+                   );
         }
     }
 }

@@ -19,7 +19,8 @@ namespace UXI.GazeToolkit
         Saccade,
 
         /// <summary>
-        /// Eye movement is unknown because the eye were not seen by the tracker (e.g. blinks), or the real movement could have not been determined from the samples.
+        /// Eye movement is unknown because the eye were not seen by the tracker (e.g. blinks),
+        /// or the real movement could have not been determined from the samples.
         /// </summary>
         Unknown
     }

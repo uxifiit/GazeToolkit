@@ -21,6 +21,7 @@ namespace UXI.GazeToolkit
     {
         private const EyeValidity HasEyeMask = EyeValidity.Valid | EyeValidity.Probably;
 
+
         /// <summary>
         /// Checks whether the eye validity code is either Valid or Probably.
         /// </summary>

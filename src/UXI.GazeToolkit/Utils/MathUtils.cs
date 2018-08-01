@@ -8,19 +8,6 @@ namespace UXI.GazeToolkit.Utils
 {
     public static class MathUtils
     {
-        // TODO following two methods belong to linear interpolation, consider taking them out of this class
-        private static double GetStepSize(double start, double end, int totalSteps)
-        {
-            return (end - start) / totalSteps; 
-        }
-
-
-        public static double Interpolate(double start, double end, int step, int totalSteps)
-        {
-            return GetStepSize(start, end, totalSteps) * step + start;
-        }
-
-
         public static double DegreeToRadian(double angle)
         {
             return Math.PI * angle / 180d;
@@ -32,11 +19,32 @@ namespace UXI.GazeToolkit.Utils
             return angle * (180d / Math.PI);
         }
 
+
         public static double? RMS(IEnumerable<double> values)
         {
             return values.Count() > 1
                  ? (double?)Math.Sqrt(values.Average(v => Math.Pow(v, 2))) 
                  : null;
+        }
+
+
+        public static double Average(IEnumerable<double> points)
+        {
+            var reference = points.First();
+            var aggregate = 0d;
+
+            var rest = points.Skip(1);
+            int count = 1;
+
+            foreach (var point in rest)
+            {
+                aggregate += point - reference;
+                count++;
+            }
+
+            double average = reference + aggregate / count;
+
+            return average;
         }
     }
 }
