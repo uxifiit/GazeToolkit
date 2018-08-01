@@ -30,17 +30,14 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
             {
                 double visualAngleDegrees = sample.GetVisualAngle(fromSample, toSample);
 
-                if (Double.IsNaN(visualAngleDegrees))
+                if (Double.IsNaN(visualAngleDegrees) == false)
                 {
-                    velocity = 0;
-                }
-                else
-                {
-                    double durationSeconds = (Math.Abs(toSample.TrackerTicks - fromSample.TrackerTicks) / (1000 * 1000d));
-                    velocity = visualAngleDegrees / durationSeconds;
-                    if (Double.IsNaN(velocity))
+                    double duration = Math.Abs(toSample.TrackerTicks - fromSample.TrackerTicks);
+                    double durationSeconds = duration / (1000 * 1000d);
+
+                    if (durationSeconds > 0d)
                     {
-                        velocity = 0;
+                        velocity = visualAngleDegrees / durationSeconds;
                     }
                 }
             }

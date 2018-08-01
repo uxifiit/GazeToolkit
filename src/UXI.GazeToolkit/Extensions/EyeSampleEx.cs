@@ -13,8 +13,8 @@ namespace UXI.GazeToolkit.Extensions
         public static double GetVisualAngle(this EyeSample sample, EyeSample from, EyeSample to)
         {
             // create gaze vectors with the origin in eye position of the sample
-            var fromVector = PointsUtils.Vectors.GetNormalizedVector(sample.EyePosition3DRelative, from.GazePoint3D);
-            var toVector = PointsUtils.Vectors.GetNormalizedVector(sample.EyePosition3DRelative, to.GazePoint3D);
+            var fromVector = PointsUtils.Vectors.GetNormalizedVector(sample.EyePosition3D, from.GazePoint3D);
+            var toVector = PointsUtils.Vectors.GetNormalizedVector(sample.EyePosition3D, to.GazePoint3D);
 
             // visual angle in radians
             var angleRad = PointsUtils.Vectors.GetAngle(fromVector, toVector);

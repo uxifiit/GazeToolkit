@@ -48,18 +48,24 @@ namespace UXI.GazeToolkit.Smoothing
         }
 
 
-        private Point2 Smooth(Point2 previous, Point2 current) => new Point2
-        (
-            ExponentialSmoothing.Smooth(previous.X, current.X, Alpha),
-            ExponentialSmoothing.Smooth(previous.Y, current.Y, Alpha)
-        );
+        private Point2 Smooth(Point2 previous, Point2 current)
+        {
+            return new Point2
+            (
+                ExponentialSmoothing.Smooth(previous.X, current.X, Alpha),
+                ExponentialSmoothing.Smooth(previous.Y, current.Y, Alpha)
+            );
+        }
 
 
-        private Point3 Smooth(Point3 previous, Point3 current) => new Point3
-        (
-            ExponentialSmoothing.Smooth(previous.X, current.X, Alpha),
-            ExponentialSmoothing.Smooth(previous.Y, current.Y, Alpha),
-            ExponentialSmoothing.Smooth(previous.Z, current.Z, Alpha)
-        );
+        private Point3 Smooth(Point3 previous, Point3 current)
+        {
+            return new Point3
+            (
+                ExponentialSmoothing.Smooth(previous.X, current.X, Alpha),
+                ExponentialSmoothing.Smooth(previous.Y, current.Y, Alpha),
+                ExponentialSmoothing.Smooth(previous.Z, current.Z, Alpha)
+            );
+        }
     }
 }
