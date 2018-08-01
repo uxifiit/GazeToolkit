@@ -16,7 +16,7 @@ namespace UXI.GazeToolkit.Frequency
 
     public static class FrequencyMeasureRx
     {
-        public static readonly TimeSpan DefaultWindow = TimeSpan.FromSeconds(1d);
+        public static readonly TimeSpan DefaultWindow = TimeSpan.FromSeconds(1);
 
 
         public static IObservable<int> MeasureFrequency(this IObservable<long> data)
@@ -44,15 +44,9 @@ namespace UXI.GazeToolkit.Frequency
         }
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<long> data, IFrequencyMeasureOptions options)
-        {
-            return MeasureFrequency(data, options.TimeWindow);
-        }
-
-
         public static IObservable<int> MeasureFrequency(this IObservable<ITimestampedData> data, IFrequencyMeasureOptions options)
         {
-            return MeasureFrequency(data.Select(d => d.TrackerTicks), options);
+            return MeasureFrequency(data.Select(d => d.TrackerTicks), options.TimeWindow);
         }
     }
 }

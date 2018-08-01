@@ -20,6 +20,12 @@ namespace UXI.GazeToolkit.Utils
         }
 
 
+        public static double WrapAround(double value, double modulo)
+        {
+            return (value + modulo) % modulo;
+        }
+
+
         public static double? RMS(IEnumerable<double> values)
         {
             return values.Count() > 1

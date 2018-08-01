@@ -20,6 +20,11 @@ namespace UXI.GazeToolkit.Smoothing
 
         public ExponentialSmoothingFilter(double alpha)
         {
+            if (alpha < 0d || alpha > 1d)
+            {
+                throw new ArgumentOutOfRangeException(nameof(alpha), "Alpha value must be on the interval from 0 to 1, inclusive.");
+            }
+
             Alpha = alpha;
         }
 

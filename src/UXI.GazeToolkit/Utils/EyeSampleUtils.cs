@@ -35,5 +35,22 @@ namespace UXI.GazeToolkit.Utils
                        MathUtils.Average(data.Select(s => s.PupilDiameter))
                    );
         }
+
+
+        public static double GetVisualAngle(Point3 eyePosition, Point3 fromGazePoint, Point3 toGazePoint)
+        {
+            // create gaze vectors with the origin in eye position of the sample
+            var fromVector = PointsUtils.Vectors.GetNormalizedVector(eyePosition, fromGazePoint);
+            var toVector = PointsUtils.Vectors.GetNormalizedVector(eyePosition, toGazePoint);
+
+            // visual angle in radians
+            var angleRad = PointsUtils.Vectors.GetAngle(fromVector, toVector);
+
+            // convert radians to degrees
+            var angleDeg = MathUtils.RadianToDegree(angleRad);
+
+            // convert angle to positive value
+            return MathUtils.WrapAround(angleDeg, 360);
+        }
     }
 }

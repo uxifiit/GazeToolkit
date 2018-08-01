@@ -77,12 +77,13 @@ namespace UXI.GazeToolkit.Utils
             /// <returns></returns>
             public static double GetAngle(Point3 source, Point3 target)
             {
-                return Math.Acos
-                (
-                    DotProduct(source, target)
-                    /
-                    (GetLength(source) * GetLength(target))
-                );
+                double cosine = DotProduct(source, target) / (GetLength(source) * GetLength(target));
+                
+                // ensure the value is in the <-1,1> interval
+                cosine = Math.Min(1, Math.Max(-1, cosine));
+
+                // return the angle for the cosine value in radians
+                return Math.Acos(cosine);
             }
         }
     }
