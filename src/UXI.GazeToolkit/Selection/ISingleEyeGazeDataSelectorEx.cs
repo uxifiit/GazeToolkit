@@ -9,7 +9,7 @@ using UXI.GazeToolkit.Selection;
 
 namespace UXI.GazeToolkit.Extensions
 {
-    public static class ISingleEyeGazeDataSelectorRx
+    public static class ISingleEyeGazeDataSelectorEx
     {
         public static IObservable<SingleEyeGazeData> SelectSingleEye(this ISingleEyeGazeDataSelector selector, IObservable<GazeData> gazeData)
         {

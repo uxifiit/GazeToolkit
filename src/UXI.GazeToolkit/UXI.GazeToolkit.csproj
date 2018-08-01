@@ -88,7 +88,7 @@
     <Compile Include="Smoothing\Rx\SmoothingRx.cs" />
     <Compile Include="Fixations\VelocityThreshold\VelocityCalculationRx.cs" />
     <Compile Include="Extensions\IObservableEx.cs" />
-    <Compile Include="Selection\ISingleEyeGazeDataSelectorRx.cs" />
+    <Compile Include="Selection\ISingleEyeGazeDataSelectorEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selection\AverageSelector.cs" />
     <Compile Include="Selection\ISingleEyeGazeDataSelector.cs" />

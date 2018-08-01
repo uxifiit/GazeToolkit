@@ -48,11 +48,11 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
 
         public static IObservable<EyeVelocity> CalculateVelocities(this IObservable<SingleEyeGazeData> gazeData, TimeSpan timeWindowSide, int frequency)
         {
-            // average time of 1 sample in 1 second in milliseconds (frequency is in samples per sec)
-            double averagedTime = 1000d / frequency;
+            // average time per sample in a second, in milliseconds (frequency is in samples per second)
+            double averageTime = 1000d / frequency;
 
             // get the number of samples in one side of the window
-            int sampleWindowSide = Math.Max(1, (int)Math.Round(timeWindowSide.TotalMilliseconds / averagedTime));
+            int sampleWindowSide = Math.Max(1, (int)Math.Round(timeWindowSide.TotalMilliseconds / averageTime));
 
             // create window with two sides
             int windowSize = sampleWindowSide * 2 + 1;
