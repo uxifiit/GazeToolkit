@@ -8,13 +8,13 @@ namespace UXI.GazeToolkit.Utils
 {
     public static class MathUtils
     {
-        public static double DegreeToRadian(double angle)
+        public static double ConvertDegToRad(double angle)
         {
             return Math.PI * angle / 180d;
         }
 
 
-        public static double RadianToDegree(double angle)
+        public static double ConvertRadToDeg(double angle)
         {
             return angle * (180d / Math.PI);
         }

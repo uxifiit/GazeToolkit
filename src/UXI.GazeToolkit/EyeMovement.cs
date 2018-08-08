@@ -10,7 +10,16 @@ namespace UXI.GazeToolkit
     {
         public static readonly EyeMovement Empty = new EyeMovement(EyeMovementType.Unknown, Enumerable.Empty<EyeVelocity>(), null, 0L, TimeSpan.Zero, 0L, TimeSpan.Zero);
 
-        public EyeMovement(EyeMovementType type, IEnumerable<EyeVelocity> samples, EyeSample averageSample, long trackerTicks, TimeSpan timestamp, long endTrackerTicks, TimeSpan endTime)
+        public EyeMovement
+        (
+            EyeMovementType type, 
+            IEnumerable<EyeVelocity> samples, 
+            EyeSample averageSample, 
+            long trackerTicks, 
+            TimeSpan timestamp, 
+            long endTrackerTicks, 
+            TimeSpan endTime
+        )
         {
             Samples = samples?.ToList() ?? new List<EyeVelocity>();
 

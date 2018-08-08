@@ -47,7 +47,7 @@ namespace UXI.GazeToolkit.Utils
             var angleRad = PointsUtils.Vectors.GetAngle(fromVector, toVector);
 
             // convert radians to degrees
-            var angleDeg = MathUtils.RadianToDegree(angleRad);
+            var angleDeg = MathUtils.ConvertRadToDeg(angleRad);
 
             // convert angle to positive value
             return MathUtils.WrapAround(angleDeg, 360);
