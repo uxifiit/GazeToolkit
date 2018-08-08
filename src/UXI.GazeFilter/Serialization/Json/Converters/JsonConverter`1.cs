@@ -17,7 +17,7 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             return (objectType == typeof(T));
         }
 
-        protected abstract T Convert(JObject jObject, JsonSerializer serializer);
+        protected abstract T Convert(JToken token, JsonSerializer serializer);
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
@@ -28,10 +28,10 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             else
             {
                 // Load the JSON for the Result into a JObject
-                JObject jObject = JObject.Load(reader);
-               
+                JToken token = JToken.Load(reader);
+
                 // Construct the Result object using the conversion function
-                T result = Convert(jObject, serializer);
+                T result = Convert(token, serializer);
 
                 // Return the result
                 return result;

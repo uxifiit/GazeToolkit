@@ -85,7 +85,6 @@
     <Compile Include="Serialization\IDataSerializationFactory.cs" />
     <Compile Include="Serialization\IDataWriter.cs" />
     <Compile Include="Serialization\Json\Converters\DataJsonConverters.cs" />
-    <Compile Include="Serialization\Json\Converters\InheritedObjectJsonConverter`1.cs" />
     <Compile Include="Serialization\Json\Converters\JsonConverter`1.cs" />
     <Compile Include="Serialization\Json\JsonDataReader.cs" />
     <Compile Include="Serialization\Json\JsonDataWriter.cs" />
