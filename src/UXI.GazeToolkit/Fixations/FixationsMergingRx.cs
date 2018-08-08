@@ -33,32 +33,34 @@ namespace UXI.GazeToolkit.Fixations
 
                                     if (lastFixation != null && nextFixation != null)
                                     {
-                                        var timeBetweenFixations = (nextFixation.StartTrackerTicks - lastFixation.EndTrackerTicks) / 1000d;
-                                        if (timeBetweenFixations <= maxTimeBetweenFixations.TotalMilliseconds)
+                                        var timeBetweenFixations = (nextFixation.TrackerTicks - lastFixation.EndTrackerTicks);
+                                        if (timeBetweenFixations <= (maxTimeBetweenFixations.Ticks / 10))
                                         {
-                                            var lastSample = lastFixation.Samples.Last().EyeGazeData;
-                                            var nextSample = nextFixation.Samples.First().EyeGazeData;
+                                            var lastSample = lastFixation.Samples.Last().Eye;
+                                            var nextSample = nextFixation.Samples.First().Eye;
 
-                                            var averageSample = EyeGazeDataUtils.Average(lastSample, nextSample);
+                                            var averageSample = EyeSampleUtils.Average(lastSample, nextSample);
 
                                             double angle = averageSample.GetVisualAngle(lastFixation.AverageSample, nextFixation.AverageSample);
 
                                             if (angle <= maxAngleBetweenFixations)
                                             {
+                                                var mergedSamples = aggregate.SelectMany(m => m.Samples).Concat(nextFixation.Samples);
+                                                var newAverageSample = EyeSampleUtils.Average(lastFixation.Samples.Concat(nextFixation.Samples).Select(s => s.Eye));
+
                                                 // merge
                                                 var mergedFixation = new List<EyeMovement>()
                                                 {
                                                     new EyeMovement
                                                     (
-                                                        aggregate.SelectMany(m => m.Samples).Concat(nextFixation.Samples),
                                                         EyeMovementType.Fixation,
-                                                        lastFixation.StartTime,
-                                                        lastFixation.StartTrackerTicks
+                                                        mergedSamples,
+                                                        newAverageSample,
+                                                        lastFixation.TrackerTicks,
+                                                        lastFixation.Timestamp,
+                                                        nextFixation.EndTrackerTicks,
+                                                        nextFixation.EndTime
                                                     )
-                                                    {
-                                                        EndTime = nextFixation.EndTime,
-                                                        EndTrackerTicks = nextFixation.EndTrackerTicks
-                                                    }
                                                 };
 
                                                 if (nextMovements != null && nextMovements.Any())
@@ -73,7 +75,7 @@ namespace UXI.GazeToolkit.Fixations
                                 return buffer;
                             })
                             .Where(b => b.Any())
-                            .Buffer((first, current) => first.First().StartTrackerTicks != current.First().StartTrackerTicks)
+                            .Buffer((first, current) => first.First().TrackerTicks != current.First().TrackerTicks)
                             .Where(b => b.Any())
                             .Select(b => b.Last())
                             .SelectMany(b => b);

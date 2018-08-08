@@ -6,51 +6,49 @@ using System.Threading.Tasks;
 
 namespace UXI.GazeToolkit
 {
-    public class EyeMovement
+    public class EyeMovement : ITimestampedData
     {
-        public static readonly EyeMovement Empty = new EyeMovement(Enumerable.Empty<EyeVelocity>(), EyeMovementType.Saccade, TimeSpan.MinValue, 0L);
+        public static readonly EyeMovement Empty = new EyeMovement(EyeMovementType.Unknown, Enumerable.Empty<EyeVelocity>(), null, 0L, TimeSpan.Zero, 0L, TimeSpan.Zero);
 
-        public EyeMovement(IEnumerable<EyeVelocity> samples, EyeMovementType type, TimeSpan startTime, long startTrackerTicks)
+        public EyeMovement
+        (
+            EyeMovementType type, 
+            IEnumerable<EyeVelocity> samples, 
+            EyeSample averageSample, 
+            long trackerTicks, 
+            TimeSpan timestamp, 
+            long endTrackerTicks, 
+            TimeSpan endTime
+        )
         {
-            Samples = samples.ToList();
+            Samples = samples?.ToList() ?? new List<EyeVelocity>();
 
-            StartTime = startTime;
-            StartTrackerTicks = startTrackerTicks;
+            TrackerTicks = trackerTicks;
+            Timestamp = timestamp;
 
             MovementType = type;
+            AverageSample = averageSample;
 
-            if (samples.Any())
-            {
-                var lastSample = Samples.Last();
-
-                EndTime = lastSample.EyeGazeData.Timestamp;
-                EndTrackerTicks = lastSample.EyeGazeData.TrackerTicks;
-
-                AverageSample = SingleEyeGazeData.AverageRange(samples.Select(s => s.EyeGazeData));
-            }
-            else
-            {
-                EndTime = startTime;
-                EndTrackerTicks = StartTrackerTicks;
-            }
+            EndTrackerTicks = endTrackerTicks;
+            EndTime = endTime;
         }
 
 
         public List<EyeVelocity> Samples { get; }
 
-        public TimeSpan StartTime { get; }
+        public TimeSpan Timestamp { get; }
 
-        public long StartTrackerTicks { get; }
+        public long TrackerTicks { get; }
 
         public TimeSpan EndTime { get; set; }
 
         public long EndTrackerTicks { get; set; }
 
-        public TimeSpan Duration => EndTime - StartTime;
+        public TimeSpan Duration => TimeSpan.FromTicks((EndTrackerTicks - TrackerTicks) * 10);
 
-        public Point2 Position => AverageSample?.GazePoint2D ?? Point2.Default;
+        public Point2 Position => AverageSample?.GazePoint2D ?? Point2.Zero;
 
-        public SingleEyeGazeData AverageSample { get; }
+        public EyeSample AverageSample { get; }
 
         public EyeMovementType MovementType { get; }
     }

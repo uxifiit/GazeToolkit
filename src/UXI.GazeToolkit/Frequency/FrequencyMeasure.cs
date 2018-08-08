@@ -16,43 +16,37 @@ namespace UXI.GazeToolkit.Frequency
 
     public static class FrequencyMeasureRx
     {
-        public static readonly TimeSpan DefaultWindow = TimeSpan.FromSeconds(1d);
+        public static readonly TimeSpan DefaultWindow = TimeSpan.FromSeconds(1);
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<TimeSpan> data)
+        public static IObservable<int> MeasureFrequency(this IObservable<long> data)
         {
             return MeasureFrequency(data, DefaultWindow);
         }
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<ITimestamped> data)
+        public static IObservable<int> MeasureFrequency(this IObservable<ITimestampedData> data)
         {
-            return MeasureFrequency(data.Select(d => d.Timestamp));
+            return MeasureFrequency(data.Select(d => d.TrackerTicks));
         }
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<TimeSpan> data, TimeSpan timeWindow)
+        public static IObservable<int> MeasureFrequency(this IObservable<long> data, TimeSpan timeWindow)
         {
-            return data.Buffer((first, current) => (current - first) >= timeWindow)
+            return data.Buffer((first, current) => (current - first) * 10 >= timeWindow.Ticks)
                        .Select(buffer => buffer.Count);
         }
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<ITimestamped> data, TimeSpan timeWindow)
+        public static IObservable<int> MeasureFrequency(this IObservable<ITimestampedData> data, TimeSpan timeWindow)
         {
-            return MeasureFrequency(data.Select(d => d.Timestamp), timeWindow);
+            return MeasureFrequency(data.Select(d => d.TrackerTicks), timeWindow);
         }
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<TimeSpan> data, IFrequencyMeasureOptions options)
+        public static IObservable<int> MeasureFrequency(this IObservable<ITimestampedData> data, IFrequencyMeasureOptions options)
         {
-            return MeasureFrequency(data, options.TimeWindow);
-        }
-
-
-        public static IObservable<int> MeasureFrequency(this IObservable<ITimestamped> data, IFrequencyMeasureOptions options)
-        {
-            return MeasureFrequency(data.Select(d => d.Timestamp), options);
+            return MeasureFrequency(data.Select(d => d.TrackerTicks), options.TimeWindow);
         }
     }
 }

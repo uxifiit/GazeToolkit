@@ -29,7 +29,6 @@ namespace UXI.GazeFilter.VelocityCalculation
             }
         }
 
-
         public TimeSpan TimeWindowSide { get; private set; }
     }
 

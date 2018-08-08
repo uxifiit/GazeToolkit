@@ -15,18 +15,9 @@ namespace UXI.GazeToolkit.Interpolation
     }
 
 
-
-    // Fills in gaps when the data is missing:
-    // ....----..-.-.-.--.-.-----.-----.      
-    // Method splits the stream into buffers starting with valid data until other valid data is found
-    // .|.|.|.----|.|.-|.-|.--|.-
-    // Then it takes every overlapping pair of 2 buffers and interpolates invalid data from the first of those two.
-    // .|.|.|.....|.|..|..|...|..
-    // Finally it merges first buffers from the pairs
-    // .................................
     public static class FillInGapsInterpolation
     {
-        private static IEnumerable<EyeGazeData> Interpolate(EyeGazeData start, EyeGazeData end, int interpolatedSteps)
+        private static IEnumerable<EyeData> Interpolate(EyeData start, EyeData end, int interpolatedSteps)
         {
             int steps = interpolatedSteps + 1;
 
@@ -38,9 +29,9 @@ namespace UXI.GazeToolkit.Interpolation
 
             foreach (var step in Enumerable.Range(1, interpolatedSteps))
             {
-                yield return new EyeGazeData
+                yield return new EyeData
                 (
-                    start.Validity,
+                    EyeValidity.Valid,
                     stepGazePoint2D * step + start.GazePoint2D,
                     stepGazePoint3D * step + start.GazePoint3D,
                     stepEyePosition3D * step + start.EyePosition3D,
@@ -51,91 +42,78 @@ namespace UXI.GazeToolkit.Interpolation
         }
 
 
-        //private static IList<EyeGazeData> Interpolate(IList<IList<EyeGazeData>> ll, TimeSpan maxGapLength)
+
+        //public static class PointsEx
         //{
-        //    if (ll.Count == 2 && ll.First().Count > 1)
+        //    public static Point2 Interpolate(int index, Point2 start, Point2 end, int count)
         //    {
-        //        var first = ll[0];
-        //        var second = ll[1];
+        //        var x = LinearInterpolation.Interpolate(start.X, end.X, index, count);
+        //        var y = LinearInterpolation.Interpolate(start.Y, end.Y, index, count);
 
-        //        var validStart = first.First();
-        //        var validEnd = second.First();
-
-        //        if (validEnd.TimeStamp - validStart.TimeStamp <= maxGapLength)
-        //        {
-                    
-
-        //            return result;
-        //        }
+        //        return new Point2(x, y);
         //    }
 
-        //    return ll.First();
+
+        //    public static Point3 Interpolate(int index, Point3 start, Point3 end, int count)
+        //    {
+        //        var x = LinearInterpolation.Interpolate(start.X, end.X, index, count);
+        //        var y = LinearInterpolation.Interpolate(start.Y, end.Y, index, count);
+        //        var z = LinearInterpolation.Interpolate(start.Z, end.Z, index, count);
+
+        //        return new Point3(x, y, z);
+        //    }
         //}
 
-
-        //public static IObservable<SingleEyeGazeData> Interpolate(this IObservable<SingleEyeGazeData> gaze, TimeSpan maxGapLength)
-        //{
-        //    // buffer gaze data into subsequences where each subsequence starts with valid sample followed by invalid samples
-        //    var gaps = gaze.Buffer(eye => eye.Validity.HasEye());
-
-        //    // continuously take overlapping tuples of subsequences with samples and fill in gaps between valid samples in tuples 
-        //    var gapsFillingIn = gaps.Buffer(2, 1).Select(gap => Interpolate(gap, maxGapLength));
-
-        //    // flatten the sequence
-        //    return gapsFillingIn.SelectMany(g => g);
-        //}
-
-
-        public static IObservable<EyeGazeData> FillInGaps(this IObservable<SingleEyeGazeData> eyeGazeData, TimeSpan maxGapLength)
+        public static IObservable<EyeData> FillInGaps(this IObservable<SingleEyeGazeData> eyeGazeData, TimeSpan maxGapLength)
         {
-            return Observable.Create<EyeGazeData>(o =>
+            return Observable.Create<EyeData>(o =>
             {
                 SingleEyeGazeData lastValidSample = null;
-                int invalidSamples = 0;
+                int invalidSamplesCount = 0;
 
-                return eyeGazeData.Subscribe(sample =>
+                return eyeGazeData.Subscribe(currentSample =>
                 {
-                    if (sample.Validity.HasEye())
+                    if (currentSample.Validity.HasEye())
                     {
-                        if (invalidSamples > 0 && lastValidSample != null)
+                        if (invalidSamplesCount > 0 && lastValidSample != null)
                         {   
-                            foreach (var interpolatedSample in Interpolate(lastValidSample, sample, invalidSamples))
+                            foreach (var interpolatedSample in Interpolate(lastValidSample, currentSample, invalidSamplesCount))
                             {
                                 o.OnNext(interpolatedSample);
                             }
 
-                            invalidSamples = 0;
+                            invalidSamplesCount = 0;
                         }
 
-                        lastValidSample = sample;
+                        lastValidSample = currentSample;
 
-                        o.OnNext(sample);
+                        o.OnNext(currentSample);
                     }
                     else
                     {
                         if (lastValidSample != null)
                         {
-                            if ((sample.Timestamp - lastValidSample.Timestamp) <= maxGapLength) 
+                            if ((currentSample.TrackerTicks - lastValidSample.TrackerTicks) * 10 <= maxGapLength.Ticks) 
                             {
-                                invalidSamples++;
+                                invalidSamplesCount++;
                             }
                             else 
                             {
                                 lastValidSample = null;
 
-                                while (invalidSamples-- > 0)
+                                while (invalidSamplesCount-- > 0)
                                 {
-                                    o.OnNext(EyeGazeData.Empty);
+                                    o.OnNext(EyeData.Default);
                                 }
 
-                                invalidSamples = 0;
+                                invalidSamplesCount = 0;
 
-                                o.OnNext(sample);
+                                o.OnNext(currentSample);
                             }
                         }
                         else
                         {
-                            o.OnNext(sample);
+                            o.OnNext(currentSample);
                         }
                     }
                 }, o.OnError, o.OnCompleted);
@@ -145,12 +123,14 @@ namespace UXI.GazeToolkit.Interpolation
 
         public static IObservable<GazeData> FillInGaps(this IObservable<GazeData> gazeData, TimeSpan maxGapLength)
         {
-            // split gaze data into 2 separate observables corresponding each eye
+            // split gaze data into 2 separate observables for each eye
             var leftEye = LeftEyeSelector.Instance.SelectSingleEye(gazeData);
             var rightEye = RightEyeSelector.Instance.SelectSingleEye(gazeData);
 
-            var leftEyeWithFilledInGaps = FillInGaps(leftEye, maxGapLength).Select(e => new EyeGazeData(e));
-            var rightEyeWithFilledInGaps = FillInGaps(rightEye, maxGapLength).Select(e => new EyeGazeData(e));
+            // fill in gaps with interpolation
+            // then create EyeData instances to make sure that no other (derived) type is returned
+            var leftEyeWithFilledInGaps = FillInGaps(leftEye, maxGapLength).Select(e => new EyeData(e));
+            var rightEyeWithFilledInGaps = FillInGaps(rightEye, maxGapLength).Select(e => new EyeData(e));
 
             // combine separated samples for each eye into single sample with both eyes.
             return Observable.Zip
@@ -158,7 +138,7 @@ namespace UXI.GazeToolkit.Interpolation
                 gazeData,
                 leftEyeWithFilledInGaps,
                 rightEyeWithFilledInGaps,
-                (source, left, right) => new GazeData(left.Validity.MergeToEyeValidity(right.Validity), left, right, source.TrackerTicks, source.Timestamp)
+                (source, left, right) => new GazeData(left, right, source.TrackerTicks, source.Timestamp)
             );
         }
 

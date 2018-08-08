@@ -20,6 +20,11 @@ namespace UXI.GazeToolkit.Smoothing
 
         public ExponentialSmoothingFilter(double alpha)
         {
+            if (alpha < 0d || alpha > 1d)
+            {
+                throw new ArgumentOutOfRangeException(nameof(alpha), "Alpha value must be on the interval from 0 to 1, inclusive.");
+            }
+
             Alpha = alpha;
         }
 
@@ -31,10 +36,10 @@ namespace UXI.GazeToolkit.Smoothing
         {
             return gazeData.Scan((previous, current) =>
             {
-                return (current.Validity == EyeGazeDataValidity.Valid && previous.Validity == EyeGazeDataValidity.Valid)
+                return (current.Validity == EyeValidity.Valid && previous.Validity == EyeValidity.Valid)
                 ? new SingleEyeGazeData
                   (
-                      current.Validity,
+                      EyeValidity.Valid,
                       Smooth(previous.GazePoint2D, current.GazePoint2D),
                       Smooth(previous.GazePoint3D, current.GazePoint3D),
                       Smooth(previous.EyePosition3D, current.EyePosition3D),
@@ -48,18 +53,24 @@ namespace UXI.GazeToolkit.Smoothing
         }
 
 
-        private Point2 Smooth(Point2 previous, Point2 current) => new Point2
-        (
-            ExponentialSmoothing.Smooth(previous.X, current.X, Alpha),
-            ExponentialSmoothing.Smooth(previous.Y, current.Y, Alpha)
-        );
+        private Point2 Smooth(Point2 previous, Point2 current)
+        {
+            return new Point2
+            (
+                ExponentialSmoothing.Smooth(previous.X, current.X, Alpha),
+                ExponentialSmoothing.Smooth(previous.Y, current.Y, Alpha)
+            );
+        }
 
 
-        private Point3 Smooth(Point3 previous, Point3 current) => new Point3
-        (
-            ExponentialSmoothing.Smooth(previous.X, current.X, Alpha),
-            ExponentialSmoothing.Smooth(previous.Y, current.Y, Alpha),
-            ExponentialSmoothing.Smooth(previous.Z, current.Z, Alpha)
-        );
+        private Point3 Smooth(Point3 previous, Point3 current)
+        {
+            return new Point3
+            (
+                ExponentialSmoothing.Smooth(previous.X, current.X, Alpha),
+                ExponentialSmoothing.Smooth(previous.Y, current.Y, Alpha),
+                ExponentialSmoothing.Smooth(previous.Z, current.Z, Alpha)
+            );
+        }
     }
 }

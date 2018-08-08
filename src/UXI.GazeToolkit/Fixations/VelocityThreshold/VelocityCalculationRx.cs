@@ -15,6 +15,7 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
     }
 
 
+
     public static class VelocityCalculationRx
     {
         public const double DefaultTimeWindowSideMilliseconds = 20d;
@@ -27,18 +28,16 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
 
             if (fromSample.Validity.HasEye() && toSample.Validity.HasEye() && sample.Validity.HasEye())
             {
-                double visualAngle = sample.GetVisualAngle(fromSample, toSample);
+                double visualAngleDegrees = sample.GetVisualAngle(fromSample, toSample);
 
-                if (Double.IsNaN(visualAngle))
+                if (Double.IsNaN(visualAngleDegrees) == false)
                 {
-                    velocity = 0;  // should be maxVelocity - 1
-                }
-                else
-                {
-                    velocity = visualAngle / ((toSample.TrackerTicks - fromSample.TrackerTicks) / 1000000d);
-                    if (Double.IsNaN(velocity))
+                    double duration = Math.Abs(toSample.TrackerTicks - fromSample.TrackerTicks);
+                    double durationSeconds = duration / (1000 * 1000d);
+
+                    if (durationSeconds > 0d)
                     {
-                        velocity = 0;
+                        velocity = visualAngleDegrees / durationSeconds;
                     }
                 }
             }
@@ -49,14 +48,17 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
 
         public static IObservable<EyeVelocity> CalculateVelocities(this IObservable<SingleEyeGazeData> gazeData, TimeSpan timeWindowSide, int frequency)
         {
-            double averagedTime = 1000d / frequency;
+            // average time per sample in a second, in milliseconds (frequency is in samples per second)
+            double averageTime = 1000d / frequency;
 
-            int sampleWindowSide = Math.Max(1, (int)Math.Round(timeWindowSide.TotalMilliseconds / averagedTime));
+            // get the number of samples in one side of the window
+            int sampleWindowSide = Math.Max(1, (int)Math.Round(timeWindowSide.TotalMilliseconds / averageTime));
 
-            int bufferSize = sampleWindowSide * 2 + 1;
+            // create window with two sides
+            int windowSize = sampleWindowSide * 2 + 1;
 
-            return gazeData.Buffer(bufferSize, 1)
-                           .Where(buffer => buffer.Count == bufferSize)
+            return gazeData.Buffer(windowSize, 1)
+                           .Where(buffer => buffer.Count == windowSize)
                            .Select(buffer =>
                            {
                                var first = buffer.First();
@@ -74,7 +76,9 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
             {
                 return CalculateVelocities(gazeData, options.TimeWindowSide, options.DataFrequency.Value);
             }
-            throw new NotImplementedException();
+
+            // TODO calc frequency as IObservable
+            throw new NotImplementedException("Data frequency was not specified, unable to calculate velocity. Online frequency calculation has not been implemented for the velocity calculation.");
         }
     }
 }

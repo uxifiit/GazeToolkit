@@ -7,7 +7,7 @@
     <ProjectGuid>{3E77E53D-BABE-4C8D-9CF4-B3FAB2F8B87E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UXI.Gaze</RootNamespace>
+    <RootNamespace>UXI.GazeToolkit</RootNamespace>
     <AssemblyName>UXI.GazeToolkit</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -65,17 +65,17 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Extensions\EyeGazeDataEx.cs" />
-    <Compile Include="Extensions\GazeDataEx.cs" />
-    <Compile Include="EyeGazeData.cs" />
-    <Compile Include="EyeGazeDataAggregate.cs" />
+    <Compile Include="Extensions\EyeSampleEx.cs" />
+    <Compile Include="EyeSample.cs" />
+    <Compile Include="EyeSampleAggregate.cs" />
+    <Compile Include="EyeData.cs" />
     <Compile Include="EyeMovement.cs" />
     <Compile Include="EyeMovementType.cs" />
     <Compile Include="EyeVelocity.cs" />
-    <Compile Include="Fixations\VelocityThreshold\VelocityThresholdClassification.cs" />
+    <Compile Include="Fixations\VelocityThreshold\VelocityThresholdClassificationRx.cs" />
     <Compile Include="GazeData.cs" />
-    <Compile Include="GazeDataValidity.cs" />
-    <Compile Include="ITimestamped.cs" />
+    <Compile Include="Interpolation\LinearInterpolation.cs" />
+    <Compile Include="ITimestampedData.cs" />
     <Compile Include="Point2.cs" />
     <Compile Include="Point3.cs" />
     <Compile Include="Selection\Rx\SelectionRx.cs" />
@@ -84,12 +84,11 @@
     <Compile Include="Frequency\FrequencyMeasure.cs" />
     <Compile Include="Interpolation\FillInGaps.cs" />
     <Compile Include="SingleEyeGazeData.cs" />
-    <Compile Include="SingleEyeGazeDataOffset.cs" />
-    <Compile Include="SingleEyeValidity.cs" />
+    <Compile Include="EyeValidity.cs" />
     <Compile Include="Smoothing\Rx\SmoothingRx.cs" />
-    <Compile Include="Fixations\VelocityThreshold\VelocityCalculation.cs" />
+    <Compile Include="Fixations\VelocityThreshold\VelocityCalculationRx.cs" />
     <Compile Include="Extensions\IObservableEx.cs" />
-    <Compile Include="Selection\ISingleEyeGazeDataSelectorRx.cs" />
+    <Compile Include="Selection\ISingleEyeGazeDataSelectorEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selection\AverageSelector.cs" />
     <Compile Include="Selection\ISingleEyeGazeDataSelector.cs" />
@@ -101,10 +100,10 @@
     <Compile Include="Smoothing\ISingleEyeGazeDataSmoothingFilter.cs" />
     <Compile Include="Smoothing\ISmoothingFilter.cs" />
     <Compile Include="Smoothing\MovingAverageSmoothingFilter.cs" />
-    <Compile Include="Timestamped.cs" />
-    <Compile Include="Utils\EyeGazeDataUtils.cs" />
+    <Compile Include="Utils\EyeSampleUtils.cs" />
     <Compile Include="Utils\PointsUtils.cs" />
     <Compile Include="Utils\MathUtils.cs" />
+    <Compile Include="Utils\PointsUtils.Vectors.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

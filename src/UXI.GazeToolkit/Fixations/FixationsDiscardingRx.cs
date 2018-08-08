@@ -18,19 +18,24 @@ namespace UXI.GazeToolkit.Fixations
     {
         public static IObservable<EyeMovement> DiscardShortFixations(this IObservable<EyeMovement> movements, TimeSpan minimumFixationDuration)
         {
-            return movements.Select(m =>
+            return movements.Select(movement =>
             {
-                // if fixation duration is shorter than minimumFixationDuration
-                if (m.MovementType == EyeMovementType.Fixation && m.Duration <= minimumFixationDuration)
+                // if the fixation duration is shorter than minimumFixationDuration
+                if (movement.MovementType == EyeMovementType.Fixation && movement.Duration < minimumFixationDuration)
                 {
-                    // we reclassify it as an Unknown movement
-                    return new EyeMovement(m.Samples, EyeMovementType.Unknown, m.StartTime, m.StartTrackerTicks)
-                    {
-                        EndTime = m.EndTime,
-                        EndTrackerTicks = m.EndTrackerTicks
-                    };
+                    // we reclassify it as an unknown movement
+                    return new EyeMovement
+                    (
+                        EyeMovementType.Unknown, 
+                        movement.Samples, 
+                        null, 
+                        movement.TrackerTicks, 
+                        movement.Timestamp, 
+                        movement.EndTrackerTicks, 
+                        movement.EndTime
+                    );
                 }
-                return m;
+                return movement;
             });
         }
 

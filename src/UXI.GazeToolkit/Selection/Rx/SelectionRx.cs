@@ -37,8 +37,9 @@ namespace UXI.GazeToolkit.Selection
                 case EyeSelectionStrategy.Average:
                     return AverageSelector.Instance;
                 case EyeSelectionStrategy.StrictAverage:
-                default:
                     return StrictAverageSelector.Instance;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(strategy), $"Selected eye selection strategy \"{strategy}\" could not be resolved.");
             }
         }
 

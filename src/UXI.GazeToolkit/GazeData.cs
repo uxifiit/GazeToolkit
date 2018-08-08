@@ -8,37 +8,33 @@ using System.Threading.Tasks;
 namespace UXI.GazeToolkit
 {
     /// <summary>
-    /// Class representing gaze data separately for both eyes, including validity code. Timestamp, when it was recorded, is saved both in <seealso cref="TrackerTicks"/> and <seealso cref="Timestamp"/> properties.
+    /// Class representing gaze data separately for both eyes,
+    /// including validity code and the timestamp when it was recorded (in microseconds).
     /// </summary>
-    public class GazeData : ITimestamped
+    public class GazeData : ITimestampedData
     {
-        public static readonly GazeData Empty = new GazeData(GazeDataValidity.None, EyeGazeData.Empty, EyeGazeData.Empty, 0, TimeSpan.MinValue);
+        public static readonly GazeData Empty = new GazeData(EyeData.Default, EyeData.Default, 0, TimeSpan.Zero);
 
-        public GazeData(EyeGazeData leftEye, EyeGazeData rightEye, long trackerTicks, TimeSpan timestamp)
-            : this(EyeGazeDataValidityEx.MergeToEyeValidity(leftEye.Validity, rightEye.Validity), leftEye, rightEye, trackerTicks, timestamp)
+        public GazeData(EyeData leftEye, EyeData rightEye, long trackerTicks, TimeSpan timestamp)
         {
-        }
-
-        public GazeData(GazeDataValidity validity, EyeGazeData leftEye, EyeGazeData rightEye, long trackerTicks, TimeSpan timestamp)
-        {
-            TrackerTicks = trackerTicks;
-            Validity = validity;
             LeftEye = leftEye;
             RightEye = rightEye;
+            TrackerTicks = trackerTicks;
             Timestamp = timestamp;
         }
 
         /// <summary>
-        /// Time when data was sampled by the EyeTracker. Microseconds from arbitrary point in time.
+        /// Time when the data was sampled by the Eye Tracker in microseconds from arbitrary point in time. 
         /// </summary>
         public long TrackerTicks { get; }
 
-        public GazeDataValidity Validity { get; }
+        /// <summary>
+        /// Time when the data was received from or sampled by the Eye Tracker. 
+        /// </summary>
+        public TimeSpan Timestamp { get; }
 
-        public EyeGazeData LeftEye { get; }
+        public EyeData LeftEye { get; }
 
-        public EyeGazeData RightEye { get; }
-
-        public TimeSpan Timestamp { get; } 
+        public EyeData RightEye { get; }
     }
 }

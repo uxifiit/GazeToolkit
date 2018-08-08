@@ -90,6 +90,7 @@
     <Compile Include="Serialization\Json\JsonDataReader.cs" />
     <Compile Include="Serialization\Json\JsonDataWriter.cs" />
     <Compile Include="Serialization\Json\JsonSerializationFactory.cs" />
+    <Compile Include="TimestampedData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UXI.GazeToolkit\UXI.GazeToolkit.csproj">

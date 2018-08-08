@@ -11,7 +11,7 @@ namespace UXI.GazeToolkit
     /// </summary>
     public struct Point3
     {
-        public readonly static Point3 Default = new Point3();
+        public readonly static Point3 Zero = new Point3();
 
         /// <summary>
         /// Gets the X coordinate of the point.
@@ -158,7 +158,7 @@ namespace UXI.GazeToolkit
         /// <returns>String representation of the point coordinates split by a semicolon</returns>
         public override string ToString()
         {
-            return $"{X};{Y}";
+            return $"{X};{Y};{Z}";
         }
     }
 }

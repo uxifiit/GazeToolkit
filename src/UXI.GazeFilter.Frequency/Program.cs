@@ -26,7 +26,6 @@ namespace UXI.GazeFilter.Frequency
             }
         }
 
-
         public TimeSpan TimeWindow { get; private set; }
     }
 
@@ -36,9 +35,9 @@ namespace UXI.GazeFilter.Frequency
     {
         static void Main(string[] args)
         {
-            new FilterTool<Timestamped, int>
+            new FilterTool<TimestampedData, int>
             (
-                new Filter<Timestamped, int, FrequencyMeasureOptions>("Frequency measure", (s, o) => s.MeasureFrequency(o))
+                new Filter<TimestampedData, int, FrequencyMeasureOptions>("Frequency measure", (s, o) => s.MeasureFrequency(o))
             ).Execute(args);
         }
     }

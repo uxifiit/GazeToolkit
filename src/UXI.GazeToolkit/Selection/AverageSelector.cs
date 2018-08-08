@@ -20,20 +20,23 @@ namespace UXI.GazeToolkit.Selection
 
         public SingleEyeGazeData SelectSingleEye(GazeData gaze)
         {
-            if (gaze.Validity == GazeDataValidity.Both)
+            bool hasLeftEye = gaze.LeftEye.Validity.HasEye();
+            bool hasRightEye = gaze.RightEye.Validity.HasEye();
+
+            if (hasLeftEye && hasRightEye)
             {
                 return StrictAverageSelector.Instance.SelectSingleEye(gaze);
             }
-            else if (gaze.Validity.HasLeftEye())
+            else if (hasLeftEye)
             {
                 return LeftEyeSelector.Instance.SelectSingleEye(gaze);
             }
-            else if (gaze.Validity.HasRightEye())
+            else if (hasRightEye)
             {
                 return RightEyeSelector.Instance.SelectSingleEye(gaze);
             }
 
-            return new SingleEyeGazeData(EyeGazeData.Empty, gaze.TrackerTicks, gaze.Timestamp);
+            return new SingleEyeGazeData(EyeData.Default, gaze.TrackerTicks, gaze.Timestamp);
         }
     }
 }

@@ -6,27 +6,8 @@ using System.Threading.Tasks;
 
 namespace UXI.GazeToolkit.Utils
 {
-    public static class PointsUtils
+    public static partial class PointsUtils
     {
-        public static Point2 Interpolate(int step, Point2 start, Point2 end, int totalSteps)
-        {
-            var x = MathUtils.Interpolate(start.X, end.X, step, totalSteps);
-            var y = MathUtils.Interpolate(start.Y, end.Y, step, totalSteps);
-
-            return new Point2(x, y);
-        }
-
-
-        public static Point3 Interpolate(int step, Point3 start, Point3 end, int totalSteps)
-        {
-            var x = MathUtils.Interpolate(start.X, end.X, step, totalSteps);
-            var y = MathUtils.Interpolate(start.Y, end.Y, step, totalSteps);
-            var z = MathUtils.Interpolate(start.Z, end.Z, step, totalSteps);
-
-            return new Point3(x, y, z);
-        }
-
-
         public static Point2 Average(Point2 pointA, Point2 pointB)
         {
             var x = (pointA.X + pointB.X) / 2;
@@ -46,9 +27,64 @@ namespace UXI.GazeToolkit.Utils
         }
 
 
+        public static double EuclidianDistance(Point2 pointA, Point2 pointB)
+        {
+            return Math.Sqrt
+            (
+                Math.Pow(pointB.X - pointA.X, 2)
+              + Math.Pow(pointB.Y - pointA.Y, 2)
+            );
+        }
+
+
         public static double EuclidianDistance(Point3 pointA, Point3 pointB)
         {
-            return Math.Sqrt(Math.Pow(pointB.X - pointA.X, 2) + Math.Pow(pointB.Y - pointA.Y, 2) + Math.Pow(pointB.Z - pointA.Z, 2));
+            return Math.Sqrt
+            (
+                Math.Pow(pointB.X - pointA.X, 2)
+              + Math.Pow(pointB.Y - pointA.Y, 2)
+              + Math.Pow(pointB.Z - pointA.Z, 2)
+            );
+        }
+
+
+        public static Point2 Average(IEnumerable<Point2> points)
+        {
+            var reference = points.First();
+            var aggregate = Point2.Zero;
+
+            var rest = points.Skip(1);
+            int count = 1;
+
+            foreach (var point in rest)
+            {
+                aggregate += point - reference;
+                count++;
+            }
+
+            Point2 average = reference + aggregate / count;
+
+            return average;
+        }
+
+
+        public static Point3 Average(IEnumerable<Point3> points)
+        {
+            var reference = points.First();
+            var aggregate = Point3.Zero;
+
+            var rest = points.Skip(1);
+            int count = 1;
+
+            foreach (var point in rest)
+            {
+                aggregate += point - reference;
+                count++;
+            }
+
+            Point3 average = reference + aggregate / count;
+
+            return average;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace UXI.GazeToolkit
     /// </summary>
     public struct Point2
     {
-        public static readonly Point2 Default = new Point2();
+        public static readonly Point2 Zero = new Point2();
 
         /// <summary>
         /// Gets the X coordinate of the point.
@@ -162,19 +162,6 @@ namespace UXI.GazeToolkit
         public override int GetHashCode()
         {                 
             return X.GetHashCode() ^ Y.GetHashCode();
-        }
-
-
-        /// <summary>
-        /// Returns distance between this and another point.
-        /// </summary>
-        /// <param name="?"></param>
-        [Obsolete]
-        public double DistanceFrom(Point2 other)
-        {
-            double difx = this.X - other.X;
-            double dify = this.Y - other.Y;
-            return Math.Sqrt(difx * difx + dify * dify);
         }
     }
 }

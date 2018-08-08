@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace UXI.GazeToolkit
 {
-    public interface ITimestamped
+    public interface ITimestampedData
     {
+        long TrackerTicks { get; }
+
         TimeSpan Timestamp { get; }
     }
 }

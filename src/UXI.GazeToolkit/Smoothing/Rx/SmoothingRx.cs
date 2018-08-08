@@ -14,10 +14,12 @@ namespace UXI.GazeToolkit.Smoothing
     }
 
 
+
     public interface INoiseReductionOptions
     {
         NoiseReductionStrategy Strategy { get; } 
     }
+
 
 
     public interface IExponentialSmoothingOptions : INoiseReductionOptions
@@ -26,10 +28,19 @@ namespace UXI.GazeToolkit.Smoothing
     }
 
 
+
     public interface IMovingAverageSmoothingOptions : INoiseReductionOptions
     {
         int WindowSize { get; }
     }
+
+
+
+    public interface IMedianSmoothingOptions : INoiseReductionOptions
+    {
+        int WindowSize { get; }
+    }
+
 
 
     public static class SmoothingRx
@@ -40,10 +51,14 @@ namespace UXI.GazeToolkit.Smoothing
             {
                 case NoiseReductionStrategy.Exponential:
                     var exponentialOptions = options as IExponentialSmoothingOptions;
-                    return new ExponentialSmoothingFilter(exponentialOptions.Alpha);
+                    return exponentialOptions != null
+                         ? new ExponentialSmoothingFilter(exponentialOptions.Alpha)
+                         : new ExponentialSmoothingFilter();
                 case NoiseReductionStrategy.MovingAverage:
                     var movingAverageOptions = options as IMovingAverageSmoothingOptions;
-                    return new MovingAverageSmoothingFilter(movingAverageOptions.WindowSize);
+                    return movingAverageOptions != null
+                         ? new MovingAverageSmoothingFilter(movingAverageOptions.WindowSize)
+                         : new MovingAverageSmoothingFilter();
                 case NoiseReductionStrategy.Median:
                 default:
                     throw new NotImplementedException();
