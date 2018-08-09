@@ -49,7 +49,6 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
 
                                  EyeMovementType movement = ClassifyMovement(start, velocityThreshold);
 
-                                 EyeSample averageSample = null;
 
                                  if (last != EyeMovement.Empty && last.Samples.Any())
                                  {
@@ -61,8 +60,12 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
 
                                      startTrackerTicks -= averageTicksDiff;
                                      startTime = startTime.Subtract(averageTimestampDiff);
+                                 }
 
-                                     averageSample = EyeSampleUtils.Average(last.Samples.Select(s => s.Eye));
+                                 EyeSample averageSample = null;
+                                 if (movement == EyeMovementType.Fixation)
+                                 {
+                                    averageSample = EyeSampleUtils.Average(current.Select(s => s.Eye));
                                  }
 
                                  return new EyeMovement(movement, current, averageSample, startTrackerTicks, startTime, endTrackerTicks, endTime);
