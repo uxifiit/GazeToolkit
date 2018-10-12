@@ -13,7 +13,7 @@ namespace UXI.GazeFilter.Selection
     public class EyeSelectionOptions : BaseOptions, IEyeSelectionOptions
     {
         [Option('s', "select", Default = EyeSelectionStrategy.Average, HelpText = "Which eye should be selected for the classification.")]
-        public EyeSelectionStrategy Strategy { get; set; }
+        public EyeSelectionStrategy EyeSelectionStrategy { get; set; }
     }
 
 

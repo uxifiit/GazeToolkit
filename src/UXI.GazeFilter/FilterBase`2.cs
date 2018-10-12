@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
+using Newtonsoft.Json.Converters;
 using UXI.GazeFilter.Extensions;
 
 namespace UXI.GazeFilter
@@ -176,6 +177,10 @@ namespace UXI.GazeFilter
             if (resolved)
             {
                 TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+
+#if DEBUG
+                Console.Error.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(options, Newtonsoft.Json.Formatting.Indented, new StringEnumConverter(false)));
+#endif
 
                 FilterIO.ReadInput<TSource>((BaseOptions)options)
                         .SubscribeOn(NewThreadScheduler.Default)

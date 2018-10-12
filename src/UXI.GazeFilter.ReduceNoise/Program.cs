@@ -13,7 +13,7 @@ namespace UXI.GazeFilter.ReduceNoise
     [Verb("movavg")]
     public class MovingAverageSmoothingOptions : BaseOptions, IMovingAverageSmoothingOptions
     {
-        public NoiseReductionStrategy Strategy => NoiseReductionStrategy.MovingAverage;
+        public NoiseReductionStrategy NoiseReductionStrategy => NoiseReductionStrategy.MovingAverage;
 
         [Option('w', "window-size", Default = MovingAverageSmoothingFilter.DEFAULT_WINDOW_SIZE, HelpText = "Window size for Moving Average smoothing filter", Required = false)]
         public int WindowSize { get; set; }
@@ -23,7 +23,7 @@ namespace UXI.GazeFilter.ReduceNoise
     [Verb("exponential")]
     public class ExponentialSmoothingOptions : BaseOptions, IExponentialSmoothingOptions
     {
-        public NoiseReductionStrategy Strategy => NoiseReductionStrategy.Exponential;
+        public NoiseReductionStrategy NoiseReductionStrategy => NoiseReductionStrategy.Exponential;
 
         [Option('a', "alpha", Default = ExponentialSmoothingFilter.DEFAULT_ALPHA, HelpText = "Alpha parameter for Exponential fmoothing filter", Required = false)]
         public double Alpha { get; set; }
