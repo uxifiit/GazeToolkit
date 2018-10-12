@@ -81,7 +81,7 @@ namespace UXI.GazeFilter.FillInGaps
         public bool IsMergeEnabled { get; set; }
 
         // IFixationsMergingOptions
-        [Option("merge-max-gap-between", Default = 75, HelpText = "Max time between fixations used when merging adjacent fixations.")]
+        [Option("merge-max-gap", Default = 75, HelpText = "Max time between fixations used when merging adjacent fixations.")]
         public double MaxTimeBetweenFixationsLength
         {
             get
@@ -97,7 +97,7 @@ namespace UXI.GazeFilter.FillInGaps
         public TimeSpan MaxTimeBetweenFixations { get; private set; }
 
 
-        [Option("merge-max-angle-between", Default = 0.5, HelpText = "Max angle between fixations used when merging adjacent fixations.")]
+        [Option("merge-max-angle", Default = 0.5, HelpText = "Max angle between fixations used when merging adjacent fixations.")]
         public double MaxAngleBetweenFixations { get; set; }
 
 
