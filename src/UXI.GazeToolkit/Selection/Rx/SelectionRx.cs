@@ -19,7 +19,7 @@ namespace UXI.GazeToolkit.Selection
 
     public interface IEyeSelectionOptions
     {
-        EyeSelectionStrategy Strategy { get; }
+        EyeSelectionStrategy EyeSelectionStrategy { get; }
     }
 
 
@@ -60,7 +60,7 @@ namespace UXI.GazeToolkit.Selection
 
         public static IObservable<SingleEyeGazeData> SelectEye(this IObservable<GazeData> gazeData, IEyeSelectionOptions options)
         {
-            return SelectEye(gazeData, options.Strategy);
+            return SelectEye(gazeData, options.EyeSelectionStrategy);
         }
     }
 }

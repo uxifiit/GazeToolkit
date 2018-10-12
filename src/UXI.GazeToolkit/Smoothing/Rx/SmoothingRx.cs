@@ -17,7 +17,7 @@ namespace UXI.GazeToolkit.Smoothing
 
     public interface INoiseReductionOptions
     {
-        NoiseReductionStrategy Strategy { get; } 
+        NoiseReductionStrategy NoiseReductionStrategy { get; } 
     }
 
 
@@ -47,7 +47,7 @@ namespace UXI.GazeToolkit.Smoothing
     {
         private static ISingleEyeGazeDataSmoothingFilter ResolveSmoothingFilter(INoiseReductionOptions options)
         {
-            switch (options.Strategy)
+            switch (options.NoiseReductionStrategy)
             {
                 case NoiseReductionStrategy.Exponential:
                     var exponentialOptions = options as IExponentialSmoothingOptions;

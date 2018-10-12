@@ -40,9 +40,9 @@ namespace UXI.GazeToolkit
 
         public long TrackerTicks { get; }
 
-        public TimeSpan EndTime { get; set; }
+        public TimeSpan EndTime { get; }
 
-        public long EndTrackerTicks { get; set; }
+        public long EndTrackerTicks { get; }
 
         public TimeSpan Duration => TimeSpan.FromTicks((EndTrackerTicks - TrackerTicks) * 10);
 
