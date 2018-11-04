@@ -10,6 +10,7 @@ namespace UXI.GazeToolkit
     {
         public static readonly EyeData Default = new EyeData(EyeValidity.Invalid, EyeSample.Empty);
 
+
         public EyeData
         (
             EyeValidity validity,

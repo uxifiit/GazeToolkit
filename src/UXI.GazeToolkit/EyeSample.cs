@@ -10,6 +10,7 @@ namespace UXI.GazeToolkit
     {
         public static readonly EyeSample Empty = new EyeSample(Point2.Zero, Point3.Zero, Point3.Zero, 0d);
 
+
         public EyeSample
         (
             Point2 gazePoint2D, 
@@ -33,9 +34,12 @@ namespace UXI.GazeToolkit
 
         public Point2 GazePoint2D { get; }
 
+
         public Point3 GazePoint3D { get; } 
 
+
         public Point3 EyePosition3D { get; } 
+
         
         public double PupilDiameter { get; } 
     }

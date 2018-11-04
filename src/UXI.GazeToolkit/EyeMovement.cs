@@ -36,19 +36,27 @@ namespace UXI.GazeToolkit
 
         public List<EyeVelocity> Samples { get; }
 
+
         public TimeSpan Timestamp { get; }
+
 
         public long TrackerTicks { get; }
 
+
         public TimeSpan EndTime { get; }
+
 
         public long EndTrackerTicks { get; }
 
+
         public TimeSpan Duration => TimeSpan.FromTicks((EndTrackerTicks - TrackerTicks) * 10);
+
 
         public Point2 Position => AverageSample?.GazePoint2D ?? Point2.Zero;
 
+
         public EyeSample AverageSample { get; }
+
 
         public EyeMovementType MovementType { get; }
     }

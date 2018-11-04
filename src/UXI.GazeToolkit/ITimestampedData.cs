@@ -10,6 +10,7 @@ namespace UXI.GazeToolkit
     {
         long TrackerTicks { get; }
 
+
         TimeSpan Timestamp { get; }
     }
 }
