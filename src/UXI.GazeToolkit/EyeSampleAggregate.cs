@@ -28,9 +28,6 @@ namespace UXI.GazeToolkit
         public Point3 EyePosition3D { get; private set; } = Point3.Zero;
 
 
-        public Point3 EyePosition3DRelative { get; private set; } = Point3.Zero;
-        
-
         public double PupilDiameter { get; private set; } = 0d;
 
 
@@ -39,7 +36,6 @@ namespace UXI.GazeToolkit
             GazePoint2D += eye.GazePoint2D;
             GazePoint3D += eye.GazePoint3D;
             EyePosition3D += eye.EyePosition3D;
-            EyePosition3DRelative += eye.EyePosition3DRelative;
             PupilDiameter += eye.PupilDiameter;
 
             return this;
@@ -51,7 +47,6 @@ namespace UXI.GazeToolkit
             GazePoint2D -= eye.GazePoint2D;
             GazePoint3D -= eye.GazePoint3D;
             EyePosition3D -= eye.EyePosition3D;
-            EyePosition3DRelative -= eye.EyePosition3DRelative;
             PupilDiameter -= eye.PupilDiameter;
 
             return this;
@@ -63,7 +58,6 @@ namespace UXI.GazeToolkit
             GazePoint2D /= count;
             GazePoint3D /= count;
             EyePosition3D /= count;
-            EyePosition3DRelative /= count;
             PupilDiameter /= count;
 
             return this;

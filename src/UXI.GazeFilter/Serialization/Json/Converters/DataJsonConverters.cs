@@ -159,7 +159,6 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             var gazePoint2D = obj.GetValue<Point2>(nameof(EyeSample.GazePoint2D), serializer);
             var gazePoint3D = obj.GetValue<Point3>(nameof(EyeSample.GazePoint3D), serializer);
             var eyePosition3D = obj.GetValue<Point3>(nameof(EyeSample.EyePosition3D), serializer);
-            var eyePosition3DRelative = obj.GetValue<Point3>(nameof(EyeSample.EyePosition3DRelative), serializer);
             var pupilDiameter = obj.GetValue<double>(nameof(EyeSample.PupilDiameter), serializer);
 
             return new EyeSample
@@ -167,7 +166,6 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
                 gazePoint2D,
                 gazePoint3D,
                 eyePosition3D,
-                eyePosition3DRelative,
                 pupilDiameter
             );
         }

@@ -62,7 +62,7 @@ namespace UXI.GazeToolkit.Utils
                 count++;
             }
 
-            Point2 average = reference + aggregate / count;
+            Point2 average = reference + (aggregate / count);
 
             return average;
         }
@@ -82,7 +82,7 @@ namespace UXI.GazeToolkit.Utils
                 count++;
             }
 
-            Point3 average = reference + aggregate / count;
+            Point3 average = reference + (aggregate / count);
 
             return average;
         }

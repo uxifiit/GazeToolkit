@@ -24,7 +24,6 @@ namespace UXI.GazeToolkit.Interpolation
             Point2 stepGazePoint2D = (end.GazePoint2D - start.GazePoint2D) / steps;
             Point3 stepGazePoint3D = (end.GazePoint3D - start.GazePoint3D) / steps;
             Point3 stepEyePosition3D = (end.EyePosition3D - start.EyePosition3D) / steps;
-            Point3 stepEyePosition3DRelative = (end.EyePosition3DRelative - start.EyePosition3DRelative) / steps;
             double stepPupilDiameter = (end.PupilDiameter - start.PupilDiameter) / steps;
 
             foreach (var step in Enumerable.Range(1, interpolatedSteps))
@@ -35,7 +34,6 @@ namespace UXI.GazeToolkit.Interpolation
                     stepGazePoint2D * step + start.GazePoint2D,
                     stepGazePoint3D * step + start.GazePoint3D,
                     stepEyePosition3D * step + start.EyePosition3D,
-                    stepEyePosition3DRelative * step + start.EyePosition3DRelative,
                     stepPupilDiameter * step + start.PupilDiameter
                 );
             }
