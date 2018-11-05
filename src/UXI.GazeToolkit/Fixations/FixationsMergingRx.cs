@@ -57,9 +57,7 @@ namespace UXI.GazeToolkit.Fixations
                                                         mergedSamples,
                                                         newAverageSample,
                                                         lastFixation.TrackerTicks,
-                                                        lastFixation.Timestamp,
-                                                        nextFixation.EndTrackerTicks,
-                                                        nextFixation.EndTime
+                                                        nextFixation.EndTrackerTicks
                                                     )
                                                 };
 

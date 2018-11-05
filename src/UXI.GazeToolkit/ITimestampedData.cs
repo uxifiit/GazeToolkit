@@ -9,8 +9,5 @@ namespace UXI.GazeToolkit
     public interface ITimestampedData
     {
         long TrackerTicks { get; }
-
-
-        TimeSpan Timestamp { get; }
     }
 }

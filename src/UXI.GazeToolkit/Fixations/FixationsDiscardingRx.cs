@@ -30,9 +30,7 @@ namespace UXI.GazeToolkit.Fixations
                         movement.Samples, 
                         null, 
                         movement.TrackerTicks, 
-                        movement.Timestamp, 
-                        movement.EndTrackerTicks, 
-                        movement.EndTime
+                        movement.EndTrackerTicks 
                     );
                 }
                 return movement;

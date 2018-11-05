@@ -8,7 +8,7 @@ namespace UXI.GazeToolkit
 {
     public class EyeMovement : ITimestampedData
     {
-        public static readonly EyeMovement Empty = new EyeMovement(EyeMovementType.Unknown, Enumerable.Empty<EyeVelocity>(), null, 0L, TimeSpan.Zero, 0L, TimeSpan.Zero);
+        public static readonly EyeMovement Empty = new EyeMovement(EyeMovementType.Unknown, Enumerable.Empty<EyeVelocity>(), null, 0L, 0L);
 
         public EyeMovement
         (
@@ -16,34 +16,24 @@ namespace UXI.GazeToolkit
             IEnumerable<EyeVelocity> samples, 
             EyeSample averageSample, 
             long trackerTicks, 
-            TimeSpan timestamp, 
-            long endTrackerTicks, 
-            TimeSpan endTime
+            long endTrackerTicks
         )
         {
             Samples = samples?.ToList() ?? new List<EyeVelocity>();
 
             TrackerTicks = trackerTicks;
-            Timestamp = timestamp;
 
             MovementType = type;
             AverageSample = averageSample;
 
             EndTrackerTicks = endTrackerTicks;
-            EndTime = endTime;
         }
 
 
         public List<EyeVelocity> Samples { get; }
 
 
-        public TimeSpan Timestamp { get; }
-
-
         public long TrackerTicks { get; }
-
-
-        public TimeSpan EndTime { get; }
 
 
         public long EndTrackerTicks { get; }

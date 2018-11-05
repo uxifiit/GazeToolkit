@@ -16,27 +16,21 @@ namespace UXI.GazeToolkit
             Point3 gazePoint3D,
             Point3 eyePosition3D,
             double pupilDiameter,
-            long trackerTicks,
-            TimeSpan timestamp
+            long trackerTicks
         )
             : base(validity, gazePoint2D, gazePoint3D, eyePosition3D, pupilDiameter)
         {
             TrackerTicks = trackerTicks;
-            Timestamp = timestamp;
         }
 
 
-        public SingleEyeGazeData(EyeData other, long trackerTicks, TimeSpan timestamp)
+        public SingleEyeGazeData(EyeData other, long trackerTicks)
             : base(other)
         {
             TrackerTicks = trackerTicks;
-            Timestamp = timestamp;
         }
 
 
         public long TrackerTicks { get; }
-
-
-        public TimeSpan Timestamp { get; }
     }
 }

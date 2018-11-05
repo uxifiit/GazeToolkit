@@ -44,8 +44,7 @@ namespace UXI.GazeToolkit.Smoothing
                       Smooth(previous.GazePoint3D, current.GazePoint3D),
                       Smooth(previous.EyePosition3D, current.EyePosition3D),
                       current.PupilDiameter,
-                      current.TrackerTicks,
-                      current.Timestamp
+                      current.TrackerTicks
                   )
                 : current;
             });
