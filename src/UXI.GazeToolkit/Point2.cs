@@ -39,28 +39,6 @@ namespace UXI.GazeToolkit
         }
 
 
-        /// <summary>
-        /// Returns the point coordinatesin in the "X;Y" format.
-        /// </summary>
-        /// <returns>String representation of the point coordinates split by a semicolon</returns>
-        public override string ToString()
-        {
-            return $"{X};{Y}";
-        }
-
-
-        public string ToString(IFormatProvider provider)
-        {
-            return ToString(";", provider);
-        }
-
-
-        public string ToString(string delimiter, IFormatProvider provider)
-        {
-            return $"{X.ToString(provider)}{delimiter}{Y.ToString(provider)}";
-        }
-
-
         public static bool operator ==(Point2 a, Point2 b)
         {
             // If both are null, or both are same instance, return true.

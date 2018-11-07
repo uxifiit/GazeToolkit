@@ -91,7 +91,7 @@ namespace UXI.GazeToolkit.Interpolation
                     {
                         if (lastValidSample != null)
                         {
-                            if ((currentSample.TrackerTicks - lastValidSample.TrackerTicks) * 10 <= maxGapLength.Ticks) 
+                            if (currentSample.Timestamp.Subtract(lastValidSample.Timestamp).Duration() <= maxGapLength) 
                             {
                                 invalidSamplesCount++;
                             }
@@ -136,7 +136,7 @@ namespace UXI.GazeToolkit.Interpolation
                 gazeData,
                 leftEyeWithFilledInGaps,
                 rightEyeWithFilledInGaps,
-                (source, left, right) => new GazeData(left, right, source.TrackerTicks)
+                (source, left, right) => new GazeData(left, right, source.Timestamp)
             );
         }
 

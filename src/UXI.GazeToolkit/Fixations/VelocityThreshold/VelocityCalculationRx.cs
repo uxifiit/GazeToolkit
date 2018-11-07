@@ -32,8 +32,11 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
 
                 if (Double.IsNaN(visualAngleDegrees) == false)
                 {
-                    double duration = Math.Abs(toSample.TrackerTicks - fromSample.TrackerTicks);
-                    double durationSeconds = duration / (1000 * 1000d);
+                    // DELETE
+                    //double duration = Math.Abs(toSample.Timestamp - fromSample.Timestamp);
+                    //double durationSeconds = duration / (1000 * 1000d);
+
+                    double durationSeconds = (toSample.Timestamp - fromSample.Timestamp).Duration().TotalSeconds;
 
                     if (durationSeconds > 0d)
                     {

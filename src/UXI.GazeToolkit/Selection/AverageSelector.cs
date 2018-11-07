@@ -36,7 +36,7 @@ namespace UXI.GazeToolkit.Selection
                 return RightEyeSelector.Instance.SelectSingleEye(gaze);
             }
 
-            return new SingleEyeGazeData(EyeData.Default, gaze.TrackerTicks);
+            return new SingleEyeGazeData(EyeData.Default, gaze.Timestamp);
         }
     }
 }

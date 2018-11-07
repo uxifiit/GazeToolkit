@@ -41,7 +41,7 @@ namespace UXI.GazeToolkit.Smoothing
                     accumulate.GazePoint3D / count,
                     accumulate.EyePosition3D / count,
                     current.PupilDiameter,
-                    current.TrackerTicks
+                    current.Timestamp
                 ));
 
             //return gazeData.MovingAverage(new SingleEyeGazeDataAggregate(), WindowSize, (accumulate, eye) => accumulate.Add(eye), (begin, end, count, current) =>

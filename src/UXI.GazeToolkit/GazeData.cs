@@ -13,21 +13,21 @@ namespace UXI.GazeToolkit
     /// </summary>
     public class GazeData : ITimestampedData
     {
-        public static readonly GazeData Empty = new GazeData(EyeData.Default, EyeData.Default, 0L);
+        public static readonly GazeData Empty = new GazeData(EyeData.Default, EyeData.Default, DateTimeOffset.MinValue);
 
 
-        public GazeData(EyeData leftEye, EyeData rightEye, long trackerTicks)
+        public GazeData(EyeData leftEye, EyeData rightEye, DateTimeOffset timestamp)
         {
             LeftEye = leftEye;
             RightEye = rightEye;
-            TrackerTicks = trackerTicks;
+            Timestamp = timestamp;
         }
 
 
         /// <summary>
         /// Time when the data was sampled by the Eye Tracker in microseconds from arbitrary point in time. 
         /// </summary>
-        public long TrackerTicks { get; }
+        public DateTimeOffset Timestamp { get; }
 
 
         public EyeData LeftEye { get; }

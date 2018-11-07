@@ -8,6 +8,6 @@ namespace UXI.GazeToolkit
 {
     public interface ITimestampedData
     {
-        long TrackerTicks { get; }
+        DateTimeOffset Timestamp { get; }
     }
 }
