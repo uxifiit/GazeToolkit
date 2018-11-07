@@ -9,12 +9,12 @@ namespace UXI.GazeFilter
 {
     public class TimestampedData : ITimestampedData
     {
-        public TimestampedData(long trackerTicks)
+        public TimestampedData(DateTimeOffset timestamp)
         {
-            TrackerTicks = trackerTicks;
+            Timestamp = timestamp;
         }
 
 
-        public long TrackerTicks { get; }
+        public DateTimeOffset Timestamp { get; }
     }
 }

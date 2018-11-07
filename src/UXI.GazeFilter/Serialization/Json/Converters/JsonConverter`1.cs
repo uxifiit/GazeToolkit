@@ -17,9 +17,11 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             return (objectType == typeof(T));
         }
 
+
         protected abstract T Convert(JToken token, JsonSerializer serializer);
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+
+        public sealed override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.Null && _canBeNull)
             {
@@ -38,14 +40,24 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             }
         }
 
+
         public override bool CanWrite
         {
             get { return false; }
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+
+        protected virtual JToken ConvertBack(T value, JsonSerializer serializer)
         {
-            throw new InvalidOperationException();
+            throw new NotImplementedException();
+        }
+
+
+        public sealed override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            JToken token = ConvertBack((T)value, serializer);
+
+            token.WriteTo(writer);
         }
     }
 }

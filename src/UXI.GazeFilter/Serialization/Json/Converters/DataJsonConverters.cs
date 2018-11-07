@@ -16,10 +16,8 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
     {
         public static readonly IEnumerable<JsonConverter> Converters = new List<JsonConverter>()
         {
-            new StringEnumConverter(camelCaseText: false),
             new Point2Converter(),
             new Point3Converter(),
-            new TimestampedDataJsonConverter(),
             new EyeSampleConverter(),
             new EyeDataConverter(),
             new GazeDataConverter(),
@@ -98,56 +96,55 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
 
 
 
-    class TimestampedDataJsonConverter : JsonConverter<TimestampedData>
-    {
-        public bool TryParseTimestamps(JObject obj, JsonSerializer serializer, out long trackerTicks, out TimeSpan timestamp)
-        {
-            JToken tokenTrackerTicks;
-            JToken tokenTimestamp;
+    //class TimestampedDataJsonConverter : JsonConverter<TimestampedData>
+    //{
+    //    public bool TryParseTimestamp(JObject obj, JsonSerializer serializer, out DateTimeOffset timestamp)
+    //    {
+    //        JToken tokenTrackerTicks;
+    //        JToken tokenTimestamp;
 
-            bool hasTrackerTicks = obj.TryGetValue(nameof(TimestampedData.TrackerTicks), out tokenTrackerTicks);
-            bool hasTimestamp = obj.TryGetValue(/*nameof(TimestampedData.Timestamp)*/"Timestamp", out tokenTimestamp);
+    //        bool hasTrackerTicks = obj.TryGetValue(nameof(TimestampedData.Timestamp), out tokenTrackerTicks);
+    //        bool hasTimestamp = obj.TryGetValue(/*nameof(TimestampedData.Timestamp)*/"Timestamp", out tokenTimestamp);
 
-            if (hasTrackerTicks && hasTimestamp)
-            {
-                trackerTicks = tokenTrackerTicks.ToObject<long>(serializer);
-                timestamp = tokenTimestamp.ToObject<TimeSpan>(serializer);
-            }
-            else if (hasTimestamp)
-            {
-                timestamp = tokenTimestamp.ToObject<TimeSpan>(serializer);
-                trackerTicks = timestamp.Ticks / 10;
-            }
-            else if (hasTrackerTicks)
-            {
-                trackerTicks = tokenTrackerTicks.ToObject<long>(serializer);
-                timestamp = TimeSpan.Zero;
-            }
-            else
-            {
-                trackerTicks = 0L;
-                timestamp = TimeSpan.Zero;
-            }
+    //        if (hasTrackerTicks && hasTimestamp)
+    //        {
+    //            trackerTicks = tokenTrackerTicks.ToObject<long>(serializer);
+    //            timestamp = tokenTimestamp.ToObject<TimeSpan>(serializer);
+    //        }
+    //        else if (hasTimestamp)
+    //        {
+    //            timestamp = tokenTimestamp.ToObject<TimeSpan>(serializer);
+    //            trackerTicks = timestamp.Ticks / 10;
+    //        }
+    //        else if (hasTrackerTicks)
+    //        {
+    //            trackerTicks = tokenTrackerTicks.ToObject<long>(serializer);
+    //            timestamp = TimeSpan.Zero;
+    //        }
+    //        else
+    //        {
+    //            trackerTicks = 0L;
+    //            timestamp = TimeSpan.Zero;
+    //        }
 
-            return hasTrackerTicks || hasTimestamp;
-        }
+    //        return hasTrackerTicks || hasTimestamp;
+    //    }
 
 
-        protected override TimestampedData Convert(JToken token, JsonSerializer serializer)
-        {
-            long trackerTicks;
-            TimeSpan timestamp;
+    //    protected override TimestampedData Convert(JToken token, JsonSerializer serializer)
+    //    {
+    //        DateTimeOffset timestamp;
 
-            JObject obj = (JObject)token;
+    //        JObject obj = (JObject)token;
 
-            if (TryParseTimestamps(obj, serializer, out trackerTicks, out timestamp))
-            {
-                return new TimestampedData(trackerTicks/*, timestamp*/);
-            }
+    //        if (TryParseTimestamp(obj, serializer, out timestamp))
+    //        {
+    //            return new TimestampedData(timestamp);
+    //        }
 
-            throw new InvalidOperationException("Missing timestamp in the data.");
-        }
-    }
+    //        throw new InvalidOperationException("Missing timestamp in the data.");
+    //    }
+    //}
 
 
     class EyeSampleConverter : JsonConverter<EyeSample>
@@ -203,7 +200,7 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             var leftEye = obj.GetValue<EyeData>(nameof(GazeData.LeftEye), serializer);
             var rightEye = obj.GetValue<EyeData>(nameof(GazeData.RightEye), serializer);
 
-            return new GazeData(leftEye, rightEye, timestampedData.TrackerTicks/*, timestampedData.Timestamp*/);
+            return new GazeData(leftEye, rightEye, timestampedData.Timestamp/*, timestampedData.Timestamp*/);
         }
     }
 
@@ -223,7 +220,7 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             var timestampedData = obj.ToObject<TimestampedData>(serializer);
 
             // Then we construct the SingleEyeGazeData instance from both objects
-            return new SingleEyeGazeData(eyeGazeData, timestampedData.TrackerTicks/*, timestampedData.Timestamp*/);
+            return new SingleEyeGazeData(eyeGazeData, timestampedData.Timestamp/*, timestampedData.Timestamp*/);
         }
     }
 
@@ -257,10 +254,194 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
 
             var timestampedData = obj.ToObject<TimestampedData>(serializer);
 
-            var endTrackerTicks = obj.GetValue<long>(nameof(EyeMovement.EndTrackerTicks), serializer);
+            var endTrackerTicks = obj.GetValue<DateTimeOffset>(nameof(EyeMovement.EndTimestamp), serializer); // TODO call proper time deserialize
             //var endTime = obj.GetValue<TimeSpan>(nameof(EyeMovement.EndTime), serializer);
 
-            return new EyeMovement(type, samples, averageSample, timestampedData.TrackerTicks,/* timestampedData.Timestamp, */endTrackerTicks/*, endTime*/);
+            return new EyeMovement(type, samples, averageSample, timestampedData.Timestamp,/* timestampedData.Timestamp, */endTrackerTicks/*, endTime*/);
         }
+    }
+
+
+
+
+
+    // timestamp DateTimeOffsetConverters
+
+
+    public interface IDateTimeStringConverter
+    {
+        DateTimeOffset Convert(string value);
+        string ConvertBack(DateTimeOffset value);
+    }
+
+    public class DateTimeOffsetTimeSpanConverter : IDateTimeStringConverter
+    {
+        public DateTimeOffset Convert(string value)
+        {
+            var timespan = TimeSpan.Parse(value);
+
+            return new DateTimeOffset(timespan.Ticks, TimeZoneInfo.Utc.BaseUtcOffset);
+        }
+
+        public string ConvertBack(DateTimeOffset value)
+        {
+            var timespan = value.TimeOfDay;
+
+            return timespan.ToString(); // TODO format
+        }
+    }
+
+    public class DateTimeOffsetFromDateTimeConverter : IDateTimeStringConverter
+    {
+        public DateTimeOffset Convert(string value)
+        {
+            //DateTime datetime = DateTime.Parse(dateTimeString, System.Globalization.CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.AssumeUniversal | System.Globalization.DateTimeStyles.NoCurrentDateDefault);
+            //return new DateTimeOffset(datetime, TimeZoneInfo.Local.GetUtcOffset(datetime));
+            return DateTimeOffset.Parse(value);
+        }
+
+        public string ConvertBack(DateTimeOffset value)
+        {
+            return value.ToString("o");
+        }
+    }
+
+
+    //class DateTimeOffsetTimeSpanConverter : JsonConverter<DateTimeOffset>
+    //{
+    //    public override bool CanWrite => true;
+
+
+    //    protected override DateTimeOffset Convert(JToken token, JsonSerializer serializer)
+    //    {
+    //        var timespan = token.ToObject<TimeSpan>(serializer);
+
+    //        return new DateTimeOffset(timespan.Ticks, TimeZoneInfo.Utc.BaseUtcOffset);
+    //    }
+
+
+    //    protected override JToken ConvertBack(DateTimeOffset value, JsonSerializer serializer)
+    //    {
+    //        var timespan = value.TimeOfDay;
+
+    //        return JToken.FromObject(timespan, serializer);
+    //    }
+    //}
+
+    //class DateTimeOffsetFromDateTimeConverter : JsonConverter<DateTimeOffset>
+    //{
+    //    public override bool CanWrite => true;
+
+
+    //    public DateTimeOffset Convert(JToken token)
+    //    {
+    //        var dateTimeString = token.ToObject<string>(serializer);
+    //        //DateTime datetime = DateTime.Parse(dateTimeString, System.Globalization.CultureInfo.CurrentCulture, System.Globalization.DateTimeStyles.AssumeUniversal | System.Globalization.DateTimeStyles.NoCurrentDateDefault);
+    //        //return new DateTimeOffset(datetime, TimeZoneInfo.Local.GetUtcOffset(datetime));
+    //        return DateTimeOffset.Parse(dateTimeString);
+    //    }
+
+
+    //    public JToken ConvertBack(DateTimeOffset value)
+    //    {
+    //        Console.WriteLine("offset: " + value.Offset.ToString());
+
+    //        return value.ToString("o");
+    //    }
+    //}
+
+
+
+    public enum Precision : int
+    {
+        HundredNanoseconds = 1,
+        Microsecond = 10,
+        Millisecond = Microsecond * 1000
+    }
+
+
+    class DateTimeOffsetTicksConverter : IDateTimeStringConverter
+    {
+        public DateTimeOffsetTicksConverter(Precision precision)
+        {
+            Precision = precision;
+        }
+
+
+        public Precision Precision { get; set; }
+
+
+
+
+        public DateTimeOffset Convert(string value)
+        {
+            long ticks = Int64.Parse(value);
+
+            ticks *= (long)Precision;
+
+            // TODO
+            // check size and increase/decrease to .NET DateTime ticks
+
+            return new DateTimeOffset(ticks, TimeZoneInfo.Utc.BaseUtcOffset);
+        }
+
+
+        public string ConvertBack(DateTimeOffset value)
+        {
+            long ticks = value.UtcTicks;
+
+            if (Precision != Precision.HundredNanoseconds)
+            {
+                ticks = ChangeTicksPrecision(ticks, Precision);
+            }
+
+            return ticks.ToString();
+        }
+
+
+        private static long ChangeTicksPrecision(long ticks, Precision newPrecision)
+        {
+            long precision = (long)newPrecision;
+            long newTicks = ticks / precision;
+            long remainder = ticks % precision;
+
+            if (remainder > 0 && remainder >= precision / 2)
+            {
+                newTicks += 1;
+            }
+
+            return newTicks;
+        }
+
+
+        //JToken tokenTrackerTicks;
+        //JToken tokenTimestamp;
+
+        //bool hasTrackerTicks = obj.TryGetValue(nameof(TimestampedData.Timestamp), out tokenTrackerTicks);
+        //bool hasTimestamp = obj.TryGetValue(/*nameof(TimestampedData.Timestamp)*/"Timestamp", out tokenTimestamp);
+
+        //if (hasTrackerTicks && hasTimestamp)
+        //{
+        //    trackerTicks = tokenTrackerTicks.ToObject<long>(serializer);
+        //    timestamp = tokenTimestamp.ToObject<TimeSpan>(serializer);
+        //}
+        //else if (hasTimestamp)
+        //{
+        //    timestamp = tokenTimestamp.ToObject<TimeSpan>(serializer);
+        //    trackerTicks = timestamp.Ticks / 10;
+        //}
+        //else if (hasTrackerTicks)
+        //{
+        //    trackerTicks = tokenTrackerTicks.ToObject<long>(serializer);
+        //    timestamp = TimeSpan.Zero;
+        //}
+        //else
+        //{
+        //    trackerTicks = 0L;
+        //    timestamp = TimeSpan.Zero;
+        //}
+
+        //return hasTrackerTicks || hasTimestamp;
+
     }
 }
