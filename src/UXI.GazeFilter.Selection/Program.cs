@@ -19,9 +19,9 @@ namespace UXI.GazeFilter.Selection
 
     static class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            new FilterTool<GazeData, SingleEyeGazeData>
+            return new SingleFilterHost<EyeSelectionOptions>
             (
                 new Filter<GazeData, SingleEyeGazeData, EyeSelectionOptions>("Eye selection", (s, o) => s.SelectEye(o))
             ).Execute(args);

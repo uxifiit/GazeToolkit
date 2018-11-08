@@ -14,24 +14,43 @@ using UXI.GazeToolkit;
 
 namespace UXI.GazeFilter
 {
-    public enum InputFileType
+    public enum FileFormat
     {
-        JSON,
-        CSV,  // not supported yet
+        JSON, CSV, TSV
+    }
+
+    //public enum InputFileType
+    //{
+    //    JSON,
+    //    CSV,  // not supported yet
+    //}
+
+
+    //public enum OutputFileType
+    //{
+    //    CSV, // not supported
+    //    TSV, // not supported
+    //    JSON
+    //}
+
+
+    public class FilterIO
+    {
+        public FilterIO(IEnumerable<IDataSerializationFactory> factories)
+        {
+
+        }
+        
+
+        public void Initialize(BaseOptions options)
+        {
+
+        }
     }
 
 
 
-    public enum OutputFileType
-    {
-        CSV, // not supported
-        TSV, // not supported
-        JSON
-    }
-
-
-
-    public static class FilterIO
+    public static class FilterIOEx
     {
         static readonly List<IDataSerializationFactory> formats = new List<IDataSerializationFactory>()
         {
@@ -56,87 +75,95 @@ namespace UXI.GazeFilter
         }
 
 
-        private static IDataReader GetInputDataReader<TResult>(TextReader reader, InputFileType fileType)
+        private static IDataReader GetInputDataReader(TextReader reader, FileFormat fileType, Type dataType)
         {
-            IDataSerializationFactory format = null;
+            IDataSerializationFactory factory = formats.FirstOrDefault(f => f.Format == fileType);
 
-            switch (fileType)
-            {
-                case InputFileType.JSON:
-                    format = formats.FirstOrDefault(f => f.FormatName == "JSON");
-                    break;
-            }
-
-            if (format == null)
+            if (factory == null)
             {
                 throw new ArgumentOutOfRangeException(nameof(fileType));
             }
 
-            return format.CreateReaderForType(reader, typeof(TResult));
+            return factory.CreateReaderForType(reader, dataType);
         }
 
 
-        private static IDataWriter GetOutputDataWriter<TResult>(TextWriter writer, OutputFileType fileType)
+        private static IDataWriter GetOutputDataWriter(TextWriter writer, FileFormat fileType, Type dataType)
         {
-            IDataSerializationFactory format = null;
+            var factory = formats.FirstOrDefault(f => f.Format == fileType);
 
-            switch (fileType)
-            {
-                case OutputFileType.JSON:
-                    format = formats.FirstOrDefault(f => f.FormatName == "JSON");
-                    break;
-            }
-
-            if (format == null)
+            if (factory == null)
             {
                 throw new ArgumentOutOfRangeException(nameof(fileType));
             }
 
-            return format.CreateWriterForType(writer, typeof(TResult));
+            return factory.CreateWriterForType(writer, dataType);
         }
 
 
-        public static IObservable<TResult> ReadInput<TResult>(BaseOptions options)
+        public static IObservable<object> ReadInput(BaseOptions options, Type dataType)
         {
-            return ReadInput<TResult>(options.InputFile, options.InputFileType);
+            return ReadInput(options.InputFile, options.InputFileType, dataType);
+        }
+
+        //public static IObservable<TResult> ReadInput<TResult>(BaseOptions options)
+        //{
+        //    return ReadInput(options.InputFile, options.InputFileType, typeof(TResult)).OfType<TResult>();
+        //}
+
+
+        public static IObservable<object> ReadInput(string inputFile, FileFormat inputFileType, Type dataType)
+        {
+            return Observable.Using(() => CreateInputReader(inputFile), (reader) =>
+            {
+                return Observable.Using(() => GetInputDataReader(reader, inputFileType, dataType), (dataReader) =>
+                {
+                    return Observable.Create<object>(observer =>
+                           {
+                               try
+                               {
+                                   object data;
+                                   while (dataReader.TryRead(out data))
+                                   {
+                                       observer.OnNext(data);
+                                   }
+
+                                   observer.OnCompleted();
+                               }
+                               catch (Exception ex)
+                               {
+                                   observer.OnError(ex);
+                               }
+
+                               return Disposable.Empty;
+                           });
+                });
+            });
         }
 
 
-        public static IObservable<TResult> ReadInput<TResult>(string inputFile, InputFileType inputFileType)
+        public static IObservable<object> WriteOutput(this IObservable<object> data, BaseOptions options, Type dataType)
         {
-            return Observable.Using(() => CreateInputReader(inputFile),
-                (reader) => Observable.Using(() => GetInputDataReader<TResult>(reader, inputFileType),
-                    (dataReader) => Observable.Create<TResult>(observer =>
-                    {
-                        try
-                        {
-                            foreach (var data in dataReader.ReadAll<TResult>())
-                            {
-                                observer.OnNext(data);
-                            }
-                            observer.OnCompleted();
-                        }
-                        catch (Exception ex)
-                        {
-                            observer.OnError(ex);
-                        }
-
-                        return Disposable.Empty;
-                    })));
+            return WriteOutput(data, options.OutputFile, options.OutputFileType, dataType);
         }
 
-
-        public static IObservable<T> WriteOutput<T>(this IObservable<T> data, BaseOptions options)
+        
+        public static IObservable<object> WriteOutput(this IObservable<object> data, string outputFile, FileFormat outputFileType, Type dataType)
         {
-            return WriteOutput<T>(data, options.OutputFile, options.OutputFileType);
-        }
+            // similar to nested using statements, but managed by the lifetime of observable
+            //
+            // using (TextWriter writer = CreateOutputWriter(outputFile)) 
+            // using (IDataWriter dataWriter = GetOutputDataWriter<T>(writer, outputFileType)) 
+            // ...
 
-
-        public static IObservable<T> WriteOutput<T>(this IObservable<T> data, string outputFile, OutputFileType outputFileType)
-        {
-            return Observable.Using(() => CreateOutputWriter(outputFile),
-                (writer) => Observable.Using(() => GetOutputDataWriter<T>(writer, outputFileType),
-                    (dataWriter) => data.Finally(dataWriter.Close).Do(d => dataWriter.Write(d))));
+            return Observable.Using(() => CreateOutputWriter(outputFile), (TextWriter writer) =>
+            {
+                return Observable.Using(() => GetOutputDataWriter(writer, outputFileType, dataType), (IDataWriter dataWriter) =>
+                {
+                    return data.Finally(dataWriter.Close)
+                               .Do(d => dataWriter.Write(d));
+                });
+            });
         }
 
 

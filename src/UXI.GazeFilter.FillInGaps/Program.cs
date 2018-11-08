@@ -31,9 +31,9 @@ namespace UXI.GazeFilter.FillInGaps
 
     static class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            new FilterTool<GazeData, GazeData>
+            return new SingleFilterHost<FillInGapsOptions>
             (   
                 new Filter<GazeData, GazeData, FillInGapsOptions>("Fill in gaps", (s, o) => s.FillInGaps(o))
             ).Execute(args);
