@@ -16,7 +16,7 @@ namespace UXI.GazeFilter.Serialization.Converters
         }
 
 
-        public bool IsUsingDefaultFormat => String.IsNullOrWhiteSpace(_format) == false;
+        public bool IsUsingDefaultFormat => String.IsNullOrWhiteSpace(_format);
 
 
         public DateTimeOffset Convert(string value)
