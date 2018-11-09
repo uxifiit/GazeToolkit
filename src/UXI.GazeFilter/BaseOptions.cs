@@ -27,6 +27,7 @@ namespace UXI.GazeFilter
         [Option('t', "timestamp", HelpText = "Format of timestamps in data.", Required = false)]
         public string TimestampFormat { get; set; }
 
+        [Option("timestamp-field", HelpText = "Name of the timestamp field in the data.", Required = false)]
         public string TimestampFieldName { get; set; }
     }
 }
