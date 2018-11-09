@@ -16,6 +16,13 @@ namespace UXI.GazeFilter
         }
 
 
+        public MultiFilterHost(Action<FilterConfiguration> configureAction, params IFilter[] filters)
+            : base(filters.AsEnumerable(), configureAction)
+        {
+
+        }
+        
+
         protected override bool TryParseFilterOptions(Parser parser, string[] args, out BaseOptions options)
         {
             bool parsed = false;

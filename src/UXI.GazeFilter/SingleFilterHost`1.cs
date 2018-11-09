@@ -13,7 +13,20 @@ namespace UXI.GazeFilter
         public SingleFilterHost(IFilter filter)
             : base(new[] { filter })
         {
-            if (filter.OptionsType.Equals(typeof(TOptions)) == false)
+            AssertOptionsTypeMatch(filter.OptionsType);
+        }
+
+
+        public SingleFilterHost(IFilter filter, Action<FilterConfiguration> configureAction)
+            : base(new [] { filter }, configureAction)
+        {
+            AssertOptionsTypeMatch(filter.OptionsType);
+        }
+
+
+        private void AssertOptionsTypeMatch(Type optionsType)
+        {
+            if (optionsType.Equals(typeof(TOptions)) == false)
             {
                 throw new ArgumentException("Filter options type mismatch.");
             }

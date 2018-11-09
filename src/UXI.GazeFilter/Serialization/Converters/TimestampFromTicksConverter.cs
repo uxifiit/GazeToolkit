@@ -16,15 +16,37 @@ namespace UXI.GazeFilter.Serialization.Converters
 
     public class TimestampFromTicksConverter : ITimestampStringConverter
     {
-        public TimestampFromTicksConverter(Precision precision)
+        public TimestampFromTicksConverter()
         {
-            Precision = precision;
         }
 
 
-        public Precision Precision { get; set; }
+        public Precision Precision { get; set; } = Precision.HundredNanoseconds;
 
         
+        public void Configure(string format)
+        {
+            Precision = ResolvePrecision(format);
+        }
+
+
+        private Precision ResolvePrecision(string value)
+        {
+            switch (value.ToLower())
+            {
+                case "us":
+                    return Precision.Microsecond;
+                case "ms":
+                    return Precision.Millisecond;
+                case "ns":
+                case "100ns":
+                    return Precision.HundredNanoseconds;
+                default:
+                    throw new ArgumentOutOfRangeException($"Failed to resolve supported precision for timestamp ticks for '{value}'.");
+            }
+        }
+
+
         public DateTimeOffset Convert(string value)
         {
             long ticks = Int64.Parse(value);

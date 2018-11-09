@@ -11,6 +11,8 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using UXI.GazeFilter.Serialization;
+using UXI.GazeFilter.Serialization.Converters;
 
 namespace UXI.GazeFilter
 {
@@ -35,11 +37,23 @@ namespace UXI.GazeFilter
                 s.HelpWriter = _help;
             });
 
-            Filters = filters.ToDictionary(f => f.OptionsType, f => f);
+            Filters = filters.ToDictionary(f => f.OptionsType);
+
+            Configuration = new FilterConfiguration();           
+        }
+
+        
+        public FilterHost(IEnumerable<IFilter> filters, Action<FilterConfiguration> configureAction)
+            : this(filters)
+        {
+            configureAction?.Invoke(Configuration);
         }
 
 
         public Dictionary<Type, IFilter> Filters { get; }
+
+
+        public FilterConfiguration Configuration { get; }
 
 
         public int Execute(string[] args)
@@ -53,6 +67,8 @@ namespace UXI.GazeFilter
 #if DEBUG
                 Console.Error.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(options, Newtonsoft.Json.Formatting.Indented, new StringEnumConverter(false)));
 #endif
+
+                Configure(options);
 
                 using (var cts = new CancellationTokenSource())
                 {
@@ -88,14 +104,22 @@ namespace UXI.GazeFilter
         {
             var tcs = new TaskCompletionSource<bool>();
 
-            FilterIO.ReadInput(options, filter.InputType)
-                    .SubscribeOn(NewThreadScheduler.Default)
-                    .Process(filter, options)
-                    .WriteOutput(options, filter.OutputType)
-                    .Subscribe(_ => { }, e => tcs.TrySetException(e), () => tcs.TrySetResult(true));
+            var io = new FilterIO(Configuration.Formats);
+
+            io.ReadInput(options, filter.InputType, Configuration)
+              .SubscribeOn(NewThreadScheduler.Default)
+              .Process(filter, options)
+              .WriteOutput(io, options, filter.OutputType, Configuration)
+              .Subscribe(_ => { }, e => tcs.TrySetException(e), () => tcs.TrySetResult(true));
 
             return tcs.Task;
         }
-    }
 
+
+        private void Configure(BaseOptions options)
+        {
+            Configuration.TimestampConverter = TimestampStringConverterResolver.Default.Resolve(options.TimestampFormat);
+            Configuration.TimestampFieldName = options.TimestampFieldName;
+        }
+    }
 }

@@ -8,7 +8,10 @@ namespace UXI.GazeFilter.Serialization.Converters
 {
     public interface ITimestampStringConverter
     {
+        void Configure(string format);
+
         DateTimeOffset Convert(string value);
+
         string ConvertBack(DateTimeOffset value);
     }
 }

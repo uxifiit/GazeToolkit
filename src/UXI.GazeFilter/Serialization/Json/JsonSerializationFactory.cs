@@ -13,6 +13,18 @@ namespace UXI.GazeFilter.Serialization.Json
 {
     public class JsonSerializationFactory : IDataSerializationFactory
     {
+        public JsonSerializationFactory() { }
+
+        public JsonSerializationFactory(IEnumerable<JsonConverter> converters, bool replaceDefaultConverters = false)
+        {
+            if (replaceDefaultConverters)
+            {
+                DefaultConverters.Clear();
+            }
+
+            DefaultConverters.AddRange(converters);
+        }
+
         public string FileExtension => "json";
 
         public FileFormat Format => FileFormat.JSON;

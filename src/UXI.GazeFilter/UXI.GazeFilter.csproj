@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseOptions.cs" />
+    <Compile Include="FileFormat.cs" />
     <Compile Include="FilterConfiguration.cs" />
     <Compile Include="FilterHost.cs" />
     <Compile Include="FilterStatistics.cs" />
@@ -85,7 +86,7 @@
     <Compile Include="Serialization\Converters\TimestampFromDateTimeConverter.cs" />
     <Compile Include="Serialization\Converters\TimestampFromTicksConverter.cs" />
     <Compile Include="Serialization\Converters\TimestampFromTimeSpanConverter.cs" />
-    <Compile Include="Serialization\Extensions\IDataSerializationFactoryEx.cs" />
+    <Compile Include="Serialization\Converters\TimestampStringConverterResolver.cs" />
     <Compile Include="Serialization\Extensions\IDataWriterEx.cs" />
     <Compile Include="Serialization\Json\Extensions\JObjectEx.cs" />
     <Compile Include="Serialization\IDataReader.cs" />
