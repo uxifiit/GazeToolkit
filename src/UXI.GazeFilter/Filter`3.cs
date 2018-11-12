@@ -4,8 +4,6 @@ using System.Reactive.Linq;
 
 namespace UXI.GazeFilter
 {
-
-
     public class Filter<TSource, TResult, TOptions> : IFilter
         where TOptions : BaseOptions
     {
@@ -17,6 +15,7 @@ namespace UXI.GazeFilter
             _filter = (_, __) => Observable.Empty<TResult>();
         }
 
+
         public Filter(string name, Func<IObservable<TSource>, TOptions, IObservable<TResult>> filter)
         {
             _statistics = new FilterStatistics<TSource, TResult>(name);
@@ -26,7 +25,9 @@ namespace UXI.GazeFilter
 
         public Type InputType { get; } = typeof(TSource);
 
+
         public Type OutputType { get; } = typeof(TResult);
+
 
         public Type OptionsType { get; } = typeof(TOptions);
 

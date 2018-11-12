@@ -11,7 +11,6 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using UXI.GazeFilter.Serialization;
 using UXI.GazeFilter.Serialization.Converters;
 
 namespace UXI.GazeFilter
@@ -67,7 +66,6 @@ namespace UXI.GazeFilter
 #if DEBUG
                 Console.Error.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(options, Newtonsoft.Json.Formatting.Indented, new StringEnumConverter(false)));
 #endif
-
                 Configure(options);
 
                 using (var cts = new CancellationTokenSource())
@@ -91,14 +89,7 @@ namespace UXI.GazeFilter
 
 
         protected abstract bool TryParseFilterOptions(Parser parser, string[] args, out BaseOptions options);
-
-
-        //protected virtual bool TryResolveFilter(BaseOptions options, out IFilter filter)
-        //{
-        //    filter = Filters.FirstOrDefault(f => f.OptionsType.Equals(options.GetType()));
-        //    return filter != null;
-        //}
-
+        
 
         private Task ExecuteAsync(IFilter filter, BaseOptions options, CancellationToken cancellationToken)
         {

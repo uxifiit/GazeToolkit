@@ -7,16 +7,13 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UXI.GazeFilter.Serialization;
-using UXI.GazeFilter.Serialization.Extensions;
-using UXI.GazeFilter.Serialization.Json;
-using UXI.GazeFilter.Serialization.Json.Converters;
-using UXI.GazeToolkit;
 
 namespace UXI.GazeFilter
 {
     public class FilterIO
     {
         private readonly Dictionary<FileFormat, IDataSerializationFactory> _formats;
+
         public FilterIO(IEnumerable<IDataSerializationFactory> factories)
         {
             _formats = factories.ToDictionary(f => f.Format);
@@ -133,22 +130,6 @@ namespace UXI.GazeFilter
             }
 
             return outputWriter;
-        }
-    }
-
-
-
-    public static class FilterIOEx
-    {
-        public static IObservable<object> ReadInput(this FilterIO io, BaseOptions options, Type dataType, FilterConfiguration configuration)
-        {
-            return io.ReadInput(options.InputFile, options.InputFileFormat, dataType, configuration);
-        }
-
-
-        public static IObservable<object> WriteOutput(this IObservable<object> data, FilterIO io, BaseOptions options, Type dataType, FilterConfiguration configuration)
-        {
-            return io.WriteOutput(data, options.OutputFile, options.OutputFileFormat ?? options.InputFileFormat, dataType, configuration);
         }
     }
 }

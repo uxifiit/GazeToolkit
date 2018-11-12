@@ -17,7 +17,9 @@ namespace UXI.GazeFilter
             new JsonSerializationFactory()
         };
 
+
         public ITimestampStringConverter TimestampConverter { get; set; }
+
 
         public string TimestampFieldName { get; set; }
     }

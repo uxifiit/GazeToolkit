@@ -119,6 +119,7 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
     }
 
 
+
     class TimestampedDataJsonConverter : JsonConverter<TimestampedData>
     {
         private readonly string _timestampFieldName;
@@ -154,57 +155,6 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
 
 
 
-    //class TimestampedDataJsonConverter : JsonConverter<TimestampedData>
-    //{
-    //    public bool TryParseTimestamp(JObject obj, JsonSerializer serializer, out DateTimeOffset timestamp)
-    //    {
-    //        JToken tokenTrackerTicks;
-    //        JToken tokenTimestamp;
-
-    //        bool hasTrackerTicks = obj.TryGetValue(nameof(TimestampedData.Timestamp), out tokenTrackerTicks);
-    //        bool hasTimestamp = obj.TryGetValue(/*nameof(TimestampedData.Timestamp)*/"Timestamp", out tokenTimestamp);
-
-    //        if (hasTrackerTicks && hasTimestamp)
-    //        {
-    //            trackerTicks = tokenTrackerTicks.ToObject<long>(serializer);
-    //            timestamp = tokenTimestamp.ToObject<TimeSpan>(serializer);
-    //        }
-    //        else if (hasTimestamp)
-    //        {
-    //            timestamp = tokenTimestamp.ToObject<TimeSpan>(serializer);
-    //            trackerTicks = timestamp.Ticks / 10;
-    //        }
-    //        else if (hasTrackerTicks)
-    //        {
-    //            trackerTicks = tokenTrackerTicks.ToObject<long>(serializer);
-    //            timestamp = TimeSpan.Zero;
-    //        }
-    //        else
-    //        {
-    //            trackerTicks = 0L;
-    //            timestamp = TimeSpan.Zero;
-    //        }
-
-    //        return hasTrackerTicks || hasTimestamp;
-    //    }
-
-
-    //    protected override TimestampedData Convert(JToken token, JsonSerializer serializer)
-    //    {
-    //        DateTimeOffset timestamp;
-
-    //        JObject obj = (JObject)token;
-
-    //        if (TryParseTimestamp(obj, serializer, out timestamp))
-    //        {
-    //            return new TimestampedData(timestamp);
-    //        }
-
-    //        throw new InvalidOperationException("Missing timestamp in the data.");
-    //    }
-    //}
-
-
     class EyeSampleConverter : JsonConverter<EyeSample>
     {
         protected override EyeSample Convert(JToken token, JsonSerializer serializer)
@@ -227,6 +177,7 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
     }
 
 
+
     class EyeDataConverter : JsonConverter<EyeData>
     {
         protected override EyeData Convert(JToken token, JsonSerializer serializer)
@@ -244,6 +195,7 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             );
         }
     }
+
 
 
     class GazeDataConverter : JsonConverter<GazeData>

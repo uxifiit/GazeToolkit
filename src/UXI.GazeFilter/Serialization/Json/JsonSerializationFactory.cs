@@ -15,6 +15,7 @@ namespace UXI.GazeFilter.Serialization.Json
     {
         public JsonSerializationFactory() { }
 
+
         public JsonSerializationFactory(IEnumerable<JsonConverter> converters, bool replaceDefaultConverters = false)
         {
             if (replaceDefaultConverters)
@@ -25,9 +26,12 @@ namespace UXI.GazeFilter.Serialization.Json
             DefaultConverters.AddRange(converters);
         }
 
+
         public string FileExtension => "json";
 
+
         public FileFormat Format => FileFormat.JSON;
+
 
         public List<JsonConverter> DefaultConverters { get; } = new List<JsonConverter>()
         {
