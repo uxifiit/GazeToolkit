@@ -33,9 +33,9 @@ namespace UXI.GazeFilter.Frequency
 
     static class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            new FilterTool<TimestampedData, int>
+            return new SingleFilterHost<FrequencyMeasureOptions>
             (
                 new Filter<TimestampedData, int, FrequencyMeasureOptions>("Frequency measure", (s, o) => s.MeasureFrequency(o))
             ).Execute(args);

@@ -9,14 +9,14 @@ namespace UXI.GazeFilter.Serialization
 {
     public interface IDataSerializationFactory
     {
-        string FileExtension { get; }
+        string FileExtension { get; } // DELETE
 
-        string FormatName { get; }
+        FileFormat Format { get; }
 
-        string MimeType { get; }
+        //string MimeType { get; }   // DELETE
 
-        IDataWriter CreateWriterForType(TextWriter writer, Type dataType);
+        IDataWriter CreateWriterForType(TextWriter writer, Type dataType, FilterConfiguration configuration);
 
-        IDataReader CreateReaderForType(TextReader reader, Type dataType);
+        IDataReader CreateReaderForType(TextReader reader, Type dataType, FilterConfiguration configuration);
     }
 }

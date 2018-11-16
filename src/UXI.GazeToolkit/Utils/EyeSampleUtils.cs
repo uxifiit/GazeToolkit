@@ -16,7 +16,6 @@ namespace UXI.GazeToolkit.Utils
                 PointsUtils.Average(first.GazePoint2D, second.GazePoint2D),
                 PointsUtils.Average(first.GazePoint3D, second.GazePoint3D),
                 PointsUtils.Average(first.EyePosition3D, second.EyePosition3D),
-                PointsUtils.Average(first.EyePosition3DRelative, second.EyePosition3DRelative),
                 (first.PupilDiameter + second.PupilDiameter) / 2
             );
         }
@@ -31,7 +30,6 @@ namespace UXI.GazeToolkit.Utils
                        PointsUtils.Average(data.Select(s => s.GazePoint2D)),
                        PointsUtils.Average(data.Select(s => s.GazePoint3D)),
                        PointsUtils.Average(data.Select(s => s.EyePosition3D)),
-                       PointsUtils.Average(data.Select(s => s.EyePosition3DRelative)),
                        MathUtils.Average(data.Select(s => s.PupilDiameter))
                    );
         }

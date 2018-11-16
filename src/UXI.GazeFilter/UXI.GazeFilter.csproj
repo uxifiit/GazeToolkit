@@ -72,13 +72,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseOptions.cs" />
-    <Compile Include="Extensions\ParserResultEx.cs" />
-    <Compile Include="FilterBase`2.cs" />
+    <Compile Include="Extensions\FilterIOEx.cs" />
+    <Compile Include="FileFormat.cs" />
+    <Compile Include="FilterConfiguration.cs" />
+    <Compile Include="FilterHost.cs" />
+    <Compile Include="FilterStatistics.cs" />
+    <Compile Include="Filter`3.cs" />
     <Compile Include="FilterIO.cs" />
     <Compile Include="Common\DisposableBase.cs" />
+    <Compile Include="IFilter.cs" />
+    <Compile Include="MultiFilterHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\Extensions\IDataReaderEx.cs" />
-    <Compile Include="Serialization\Extensions\IDataSerializationFactoryEx.cs" />
+    <Compile Include="Serialization\Converters\ITimestampStringConverter.cs" />
+    <Compile Include="Serialization\Converters\TimestampFromDateTimeConverter.cs" />
+    <Compile Include="Serialization\Converters\TimestampFromTicksConverter.cs" />
+    <Compile Include="Serialization\Converters\TimestampFromTimeSpanConverter.cs" />
+    <Compile Include="Serialization\Converters\TimestampStringConverterResolver.cs" />
     <Compile Include="Serialization\Extensions\IDataWriterEx.cs" />
     <Compile Include="Serialization\Json\Extensions\JObjectEx.cs" />
     <Compile Include="Serialization\IDataReader.cs" />
@@ -89,6 +98,7 @@
     <Compile Include="Serialization\Json\JsonDataReader.cs" />
     <Compile Include="Serialization\Json\JsonDataWriter.cs" />
     <Compile Include="Serialization\Json\JsonSerializationFactory.cs" />
+    <Compile Include="SingleFilterHost`1.cs" />
     <Compile Include="TimestampedData.cs" />
   </ItemGroup>
   <ItemGroup>

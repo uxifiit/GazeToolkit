@@ -124,9 +124,9 @@ namespace UXI.GazeFilter.FillInGaps
 
     static class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            new FilterTool<GazeData, EyeMovement>
+            return new SingleFilterHost<FixationFilterOptions>
             (   
                 new Filter<GazeData, EyeMovement, FixationFilterOptions>("I-VT Fixation Filtering", (source, o) => {
                     var data = o.IsFillInGapsEnabled ? source.FillInGaps(o) : source;

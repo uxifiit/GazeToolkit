@@ -19,7 +19,7 @@ namespace UXI.GazeToolkit.Selection
 
         public SingleEyeGazeData SelectSingleEye(GazeData gaze)
         {
-            return new SingleEyeGazeData(gaze.RightEye, gaze.TrackerTicks, gaze.Timestamp);
+            return new SingleEyeGazeData(gaze.RightEye, gaze.Timestamp);
         }
     }
 }

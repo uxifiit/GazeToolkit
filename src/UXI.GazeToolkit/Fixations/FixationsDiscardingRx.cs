@@ -29,10 +29,8 @@ namespace UXI.GazeToolkit.Fixations
                         EyeMovementType.Unknown, 
                         movement.Samples, 
                         null, 
-                        movement.TrackerTicks, 
                         movement.Timestamp, 
-                        movement.EndTrackerTicks, 
-                        movement.EndTime
+                        movement.EndTimestamp 
                     );
                 }
                 return movement;

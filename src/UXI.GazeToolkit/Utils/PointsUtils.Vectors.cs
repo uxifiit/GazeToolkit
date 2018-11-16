@@ -29,7 +29,12 @@ namespace UXI.GazeToolkit.Utils
             /// <returns></returns>
             public static double GetLength(Point3 vector)
             {
-                return Math.Sqrt(Math.Pow(vector.X, 2) + Math.Pow(vector.Y, 2) + Math.Pow(vector.Z, 2));
+                return Math.Sqrt
+                (
+                    Math.Pow(vector.X, 2) 
+                  + Math.Pow(vector.Y, 2) 
+                  + Math.Pow(vector.Z, 2)
+                );
             }
 
             
@@ -65,7 +70,9 @@ namespace UXI.GazeToolkit.Utils
             /// <returns></returns>
             public static double DotProduct(Point3 left, Point3 right)
             {
-                return left.X * right.X + left.Y * right.Y + left.Z * right.Z;
+                return left.X * right.X 
+                     + left.Y * right.Y 
+                     + left.Z * right.Z;
             }
 
 

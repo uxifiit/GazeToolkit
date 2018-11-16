@@ -33,8 +33,8 @@ namespace UXI.GazeToolkit.Fixations
 
                                     if (lastFixation != null && nextFixation != null)
                                     {
-                                        var timeBetweenFixations = (nextFixation.TrackerTicks - lastFixation.EndTrackerTicks);
-                                        if (timeBetweenFixations <= (maxTimeBetweenFixations.Ticks / 10))
+                                        var timeBetweenFixations = (nextFixation.Timestamp - lastFixation.EndTimestamp);
+                                        if (timeBetweenFixations <= maxTimeBetweenFixations) // DELETE (maxTimeBetweenFixations.Ticks / 10)
                                         {
                                             var lastSample = lastFixation.Samples.Last().Eye;
                                             var nextSample = nextFixation.Samples.First().Eye;
@@ -56,10 +56,8 @@ namespace UXI.GazeToolkit.Fixations
                                                         EyeMovementType.Fixation,
                                                         mergedSamples,
                                                         newAverageSample,
-                                                        lastFixation.TrackerTicks,
                                                         lastFixation.Timestamp,
-                                                        nextFixation.EndTrackerTicks,
-                                                        nextFixation.EndTime
+                                                        nextFixation.EndTimestamp
                                                     )
                                                 };
 
@@ -75,7 +73,7 @@ namespace UXI.GazeToolkit.Fixations
                                 return buffer;
                             })
                             .Where(b => b.Any())
-                            .Buffer((first, current) => first.First().TrackerTicks != current.First().TrackerTicks)
+                            .Buffer((first, current) => first.First().Timestamp != current.First().Timestamp)
                             .Where(b => b.Any())
                             .Select(b => b.Last())
                             .SelectMany(b => b);

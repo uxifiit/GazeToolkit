@@ -9,6 +9,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using UXI.GazeToolkit;
 using UXI.GazeFilter.Serialization.Json.Extensions;
+using UXI.GazeFilter.Serialization.Converters;
 
 namespace UXI.GazeFilter.Serialization.Json.Converters
 {
@@ -16,10 +17,8 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
     {
         public static readonly IEnumerable<JsonConverter> Converters = new List<JsonConverter>()
         {
-            new StringEnumConverter(camelCaseText: false),
             new Point2Converter(),
             new Point3Converter(),
-            new TimestampedDataJsonConverter(),
             new EyeSampleConverter(),
             new EyeDataConverter(),
             new GazeDataConverter(),
@@ -92,7 +91,30 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             }
 
             return new Point3(x, y, z);
+        }
+    }
 
+
+
+    class DateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
+    {
+        private readonly ITimestampStringConverter _timestampConverter;
+
+        public DateTimeOffsetJsonConverter(ITimestampStringConverter timestampConverter)
+        {
+            _timestampConverter = timestampConverter;
+        }
+
+        public override bool CanWrite => true;
+
+        protected override DateTimeOffset Convert(JToken token, JsonSerializer serializer)
+        {
+            return _timestampConverter.Convert(token.Value<string>());
+        }
+
+        protected override JToken ConvertBack(DateTimeOffset value, JsonSerializer serializer)
+        {
+            return _timestampConverter.ConvertBack(value);
         }
     }
 
@@ -100,54 +122,37 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
 
     class TimestampedDataJsonConverter : JsonConverter<TimestampedData>
     {
-        public bool TryParseTimestamps(JObject obj, JsonSerializer serializer, out long trackerTicks, out TimeSpan timestamp)
+        private readonly string _timestampFieldName;
+
+
+        public TimestampedDataJsonConverter()
         {
-            JToken tokenTrackerTicks;
-            JToken tokenTimestamp;
+            _timestampFieldName = nameof(TimestampedData.Timestamp);
+        }
 
-            bool hasTrackerTicks = obj.TryGetValue(nameof(TimestampedData.TrackerTicks), out tokenTrackerTicks);
-            bool hasTimestamp = obj.TryGetValue(nameof(TimestampedData.Timestamp), out tokenTimestamp);
 
-            if (hasTrackerTicks && hasTimestamp)
+        public TimestampedDataJsonConverter(string timestampFieldName)
+        {
+            string fieldName = timestampFieldName?.Trim();
+            if (String.IsNullOrWhiteSpace(fieldName))
             {
-                trackerTicks = tokenTrackerTicks.ToObject<long>(serializer);
-                timestamp = tokenTimestamp.ToObject<TimeSpan>(serializer);
-            }
-            else if (hasTimestamp)
-            {
-                timestamp = tokenTimestamp.ToObject<TimeSpan>(serializer);
-                trackerTicks = timestamp.Ticks / 10;
-            }
-            else if (hasTrackerTicks)
-            {
-                trackerTicks = tokenTrackerTicks.ToObject<long>(serializer);
-                timestamp = TimeSpan.Zero;
-            }
-            else
-            {
-                trackerTicks = 0L;
-                timestamp = TimeSpan.Zero;
+                throw new ArgumentException("Timestamp field name cannot be null, empty or white space only.", nameof(timestampFieldName));
             }
 
-            return hasTrackerTicks || hasTimestamp;
+            _timestampFieldName = fieldName;
         }
 
 
         protected override TimestampedData Convert(JToken token, JsonSerializer serializer)
         {
-            long trackerTicks;
-            TimeSpan timestamp;
-
             JObject obj = (JObject)token;
 
-            if (TryParseTimestamps(obj, serializer, out trackerTicks, out timestamp))
-            {
-                return new TimestampedData(trackerTicks, timestamp);
-            }
+            var timestamp = obj.GetValue<DateTimeOffset>(_timestampFieldName, serializer);
 
-            throw new InvalidOperationException("Missing timestamp in the data.");
+            return new TimestampedData(timestamp);
         }
     }
+
 
 
     class EyeSampleConverter : JsonConverter<EyeSample>
@@ -159,7 +164,6 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             var gazePoint2D = obj.GetValue<Point2>(nameof(EyeSample.GazePoint2D), serializer);
             var gazePoint3D = obj.GetValue<Point3>(nameof(EyeSample.GazePoint3D), serializer);
             var eyePosition3D = obj.GetValue<Point3>(nameof(EyeSample.EyePosition3D), serializer);
-            var eyePosition3DRelative = obj.GetValue<Point3>(nameof(EyeSample.EyePosition3DRelative), serializer);
             var pupilDiameter = obj.GetValue<double>(nameof(EyeSample.PupilDiameter), serializer);
 
             return new EyeSample
@@ -167,11 +171,11 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
                 gazePoint2D,
                 gazePoint3D,
                 eyePosition3D,
-                eyePosition3DRelative,
                 pupilDiameter
             );
         }
     }
+
 
 
     class EyeDataConverter : JsonConverter<EyeData>
@@ -193,19 +197,20 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
     }
 
 
+
     class GazeDataConverter : JsonConverter<GazeData>
     {
         protected override GazeData Convert(JToken token, JsonSerializer serializer)
         {
             JObject obj = (JObject)token;
 
-            // GazeData implements the ITimestampedData interface, we use conversion to the TimestampedData object
+            // GazeData implements the ITimestampedData interface, so deserialize a TimestampedData object and take its members
             var timestampedData = obj.ToObject<TimestampedData>(serializer);
 
             var leftEye = obj.GetValue<EyeData>(nameof(GazeData.LeftEye), serializer);
             var rightEye = obj.GetValue<EyeData>(nameof(GazeData.RightEye), serializer);
 
-            return new GazeData(leftEye, rightEye, timestampedData.TrackerTicks, timestampedData.Timestamp);
+            return new GazeData(leftEye, rightEye, timestampedData.Timestamp);
         }
     }
 
@@ -221,11 +226,12 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             var eyeGazeData = obj.ToObject<EyeData>(serializer);
 
             // Then we take other members of SingleEyeGazeData
-            // SingleEyeGazeData implements the ITimestampedData interface, we can use conversion to the TimestampedData object
+
+            // SingleEyeGazeData implements the ITimestampedData interface, so deserialize a TimestampedData object and take its members
             var timestampedData = obj.ToObject<TimestampedData>(serializer);
 
             // Then we construct the SingleEyeGazeData instance from both objects
-            return new SingleEyeGazeData(eyeGazeData, timestampedData.TrackerTicks, timestampedData.Timestamp);
+            return new SingleEyeGazeData(eyeGazeData, timestampedData.Timestamp);
         }
     }
 
@@ -252,17 +258,16 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
         {
             JObject obj = (JObject)token;
 
+            var timestampedData = obj.ToObject<TimestampedData>(serializer);
+
             var type = obj.GetValue<EyeMovementType>(nameof(EyeMovement.MovementType), serializer);
             var samples = obj.GetValue<List<EyeVelocity>>(nameof(EyeMovement.Samples), serializer);
 
             var averageSample = obj.GetValue<EyeSample>(nameof(EyeMovement.AverageSample), serializer);
 
-            var timestampedData = obj.ToObject<TimestampedData>(serializer);
+            var endTimestamp = obj.GetValue<DateTimeOffset>(nameof(EyeMovement.EndTimestamp), serializer); // TODO call proper time deserialize
 
-            var endTrackerTicks = obj.GetValue<long>(nameof(EyeMovement.EndTrackerTicks), serializer);
-            var endTime = obj.GetValue<TimeSpan>(nameof(EyeMovement.EndTime), serializer);
-
-            return new EyeMovement(type, samples, averageSample, timestampedData.TrackerTicks, timestampedData.Timestamp, endTrackerTicks, endTime);
+            return new EyeMovement(type, samples, averageSample, timestampedData.Timestamp, endTimestamp);
         }
     }
 }
