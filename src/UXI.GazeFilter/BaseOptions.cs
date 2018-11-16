@@ -29,7 +29,7 @@ namespace UXI.GazeFilter
         public bool SuppressMessages { get; set; }
 
 
-        [Option('t', "timestamp", HelpText = "Format of timestamps in data.", Required = false)]
+        [Option("timestamp-format", HelpText = "Format of timestamps in data.", Required = false)]
         public string TimestampFormat { get; set; }
 
 
