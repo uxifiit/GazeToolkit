@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UXI.GazeFilter.Serialization.Converters;
 using UXI.GazeFilter.Serialization.Json.Converters;
+using Newtonsoft.Json.Converters;
 
 namespace UXI.GazeFilter.Serialization.Json
 {
@@ -42,7 +43,8 @@ namespace UXI.GazeFilter.Serialization.Json
             new GazeDataConverter(),
             new SingleEyeGazeDataJsonConverter(),
             new EyeVelocityJsonConverter(),
-            new EyeMovementJsonConverter()
+            new EyeMovementJsonConverter(),
+            new StringEnumConverter(false)
         };
 
 
