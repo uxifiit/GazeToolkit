@@ -10,6 +10,8 @@ namespace UXI.GazeFilter.Serialization.Converters
     {
         void Configure(string format);
 
+        bool IsUsingDefaultFormat { get; }
+
         DateTimeOffset Convert(string value);
 
         string ConvertBack(DateTimeOffset value);

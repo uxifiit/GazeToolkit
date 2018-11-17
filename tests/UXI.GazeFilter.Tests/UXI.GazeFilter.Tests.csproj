@@ -56,9 +56,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Serialization\Json\Converters\DataJsonConvertersTests.cs" />
+    <Compile Include="Serialization\Converters\TimestampFromTimeSpanConverterTest.cs" />
+    <Compile Include="Serialization\Converters\TimestampStringConverterResolverTest.cs" />
+    <Compile Include="Serialization\Json\Converters\Point2ConverterTest.cs" />
     <Compile Include="Serialization\Json\JsonDataReaderTest.cs" />
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +75,7 @@
       <Name>UXI.GazeToolkit</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

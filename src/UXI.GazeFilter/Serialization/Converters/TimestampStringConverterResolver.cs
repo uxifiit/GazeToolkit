@@ -12,7 +12,7 @@ namespace UXI.GazeFilter.Serialization.Converters
 
         public ITimestampStringConverter Resolve(string format)
         {
-            string[] formatParts = format?.Split(':');
+            string[] formatParts = format?.Split(new char[] { ':' }, count: 2, options: StringSplitOptions.RemoveEmptyEntries);
 
             string converterId = formatParts?.FirstOrDefault();
             string configuration = formatParts?.Skip(1).FirstOrDefault();

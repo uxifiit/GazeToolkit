@@ -16,12 +16,17 @@ namespace UXI.GazeFilter.Serialization.Converters
 
     public class TimestampFromTicksConverter : ITimestampStringConverter
     {
+        public const Precision DefaultPrecision = Precision.HundredNanoseconds;
+
         public TimestampFromTicksConverter()
         {
         }
 
 
-        public Precision Precision { get; set; } = Precision.HundredNanoseconds;
+        public Precision Precision { get; set; } = DefaultPrecision;
+
+
+        public bool IsUsingDefaultFormat => Precision == DefaultPrecision;
 
         
         public void Configure(string format)
@@ -46,7 +51,7 @@ namespace UXI.GazeFilter.Serialization.Converters
             }
         }
 
-
+        // TODO add support for ticks with floating point
         public DateTimeOffset Convert(string value)
         {
             long ticks = Int64.Parse(value);
@@ -86,36 +91,5 @@ namespace UXI.GazeFilter.Serialization.Converters
 
             return newTicks;
         }
-
-
-        //JToken tokenTrackerTicks;
-        //JToken tokenTimestamp;
-
-        //bool hasTrackerTicks = obj.TryGetValue(nameof(TimestampedData.Timestamp), out tokenTrackerTicks);
-        //bool hasTimestamp = obj.TryGetValue(/*nameof(TimestampedData.Timestamp)*/"Timestamp", out tokenTimestamp);
-
-        //if (hasTrackerTicks && hasTimestamp)
-        //{
-        //    trackerTicks = tokenTrackerTicks.ToObject<long>(serializer);
-        //    timestamp = tokenTimestamp.ToObject<TimeSpan>(serializer);
-        //}
-        //else if (hasTimestamp)
-        //{
-        //    timestamp = tokenTimestamp.ToObject<TimeSpan>(serializer);
-        //    trackerTicks = timestamp.Ticks / 10;
-        //}
-        //else if (hasTrackerTicks)
-        //{
-        //    trackerTicks = tokenTrackerTicks.ToObject<long>(serializer);
-        //    timestamp = TimeSpan.Zero;
-        //}
-        //else
-        //{
-        //    trackerTicks = 0L;
-        //    timestamp = TimeSpan.Zero;
-        //}
-
-        //return hasTrackerTicks || hasTimestamp;
-
     }
 }

@@ -57,6 +57,7 @@ namespace UXI.GazeFilter.Serialization.Json.Converters
             else if (token.Type == JTokenType.Array)
             {
                 var array = (JArray)token;
+
                 x = array[0].ToObject<double>(serializer);
                 y = array[1].ToObject<double>(serializer);
             }

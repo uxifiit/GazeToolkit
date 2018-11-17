@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UXI.GazeFilter.Serialization.Converters
 {
-    class TimestampFromTimeSpanConverter : ITimestampStringConverter
+    public class TimestampFromTimeSpanConverter : ITimestampStringConverter
     {
         private string _format = null;
 
@@ -34,10 +34,10 @@ namespace UXI.GazeFilter.Serialization.Converters
 
         public string ConvertBack(DateTimeOffset value)
         {
-            var timespan = value.TimeOfDay;
+            var timespan = TimeSpan.FromTicks(value.Ticks);
 
             return IsUsingDefaultFormat
-                 ? timespan.ToString()
+                 ? value.TimeOfDay.ToString()
                  : timespan.ToString(_format);
         }
     }
