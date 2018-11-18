@@ -9,11 +9,7 @@ namespace UXI.GazeFilter.Serialization
 {
     public interface IDataSerializationFactory
     {
-        string FileExtension { get; } // DELETE
-
         FileFormat Format { get; }
-
-        //string MimeType { get; }   // DELETE
 
         IDataWriter CreateWriterForType(TextWriter writer, Type dataType, FilterConfiguration configuration);
 

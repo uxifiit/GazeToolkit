@@ -13,8 +13,9 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
         private readonly IEnumerable<string> DateFormatAliases = new string[] { "date", "dt", "d" };
         private readonly IEnumerable<string> TicksFormatAliases = new string[] { "ticks", "tick", "c", "k" };
 
+
         [TestMethod]
-        public void Resolve_TimeFormatAliases()
+        public void TestResolve_TimeFormatAliases()
         {
             var resolver = new TimestampStringConverterResolver();
 
@@ -29,7 +30,7 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
 
 
         [TestMethod]
-        public void Resolve_DateFormatAliases()
+        public void TestResolve_DateFormatAliases()
         {
             var resolver = new TimestampStringConverterResolver();
 
@@ -44,7 +45,7 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
 
 
         [TestMethod]
-        public void Resolve_TicksFormatAliases()
+        public void TestResolve_TicksFormatAliases()
         {
             var resolver = new TimestampStringConverterResolver();
 
@@ -59,7 +60,7 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
 
 
         [TestMethod]
-        public void Resolve_DefaultTicksConverterForNoFormat()
+        public void TestResolve_DefaultTicksConverterForNoFormat()
         {
             var resolver = new TimestampStringConverterResolver();
 
@@ -71,7 +72,7 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
 
 
         [TestMethod]
-        public void Resolve_OnlyFormatForDefaultTicksConverter()
+        public void TestResolve_OnlyFormatForDefaultTicksConverter()
         {
             var resolver = new TimestampStringConverterResolver();
 
@@ -89,7 +90,7 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
 
 
         [TestMethod]
-        public void Resolve_TimeWithCustomFormat()
+        public void TestResolve_TimeWithCustomFormat()
         {
             var resolver = new TimestampStringConverterResolver();
 
@@ -109,7 +110,7 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
 
 
         [TestMethod]
-        public void Resolve_TicksWithCustomFormat()
+        public void TestResolve_TicksWithCustomFormat()
         {
             var resolver = new TimestampStringConverterResolver();
 

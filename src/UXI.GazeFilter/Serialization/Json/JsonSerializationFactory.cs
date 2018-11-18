@@ -28,9 +28,6 @@ namespace UXI.GazeFilter.Serialization.Json
         }
 
 
-        public string FileExtension => "json";
-
-
         public FileFormat Format => FileFormat.JSON;
 
 
