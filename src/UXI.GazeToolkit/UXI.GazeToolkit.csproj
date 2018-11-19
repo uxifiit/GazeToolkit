@@ -101,9 +101,9 @@
     <Compile Include="Smoothing\ISmoothingFilter.cs" />
     <Compile Include="Smoothing\MovingAverageSmoothingFilter.cs" />
     <Compile Include="Utils\EyeSampleUtils.cs" />
-    <Compile Include="Utils\PointsUtils.cs" />
+    <Compile Include="Utils\PointUtils.cs" />
     <Compile Include="Utils\MathUtils.cs" />
-    <Compile Include="Utils\PointsUtils.Vectors.cs" />
+    <Compile Include="Utils\PointUtils.Vectors.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

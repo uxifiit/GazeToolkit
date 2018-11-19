@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UXI.GazeToolkit.Utils
 {
-    public static partial class PointsUtils
+    public static partial class PointUtils
     {
         public static class Vectors
         {
