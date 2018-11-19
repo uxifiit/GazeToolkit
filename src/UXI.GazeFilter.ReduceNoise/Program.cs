@@ -36,8 +36,8 @@ namespace UXI.GazeFilter.ReduceNoise
         {
             return new MultiFilterHost
             (
-                new Filter<SingleEyeGazeData, SingleEyeGazeData, MovingAverageSmoothingOptions>("Reduce noise - Moving average smoothing", (s, o) => s.ReduceNoise(o)),
-                new Filter<SingleEyeGazeData, SingleEyeGazeData, ExponentialSmoothingOptions>("Reduce noise - Exponential smoothing", (s, o) => s.ReduceNoise(o))
+                new RelayFilter<SingleEyeGazeData, SingleEyeGazeData, MovingAverageSmoothingOptions>("Reduce noise - Moving average smoothing", (s, o) => s.ReduceNoise(o)),
+                new RelayFilter<SingleEyeGazeData, SingleEyeGazeData, ExponentialSmoothingOptions>("Reduce noise - Exponential smoothing", (s, o) => s.ReduceNoise(o))
             ).Execute(args);
         }
     }

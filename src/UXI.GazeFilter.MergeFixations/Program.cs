@@ -39,7 +39,7 @@ namespace UXI.GazeFilter.MergeFixations
         {
             return new SingleFilterHost<FixationsMergingOptions>
             (
-                new Filter<EyeMovement, EyeMovement, FixationsMergingOptions>("Merge adjacent fixations", (s, o) => s.MergeAdjacentFixations(o))
+                new RelayFilter<EyeMovement, EyeMovement, FixationsMergingOptions>("Merge adjacent fixations", (s, o) => s.MergeAdjacentFixations(o))
             ).Execute(args);
         }
     }

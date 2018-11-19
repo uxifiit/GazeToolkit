@@ -35,7 +35,7 @@ namespace UXI.GazeFilter.FillInGaps
         {
             return new SingleFilterHost<FillInGapsOptions>
             (   
-                new Filter<GazeData, GazeData, FillInGapsOptions>("Fill in gaps", (s, o) => s.FillInGaps(o))
+                new RelayFilter<GazeData, GazeData, FillInGapsOptions>("Fill in gaps", (s, o) => s.FillInGaps(o))
             ).Execute(args);
         }
     }

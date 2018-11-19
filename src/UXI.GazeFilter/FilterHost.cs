@@ -97,7 +97,7 @@ namespace UXI.GazeFilter
 
             var io = new DataIO(Configuration.Formats);
 
-            filter.Initialize(Configuration);
+            filter.Initialize(options);
 
             io.ReadInput(options, filter.InputType, Configuration.Serialization)
               .SubscribeOn(NewThreadScheduler.Default)

@@ -4,22 +4,16 @@ using System.Reactive.Linq;
 
 namespace UXI.GazeFilter
 {
-    public class Filter<TSource, TResult, TOptions> : IFilter
+    public abstract class Filter<TSource, TResult, TOptions> : IFilter
         where TOptions : BaseOptions
     {
-        private readonly Func<IObservable<TSource>, TOptions, IObservable<TResult>> _filter;
         private readonly FilterStatistics<TSource, TResult> _statistics;
 
-        protected Filter()
-        {
-            _filter = (_, __) => Observable.Empty<TResult>();
-        }
+        protected Filter() { }
 
-
-        public Filter(string name, Func<IObservable<TSource>, TOptions, IObservable<TResult>> filter)
+        protected Filter(string name)
         {
             _statistics = new FilterStatistics<TSource, TResult>(name);
-            _filter = filter;
         }
 
 
@@ -32,32 +26,44 @@ namespace UXI.GazeFilter
         public Type OptionsType { get; } = typeof(TOptions);
 
 
-        public virtual void Initialize(FilterConfiguration configuration) { }
+        public void Initialize(object options)
+        {
+            if (options is TOptions)
+            {
+                Initialize((TOptions)options);
+            }
+        }
+
+
+        protected abstract void Initialize(TOptions options);
 
 
         public IObservable<object> Process(IObservable<object> data, object options)
         {
-            return Process(data.OfType<TSource>(), (TOptions)options).Select(d => (object)d);
-        }
+            var baseOptions = options as BaseOptions;
 
+            var typedData = data.OfType<TSource>();
 
-        protected virtual IObservable<TResult> Process(IObservable<TSource> data, TOptions options)
-        {
-            if (options.SuppressMessages == false && _statistics != null)
+            if (baseOptions != null && baseOptions.SuppressMessages == false && _statistics != null)
             {
-                data = data.Do(_statistics.InputObserver);
+                typedData = typedData.Do(_statistics.InputObserver);
             }
 
-            var publishedData = data.Publish().RefCount();
+            var publishedData = typedData.Publish().RefCount();
 
-            var result = _filter.Invoke(publishedData, options);
+            var result = Process(publishedData, (TOptions)options);
 
-            if (options.SuppressMessages == false && _statistics != null)
+            if (baseOptions != null && baseOptions.SuppressMessages == false && _statistics != null)
             {
                 result = result.Do(_statistics.OutputObserver);
             }
 
-            return result;
+            return result.Select(d => (object)d);
         }
+
+
+        protected abstract IObservable<TResult> Process(IObservable<TSource> data, TOptions options);
     }
+
+    
 }

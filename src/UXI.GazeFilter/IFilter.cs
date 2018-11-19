@@ -14,7 +14,7 @@ namespace UXI.GazeFilter
 
         Type OptionsType { get; }
 
-        void Initialize(FilterConfiguration configuration);
+        void Initialize(object options);
 
         IObservable<object> Process(IObservable<object> data, object options);
     }

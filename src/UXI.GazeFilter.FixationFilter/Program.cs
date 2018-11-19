@@ -128,7 +128,7 @@ namespace UXI.GazeFilter.FillInGaps
         {
             return new SingleFilterHost<FixationFilterOptions>
             (   
-                new Filter<GazeData, EyeMovement, FixationFilterOptions>("I-VT Fixation Filtering", (source, o) => {
+                new RelayFilter<GazeData, EyeMovement, FixationFilterOptions>("I-VT Fixation Filtering", (source, o) => {
                     var data = o.IsFillInGapsEnabled ? source.FillInGaps(o) : source;
                     var eye = data.SelectEye(o);
                     eye = o.IsNoiseReductionEnabled ? eye.ReduceNoise(o) : eye;
