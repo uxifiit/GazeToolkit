@@ -1,5 +1,4 @@
 ﻿using CommandLine;
-using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +10,8 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using UXI.GazeFilter.Serialization.Converters;
+using UXI.GazeToolkit.Serialization;
+using UXI.GazeToolkit.Serialization.Converters;
 
 namespace UXI.GazeFilter
 {
@@ -63,9 +63,9 @@ namespace UXI.GazeFilter
             if (TryParseFilterOptions(_commandLineParser, args, out options)
                 && Filters.TryGetValue(options.GetType(), out filter))
             {
-#if DEBUG
-                Console.Error.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(options, Newtonsoft.Json.Formatting.Indented, new StringEnumConverter(false)));
-#endif
+//#if DEBUG
+//                Console.Error.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(options, Newtonsoft.Json.Formatting.Indented, new StringEnumConverter(false)));
+//#endif
                 Configure(options);
 
                 using (var cts = new CancellationTokenSource())
@@ -95,12 +95,12 @@ namespace UXI.GazeFilter
         {
             var tcs = new TaskCompletionSource<bool>();
 
-            var io = new FilterIO(Configuration.Formats);
+            var io = new DataIO(Configuration.Formats);
 
-            io.ReadInput(options, filter.InputType, Configuration)
+            io.ReadInput(options, filter.InputType, Configuration.Serialization)
               .SubscribeOn(NewThreadScheduler.Default)
               .Process(filter, options)
-              .WriteOutput(io, options, filter.OutputType, Configuration)
+              .WriteOutput(io, options, filter.OutputType, Configuration.Serialization)
               .Subscribe(_ => { }, e => tcs.TrySetException(e), () => tcs.TrySetResult(true));
 
             return tcs.Task;
@@ -109,8 +109,8 @@ namespace UXI.GazeFilter
 
         private void Configure(BaseOptions options)
         {
-            Configuration.TimestampConverter = TimestampStringConverterResolver.Default.Resolve(options.TimestampFormat);
-            Configuration.TimestampFieldName = options.TimestampFieldName;
+            Configuration.Serialization.TimestampConverter = TimestampStringConverterResolver.Default.Resolve(options.TimestampFormat);
+            Configuration.Serialization.TimestampFieldName = options.TimestampFieldName;
         }
     }
 }

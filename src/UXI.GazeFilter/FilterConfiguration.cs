@@ -4,9 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UXI.GazeFilter.Serialization;
-using UXI.GazeFilter.Serialization.Converters;
-using UXI.GazeFilter.Serialization.Json;
+using UXI.GazeToolkit.Serialization;
+using UXI.GazeToolkit.Serialization.Json;
 
 namespace UXI.GazeFilter
 {
@@ -18,9 +17,6 @@ namespace UXI.GazeFilter
         };
 
 
-        public ITimestampStringConverter TimestampConverter { get; set; }
-
-
-        public string TimestampFieldName { get; set; }
+        public SerializationConfiguration Serialization { get; set; } = new SerializationConfiguration();
     }
 }
