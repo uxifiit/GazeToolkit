@@ -32,6 +32,9 @@ namespace UXI.GazeFilter
         public Type OptionsType { get; } = typeof(TOptions);
 
 
+        public virtual void Initialize(FilterConfiguration configuration) { }
+
+
         public IObservable<object> Process(IObservable<object> data, object options)
         {
             return Process(data.OfType<TSource>(), (TOptions)options).Select(d => (object)d);
