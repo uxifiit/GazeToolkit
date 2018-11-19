@@ -19,6 +19,10 @@ namespace UXI.GazeFilter.Serialization.Json
         {
             _serializer = serializer;
             _reader = new JsonTextReader(reader);
+
+            _reader.DateTimeZoneHandling = serializer.DateTimeZoneHandling;
+            _reader.DateParseHandling = serializer.DateParseHandling;
+
             DataType = dataType;
         }
 

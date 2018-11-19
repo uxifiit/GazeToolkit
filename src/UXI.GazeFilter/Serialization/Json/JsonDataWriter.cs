@@ -20,6 +20,10 @@ namespace UXI.GazeFilter.Serialization.Json
             _serializer = serializer;
 
             _writer = new JsonTextWriter(writer);
+
+            _writer.DateTimeZoneHandling = serializer.DateTimeZoneHandling;
+            _writer.DateFormatHandling = serializer.DateFormatHandling;
+
             _writer.WriteStartArray();
         }
 

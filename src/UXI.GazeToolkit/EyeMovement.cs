@@ -39,8 +39,7 @@ namespace UXI.GazeToolkit
         public DateTimeOffset EndTimestamp { get; }
 
 
-        // DELETE comment
-        public TimeSpan Duration => EndTimestamp.Subtract(Timestamp); /*TimeSpan.FromTicks(*//*) * 10);*/
+        public TimeSpan Duration => EndTimestamp.Subtract(Timestamp);
 
 
         public Point2 Position => AverageSample?.GazePoint2D ?? Point2.Zero;
