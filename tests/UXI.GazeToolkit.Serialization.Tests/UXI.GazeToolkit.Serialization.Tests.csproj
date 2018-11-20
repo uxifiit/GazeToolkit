@@ -6,7 +6,7 @@
     <ProjectGuid>{8DC905FB-2243-4214-8E64-A90D852B689D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UXI.GazeToolkit.Serialization.Tests</RootNamespace>
+    <RootNamespace>UXI.GazeToolkit.Serialization</RootNamespace>
     <AssemblyName>UXI.GazeToolkit.Serialization.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -58,7 +58,6 @@
     <Compile Include="Converters\TimestampFromTimeSpanConverterTest.cs" />
     <Compile Include="Converters\TimestampStringConverterResolverTest.cs" />
     <Compile Include="Json\Converters\Point2ConverterTest.cs" />
-    <Compile Include="Json\JsonDataReaderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

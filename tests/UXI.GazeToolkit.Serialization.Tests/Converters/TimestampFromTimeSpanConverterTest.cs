@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UXI.GazeToolkit.Serialization.Converters;
 
-namespace UXI.GazeToolkit.Serialization.Tests.Converters
+namespace UXI.GazeToolkit.Serialization.Converters
 {
     [TestClass]
     public class TimestampFromTimeSpanConverterTest
@@ -13,7 +13,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Converters
 
 
         [TestMethod]
-        public void TestIsUsingDefaultFormat_TrueForNewInstance()
+        public void IsUsingDefaultFormat_TrueForNewInstance()
         {
             var converter = new TimestampFromTimeSpanConverter();
 
@@ -22,7 +22,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Converters
 
 
         [TestMethod]
-        public void TestIsUsingDefaultFormat_FalseAfterConfigure()
+        public void IsUsingDefaultFormat_FalseAfterConfigure()
         {
             var converter = new TimestampFromTimeSpanConverter();
 
@@ -33,7 +33,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Converters
 
 
         [TestMethod]
-        public void TestConfigure_ResetFormatWithNullOrEmptyString()
+        public void Configure_ResetFormatWithNullOrEmptyString()
         {
             var converter = new TimestampFromTimeSpanConverter();
 
@@ -46,7 +46,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Converters
 
 
         [TestMethod]
-        public void TestConvert_ValidValue()
+        public void Convert_ValidValue()
         {
             var converter = new TimestampFromTimeSpanConverter();
 
@@ -59,7 +59,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Converters
 
 
         [TestMethod]
-        public void TestConvert_ValidValue_CustomFormat()
+        public void Convert_ValidValue_CustomFormat()
         {
             var converter = new TimestampFromTimeSpanConverter();
             converter.Configure(@"hh\-mm\-ss\.ffffff");
@@ -73,7 +73,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Converters
 
 
         [TestMethod]
-        public void TestConvert_InvalidValue()
+        public void Convert_InvalidValue()
         {
             var converter = new TimestampFromTimeSpanConverter();
 
@@ -90,7 +90,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Converters
 
 
         [TestMethod]
-        public void TestConvertBack_ValidValue_TimeOnly()
+        public void ConvertBack_ValidValue_TimeOnly()
         {
             var converter = new TimestampFromTimeSpanConverter();
 
@@ -104,7 +104,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Converters
 
 
         [TestMethod]
-        public void TestConvertBack_ValidValue_IgnoreDatePart()
+        public void ConvertBack_ValidValue_IgnoreDatePart()
         {
             var converter = new TimestampFromTimeSpanConverter();
 
@@ -118,7 +118,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Converters
 
 
         [TestMethod]
-        public void TestConvertBack_ValidValue_CustomFormat()
+        public void ConvertBack_ValidValue_CustomFormat()
         {
             var converter = new TimestampFromTimeSpanConverter();
 
@@ -134,7 +134,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Converters
 
 
         [TestMethod]
-        public void TestConvertAndConvertBack_ValidValue()
+        public void ConvertAndConvertBack_ValidValue()
         {
             var converter = new TimestampFromTimeSpanConverter();
 

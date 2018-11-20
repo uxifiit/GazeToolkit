@@ -4,7 +4,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using UXI.GazeToolkit.Serialization.Converters;
 
-namespace UXI.GazeFilter.Tests.Serialization.Converters
+namespace UXI.GazeFilter.Serialization.Converters
 {
     [TestClass]
     public class TimestampStringConverterResolverTest
@@ -15,7 +15,7 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
 
 
         [TestMethod]
-        public void TestResolve_TimeFormatAliases()
+        public void Resolve_TimeFormatAliases()
         {
             var resolver = new TimestampStringConverterResolver();
 
@@ -30,7 +30,7 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
 
 
         [TestMethod]
-        public void TestResolve_DateFormatAliases()
+        public void Resolve_DateFormatAliases()
         {
             var resolver = new TimestampStringConverterResolver();
 
@@ -45,7 +45,7 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
 
 
         [TestMethod]
-        public void TestResolve_TicksFormatAliases()
+        public void Resolve_TicksFormatAliases()
         {
             var resolver = new TimestampStringConverterResolver();
 
@@ -60,7 +60,7 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
 
 
         [TestMethod]
-        public void TestResolve_DefaultTicksConverterForNoFormat()
+        public void Resolve_DefaultTicksConverterForNoFormat()
         {
             var resolver = new TimestampStringConverterResolver();
 
@@ -72,7 +72,7 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
 
 
         [TestMethod]
-        public void TestResolve_OnlyFormatForDefaultTicksConverter()
+        public void Resolve_OnlyFormatForDefaultTicksConverter()
         {
             var resolver = new TimestampStringConverterResolver();
 
@@ -90,7 +90,7 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
 
 
         [TestMethod]
-        public void TestResolve_TimeWithCustomFormat()
+        public void Resolve_TimeWithCustomFormat()
         {
             var resolver = new TimestampStringConverterResolver();
 
@@ -110,7 +110,7 @@ namespace UXI.GazeFilter.Tests.Serialization.Converters
 
 
         [TestMethod]
-        public void TestResolve_TicksWithCustomFormat()
+        public void Resolve_TicksWithCustomFormat()
         {
             var resolver = new TimestampStringConverterResolver();
 

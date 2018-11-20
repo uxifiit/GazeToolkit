@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using UXI.GazeToolkit.Serialization.Json.Converters;
 using UXI.GazeToolkit;
 
-namespace UXI.GazeToolkit.Serialization.Tests.Json.Converters
+namespace UXI.GazeToolkit.Serialization.Json.Converters
 {
     [TestClass]
     public class Point2ConverterTest
@@ -25,7 +25,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Json.Converters
 
 
         [TestMethod]
-        public void TestConvert_FromArray()
+        public void Convert_FromArray()
         {
             var expected = new Point2(0.2, 0.3);
             string json = "[0.2, 0.3]";
@@ -41,7 +41,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Json.Converters
 
 
         [TestMethod]
-        public void TestConvert_EmptyObject()
+        public void Convert_EmptyObject()
         {
             var expected = new Point2();
             string json = "{}";
@@ -56,7 +56,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Json.Converters
 
 
         [TestMethod]
-        public void TestConvert_FromObject()
+        public void Convert_FromObject()
         {
             var expected = new Point2(0.2, 0.3);
             string json = "{ \"x\": 0.2, \"y\": 0.3 }";
@@ -71,7 +71,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Json.Converters
 
 
         [TestMethod]
-        public void TestConvert_Null()
+        public void Convert_Null()
         {
             var expected = new Point2();
             string json = "null";
@@ -86,7 +86,7 @@ namespace UXI.GazeToolkit.Serialization.Tests.Json.Converters
 
 
         [TestMethod]
-        public void TestConvert_NullableNull()
+        public void Convert_NullableNull()
         {
             Point2? expected = null;
             string json = "null";
