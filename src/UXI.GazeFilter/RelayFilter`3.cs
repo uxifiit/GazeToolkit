@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UXI.GazeToolkit.Serialization;
 
 namespace UXI.GazeFilter
 {
@@ -33,7 +34,7 @@ namespace UXI.GazeFilter
         }
 
 
-        protected override void Initialize(TOptions options) { }
+        protected override void Initialize(TOptions options, SerializationConfiguration configuration, DataIO io) { }
 
 
         protected override IObservable<TResult> Process(IObservable<TSource> data, TOptions options)

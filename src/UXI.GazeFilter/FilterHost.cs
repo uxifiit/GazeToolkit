@@ -42,10 +42,10 @@ namespace UXI.GazeFilter
         }
 
         
-        public FilterHost(IEnumerable<IFilter> filters, Action<FilterConfiguration> configureAction)
+        public FilterHost(Action<FilterConfiguration> configure, IEnumerable<IFilter> filters)
             : this(filters)
         {
-            configureAction?.Invoke(Configuration);
+            configure?.Invoke(Configuration);
         }
 
 
@@ -97,7 +97,7 @@ namespace UXI.GazeFilter
 
             var io = new DataIO(Configuration.Formats);
 
-            filter.Initialize(options);
+            filter.Initialize(options, Configuration.Serialization, io);
 
             io.ReadInput(options, filter.InputType, Configuration.Serialization)
               .SubscribeOn(NewThreadScheduler.Default)

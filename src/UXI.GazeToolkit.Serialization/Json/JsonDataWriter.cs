@@ -55,18 +55,6 @@ namespace UXI.GazeToolkit.Serialization.Json
         }
 
 
-        public void WriteRange(IEnumerable<object> data)
-        {
-            if (_isOpen)
-            {
-                foreach (var item in data)
-                {
-                    _serializer.Serialize(_writer, item);
-                }
-            }
-        }
-
-
         private bool _disposed = false;
 
         protected override void Dispose(bool disposing)

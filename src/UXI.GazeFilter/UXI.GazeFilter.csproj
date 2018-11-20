@@ -71,6 +71,7 @@
     <Compile Include="Extensions\DataIOEx.cs" />
     <Compile Include="FilterConfiguration.cs" />
     <Compile Include="FilterHost.cs" />
+    <Compile Include="FilterPipeline`3.cs" />
     <Compile Include="FilterStatistics.cs" />
     <Compile Include="Filter`3.cs" />
     <Compile Include="IFilter.cs" />

@@ -17,7 +17,19 @@ namespace UXI.GazeToolkit.Serialization.Json
         public JsonSerializationFactory() { }
 
 
-        public JsonSerializationFactory(IEnumerable<JsonConverter> converters, bool replaceDefaultConverters = false)
+        public JsonSerializationFactory(IEnumerable<JsonConverter> converters)
+            : this(false, converters)
+        { }
+
+        public JsonSerializationFactory(params JsonConverter[] converters)
+            : this(converters.AsEnumerable())
+        { }
+
+        public JsonSerializationFactory(bool replaceDefaultConverters, params JsonConverter[] converters)
+            : this(replaceDefaultConverters, converters.AsEnumerable())
+        { }
+
+        public JsonSerializationFactory(bool replaceDefaultConverters, IEnumerable<JsonConverter> converters)
         {
             if (replaceDefaultConverters)
             {

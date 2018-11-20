@@ -16,8 +16,8 @@ namespace UXI.GazeFilter
         }
 
 
-        public MultiFilterHost(Action<FilterConfiguration> configureAction, params IFilter[] filters)
-            : base(filters.AsEnumerable(), configureAction)
+        public MultiFilterHost(Action<FilterConfiguration> configure, params IFilter[] filters)
+            : base(configure, filters.AsEnumerable())
         {
 
         }

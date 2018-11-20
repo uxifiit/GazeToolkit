@@ -13,7 +13,5 @@ namespace UXI.GazeToolkit.Serialization
         void Write(object data);
 
         void Close();
-
-        void WriteRange(IEnumerable<object> data);
     }
 }

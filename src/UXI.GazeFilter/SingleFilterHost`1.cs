@@ -17,8 +17,8 @@ namespace UXI.GazeFilter
         }
 
 
-        public SingleFilterHost(IFilter filter, Action<FilterConfiguration> configureAction)
-            : base(new [] { filter }, configureAction)
+        public SingleFilterHost(Action<FilterConfiguration> configure, IFilter filter)
+            : base(configure, new[] { filter })
         {
             AssertOptionsTypeMatch(filter.OptionsType);
         }

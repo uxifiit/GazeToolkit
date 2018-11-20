@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UXI.GazeToolkit.Serialization;
 
 namespace UXI.GazeFilter
 {
@@ -14,7 +15,7 @@ namespace UXI.GazeFilter
 
         Type OptionsType { get; }
 
-        void Initialize(object options);
+        void Initialize(object options, SerializationConfiguration configuration, DataIO io);
 
         IObservable<object> Process(IObservable<object> data, object options);
     }

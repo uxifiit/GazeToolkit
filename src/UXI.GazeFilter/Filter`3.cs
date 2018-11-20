@@ -1,48 +1,48 @@
 ﻿using System;
 using System.Linq;
 using System.Reactive.Linq;
+using UXI.GazeToolkit.Serialization;
 
 namespace UXI.GazeFilter
 {
-    public abstract class Filter<TSource, TResult, TOptions> : IFilter
-        where TOptions : BaseOptions
+    public abstract class Filter<TInput, TOutput, TOptions> : IFilter
     {
-        private readonly FilterStatistics<TSource, TResult> _statistics;
+        private readonly FilterStatistics<TInput, TOutput> _statistics;
 
         protected Filter() { }
 
         protected Filter(string name)
         {
-            _statistics = new FilterStatistics<TSource, TResult>(name);
+            _statistics = new FilterStatistics<TInput, TOutput>(name);
         }
 
 
-        public Type InputType { get; } = typeof(TSource);
+        public Type InputType { get; } = typeof(TInput);
 
 
-        public Type OutputType { get; } = typeof(TResult);
+        public Type OutputType { get; } = typeof(TOutput);
 
 
         public Type OptionsType { get; } = typeof(TOptions);
 
 
-        public void Initialize(object options)
+        public void Initialize(object options, SerializationConfiguration configuration, DataIO io)
         {
             if (options is TOptions)
             {
-                Initialize((TOptions)options);
+                Initialize((TOptions)options, configuration, io);
             }
         }
 
 
-        protected abstract void Initialize(TOptions options);
+        protected abstract void Initialize(TOptions options, SerializationConfiguration configuration, DataIO io);
 
 
         public IObservable<object> Process(IObservable<object> data, object options)
         {
             var baseOptions = options as BaseOptions;
 
-            var typedData = data.OfType<TSource>();
+            var typedData = data.OfType<TInput>();
 
             if (baseOptions != null && baseOptions.SuppressMessages == false && _statistics != null)
             {
@@ -62,8 +62,6 @@ namespace UXI.GazeFilter
         }
 
 
-        protected abstract IObservable<TResult> Process(IObservable<TSource> data, TOptions options);
+        protected abstract IObservable<TOutput> Process(IObservable<TInput> data, TOptions options);
     }
-
-    
 }
