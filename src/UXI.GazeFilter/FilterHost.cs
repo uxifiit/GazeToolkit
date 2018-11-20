@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,21 +39,21 @@ namespace UXI.GazeFilter
 
             Filters = filters.ToDictionary(f => f.OptionsType);
 
-            Configuration = new FilterConfiguration();           
+            Context = new FilterContext();           
         }
 
         
-        public FilterHost(Action<FilterConfiguration> configure, IEnumerable<IFilter> filters)
+        public FilterHost(Action<FilterContext> configure, IEnumerable<IFilter> filters)
             : this(filters)
         {
-            configure?.Invoke(Configuration);
+            configure?.Invoke(Context);
         }
 
 
         public Dictionary<Type, IFilter> Filters { get; }
 
 
-        public FilterConfiguration Configuration { get; }
+        public FilterContext Context { get; }
 
 
         public int Execute(string[] args)
@@ -95,14 +96,16 @@ namespace UXI.GazeFilter
         {
             var tcs = new TaskCompletionSource<bool>();
 
-            var io = new DataIO(Configuration.Formats);
+            var io = new DataIO(Context.Formats);
 
-            filter.Initialize(options, Configuration.Serialization, io);
+            Context.IO = io;
 
-            io.ReadInput(options, filter.InputType, Configuration.Serialization)
+            filter.Initialize(options, Context);
+
+            io.ReadInput(options, filter.InputType, Context.Serialization)
               .SubscribeOn(NewThreadScheduler.Default)
               .Process(filter, options)
-              .WriteOutput(io, options, filter.OutputType, Configuration.Serialization)
+              .WriteOutput(io, options, filter.OutputType, Context.Serialization)
               .Subscribe(_ => { }, e => tcs.TrySetException(e), () => tcs.TrySetResult(true));
 
             return tcs.Task;
@@ -111,8 +114,8 @@ namespace UXI.GazeFilter
 
         private void Configure(BaseOptions options)
         {
-            Configuration.Serialization.TimestampConverter = TimestampStringConverterResolver.Default.Resolve(options.TimestampFormat);
-            Configuration.Serialization.TimestampFieldName = options.TimestampFieldName;
+            Context.Serialization.TimestampConverter = TimestampStringConverterResolver.Default.Resolve(options.TimestampFormat);
+            Context.Serialization.TimestampFieldName = options.TimestampFieldName;
         }
     }
 }

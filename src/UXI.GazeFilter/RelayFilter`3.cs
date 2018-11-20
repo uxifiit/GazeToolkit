@@ -34,7 +34,7 @@ namespace UXI.GazeFilter
         }
 
 
-        protected override void Initialize(TOptions options, SerializationConfiguration configuration, DataIO io) { }
+        protected override void Initialize(TOptions options, FilterContext context) { }
 
 
         protected override IObservable<TResult> Process(IObservable<TSource> data, TOptions options)

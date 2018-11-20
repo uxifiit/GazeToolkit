@@ -9,7 +9,7 @@ using UXI.GazeToolkit.Serialization.Json;
 
 namespace UXI.GazeFilter
 {
-    public class FilterConfiguration
+    public class FilterContext
     {
         public Collection<IDataSerializationFactory> Formats { get; set; } = new Collection<IDataSerializationFactory>()
         {
@@ -18,5 +18,8 @@ namespace UXI.GazeFilter
 
 
         public SerializationConfiguration Serialization { get; set; } = new SerializationConfiguration();
+
+
+        public DataIO IO { get; set; } = null;
     }
 }

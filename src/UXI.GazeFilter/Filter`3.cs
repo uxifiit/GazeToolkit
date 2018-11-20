@@ -26,16 +26,16 @@ namespace UXI.GazeFilter
         public Type OptionsType { get; } = typeof(TOptions);
 
 
-        public void Initialize(object options, SerializationConfiguration configuration, DataIO io)
+        public void Initialize(object options, FilterContext context)
         {
             if (options is TOptions)
             {
-                Initialize((TOptions)options, configuration, io);
+                Initialize((TOptions)options, context);
             }
         }
 
 
-        protected abstract void Initialize(TOptions options, SerializationConfiguration configuration, DataIO io);
+        protected abstract void Initialize(TOptions options, FilterContext context);
 
 
         public IObservable<object> Process(IObservable<object> data, object options)

@@ -15,7 +15,7 @@ namespace UXI.GazeFilter
 
         Type OptionsType { get; }
 
-        void Initialize(object options, SerializationConfiguration configuration, DataIO io);
+        void Initialize(object options, FilterContext context);
 
         IObservable<object> Process(IObservable<object> data, object options);
     }

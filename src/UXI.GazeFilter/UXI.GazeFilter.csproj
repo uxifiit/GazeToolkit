@@ -68,8 +68,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseOptions.cs" />
+    <Compile Include="Exceptions\FilterTypeMismatchException.cs" />
     <Compile Include="Extensions\DataIOEx.cs" />
-    <Compile Include="FilterConfiguration.cs" />
+    <Compile Include="FilterContext.cs" />
     <Compile Include="FilterHost.cs" />
     <Compile Include="FilterPipeline`3.cs" />
     <Compile Include="FilterStatistics.cs" />
