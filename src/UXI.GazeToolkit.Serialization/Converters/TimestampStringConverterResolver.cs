@@ -63,7 +63,7 @@ namespace UXI.GazeToolkit.Serialization.Converters
         }
 
 
-        private ITimestampStringConverter CreateDefaultConverter()
+        public ITimestampStringConverter CreateDefaultConverter()
         {
             return new TimestampFromTicksConverter();
         }
