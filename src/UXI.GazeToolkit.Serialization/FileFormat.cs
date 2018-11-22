@@ -8,6 +8,6 @@ namespace UXI.GazeToolkit.Serialization
 {
     public enum FileFormat
     {
-        JSON, CSV, TSV
+        Default, JSON, CSV, TSV
     }
 }

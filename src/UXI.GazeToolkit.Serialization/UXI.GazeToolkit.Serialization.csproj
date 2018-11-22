@@ -74,12 +74,12 @@
     <Compile Include="IDataReader.cs" />
     <Compile Include="IDataSerializationFactory.cs" />
     <Compile Include="IDataWriter.cs" />
-    <Compile Include="Json\Converters\DataJsonConverters.cs" />
-    <Compile Include="Json\Converters\JsonConverter`1.cs" />
-    <Compile Include="Json\Extensions\JObjectEx.cs" />
-    <Compile Include="Json\JsonDataReader.cs" />
-    <Compile Include="Json\JsonDataWriter.cs" />
-    <Compile Include="Json\JsonSerializationFactory.cs" />
+    <Compile Include="Formats\Json\Converters\DataJsonConverters.cs" />
+    <Compile Include="Formats\Json\Converters\JsonConverter`1.cs" />
+    <Compile Include="Formats\Json\Extensions\JObjectEx.cs" />
+    <Compile Include="Formats\Json\JsonDataReader.cs" />
+    <Compile Include="Formats\Json\JsonDataWriter.cs" />
+    <Compile Include="Formats\Json\JsonSerializationFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TimestampedData.cs" />
   </ItemGroup>

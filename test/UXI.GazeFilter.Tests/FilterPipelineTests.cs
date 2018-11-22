@@ -10,8 +10,6 @@ using UXI.GazeFilter.Fakes;
 
 namespace UXI.GazeFilter
 {
-   
-
     [TestClass]
     public class FilterPipelineTests
     {

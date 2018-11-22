@@ -23,5 +23,4 @@ namespace UXI.GazeFilter.Fakes
             return data;
         }
     }
-
 }

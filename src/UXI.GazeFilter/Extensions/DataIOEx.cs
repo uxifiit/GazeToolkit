@@ -17,7 +17,7 @@ namespace UXI.GazeFilter
 
         public static IObservable<object> WriteOutput(this IObservable<object> data, DataIO io, BaseOptions options, Type dataType, SerializationConfiguration configuration)
         {
-            return io.WriteOutput(data, options.OutputFile, options.OutputFileFormat ?? options.InputFileFormat, dataType, configuration);
+            return io.WriteOutput(data, options.OutputFile, options.OutputFileFormat == FileFormat.Default ? options.InputFileFormat : options.OutputFileFormat, dataType, configuration);
         }
     }
 }

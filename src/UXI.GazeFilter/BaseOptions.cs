@@ -18,8 +18,8 @@ namespace UXI.GazeFilter
         public FileFormat InputFileFormat { get; set; }
 
 
-        [Option("output-format", HelpText = "Data format of the output. If not specified, it is the same as input file format.", Required = false)]
-        public FileFormat? OutputFileFormat { get; set; }
+        [Option("output-format", Default = FileFormat.Default, HelpText = "Data format of the output. If not specified, it is the same as input file format.", Required = false)]
+        public FileFormat OutputFileFormat { get; set; }
 
 
         [Option('o', "output", Default = null, HelpText = "Path to the output file. If not omitted, standard output stream is used.", Required = false)]
