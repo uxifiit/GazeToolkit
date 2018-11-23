@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CsvHelper, Version=9.0.0.0, Culture=neutral, PublicKeyToken=8c4959082be5c823, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CsvHelper.9.2.3\lib\net45\CsvHelper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -70,6 +74,14 @@
     <Compile Include="Extensions\IDataReaderEx.cs" />
     <Compile Include="Extensions\IDataWriterEx.cs" />
     <Compile Include="FileFormat.cs" />
+    <Compile Include="Formats\Csv\CsvDataReader.cs" />
+    <Compile Include="Formats\Csv\CsvDataWriter.cs" />
+    <Compile Include="Formats\Csv\CsvSerializationFactory.cs" />
+    <Compile Include="Formats\Csv\CsvSerializerContext.cs" />
+    <Compile Include="Formats\Csv\DataConverters\DataConverter`1.cs" />
+    <Compile Include="Formats\Csv\DataConverters\DefaultDataConverter.cs" />
+    <Compile Include="Formats\Csv\DataConverters\IDataConverter.cs" />
+    <Compile Include="Formats\Csv\TypeConverters\DateTimeOffsetTypeConverter.cs" />
     <Compile Include="SerializationConfiguration.cs" />
     <Compile Include="DataIO.cs" />
     <Compile Include="IDataReader.cs" />
