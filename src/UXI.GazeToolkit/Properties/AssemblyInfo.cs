@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("UXI.GazeToolkit")]
-[assembly: AssemblyDescription("Toolkit for stream processing eye movement data, fixation filtering, smoothing, etc., using Reactive Extensions.")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("UXI FIIT STUBA")]
 [assembly: AssemblyProduct("UXI.GazeToolkit")]

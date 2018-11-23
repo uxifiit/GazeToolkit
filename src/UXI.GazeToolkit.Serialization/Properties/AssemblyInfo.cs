@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("UXI.GazeToolkit.Serialization")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("UXI FIIT STUBA")]
 [assembly: AssemblyProduct("UXI.GazeToolkit.Serialization")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCopyright("Copyright © 2018 UXI FIIT STUBA")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
