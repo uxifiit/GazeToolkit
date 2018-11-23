@@ -13,10 +13,9 @@ namespace UXI.GazeToolkit.Utils
         {
             return new EyeSample
             (
-                PointsUtils.Average(first.GazePoint2D, second.GazePoint2D),
-                PointsUtils.Average(first.GazePoint3D, second.GazePoint3D),
-                PointsUtils.Average(first.EyePosition3D, second.EyePosition3D),
-                PointsUtils.Average(first.EyePosition3DRelative, second.EyePosition3DRelative),
+                PointUtils.Average(first.GazePoint2D, second.GazePoint2D),
+                PointUtils.Average(first.GazePoint3D, second.GazePoint3D),
+                PointUtils.Average(first.EyePosition3D, second.EyePosition3D),
                 (first.PupilDiameter + second.PupilDiameter) / 2
             );
         }
@@ -28,10 +27,9 @@ namespace UXI.GazeToolkit.Utils
                  ? data.FirstOrDefault()
                  : new EyeSample
                    (
-                       PointsUtils.Average(data.Select(s => s.GazePoint2D)),
-                       PointsUtils.Average(data.Select(s => s.GazePoint3D)),
-                       PointsUtils.Average(data.Select(s => s.EyePosition3D)),
-                       PointsUtils.Average(data.Select(s => s.EyePosition3DRelative)),
+                       PointUtils.Average(data.Select(s => s.GazePoint2D)),
+                       PointUtils.Average(data.Select(s => s.GazePoint3D)),
+                       PointUtils.Average(data.Select(s => s.EyePosition3D)),
                        MathUtils.Average(data.Select(s => s.PupilDiameter))
                    );
         }
@@ -40,11 +38,11 @@ namespace UXI.GazeToolkit.Utils
         public static double GetVisualAngle(Point3 eyePosition, Point3 fromGazePoint, Point3 toGazePoint)
         {
             // create gaze vectors with the origin in eye position of the sample
-            var fromVector = PointsUtils.Vectors.GetNormalizedVector(eyePosition, fromGazePoint);
-            var toVector = PointsUtils.Vectors.GetNormalizedVector(eyePosition, toGazePoint);
+            var fromVector = PointUtils.Vectors.GetNormalizedVector(eyePosition, fromGazePoint);
+            var toVector = PointUtils.Vectors.GetNormalizedVector(eyePosition, toGazePoint);
 
             // visual angle in radians
-            var angleRad = PointsUtils.Vectors.GetAngle(fromVector, toVector);
+            var angleRad = PointUtils.Vectors.GetAngle(fromVector, toVector);
 
             // convert radians to degrees
             var angleDeg = MathUtils.ConvertRadToDeg(angleRad);

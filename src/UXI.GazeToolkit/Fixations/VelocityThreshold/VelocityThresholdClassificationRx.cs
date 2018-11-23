@@ -43,31 +43,23 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
                                  var last = buffers.LastOrDefault();
 
                                  var currentFirstSample = current.First();
-
-                                 long startTrackerTicks = currentFirstSample.Eye.TrackerTicks;
-                                 TimeSpan startTimestamp = currentFirstSample.Eye.Timestamp;
+                                 DateTimeOffset startTimestamp = currentFirstSample.Eye.Timestamp;
 
                                  if (movement != null)
                                  {
-                                     var startTicksDiff = movement.EndTrackerTicks - movement.Samples.Last().Eye.TrackerTicks;
-                                     var startTimestampDiff = movement.EndTime.Ticks - movement.Samples.Last().Eye.Timestamp.Ticks;
+                                     var startTicksDiff = movement.EndTimestamp - movement.Samples.Last().Eye.Timestamp;
 
-                                     startTrackerTicks -= Math.Max(startTicksDiff, 0);
-                                     startTimestamp = startTimestamp.Subtract(TimeSpan.FromTicks(Math.Max(startTimestampDiff, 0)));
+                                     startTimestamp = startTimestamp.Subtract(startTicksDiff.Duration());
                                  }
 
                                  var currentLastSample = current.Last();
-
-                                 long endTrackerTicks = currentLastSample.Eye.TrackerTicks;
-                                 TimeSpan endTimestamp = currentLastSample.Eye.Timestamp;
+                                 DateTimeOffset endTimestamp = currentLastSample.Eye.Timestamp;
 
                                  if (last != null && last != current)
                                  {
-                                     var endTicksDiff = (last.First().Eye.TrackerTicks - endTrackerTicks) / 2;
-                                     var endTimestampDiff = (last.First().Eye.Timestamp.Ticks - endTimestamp.Ticks) / 2;
+                                     var endTicksDiff = (last.First().Eye.Timestamp - endTimestamp).Duration().Ticks / 2;
 
-                                     endTrackerTicks += endTicksDiff;
-                                     endTimestamp = endTimestamp.Add(TimeSpan.FromTicks(endTimestampDiff));
+                                     endTimestamp = endTimestamp.Add(TimeSpan.FromTicks(endTicksDiff));
                                  }
 
                                  EyeMovementType movementType = ClassifyMovement(current.First(), velocityThreshold);
@@ -78,7 +70,7 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
                                      averageSample = EyeSampleUtils.Average(current.Select(s => s.Eye));
                                  }
 
-                                 return new EyeMovement(movementType, current, averageSample, startTrackerTicks, startTimestamp, endTrackerTicks, endTimestamp);
+                                 return new EyeMovement(movementType, current, averageSample, startTimestamp, endTimestamp);
                              });
         }
 

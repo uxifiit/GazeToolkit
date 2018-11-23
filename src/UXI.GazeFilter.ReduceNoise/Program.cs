@@ -32,13 +32,12 @@ namespace UXI.GazeFilter.ReduceNoise
 
     static class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            new FilterTool<SingleEyeGazeData, SingleEyeGazeData>
+            return new MultiFilterHost
             (
-                true,
-                new Filter<SingleEyeGazeData, SingleEyeGazeData, MovingAverageSmoothingOptions>("Reduce noise - Moving average smoothing", (s, o) => s.ReduceNoise(o)),
-                new Filter<SingleEyeGazeData, SingleEyeGazeData, ExponentialSmoothingOptions>("Reduce noise - Exponential smoothing", (s, o) => s.ReduceNoise(o))
+                new RelayFilter<SingleEyeGazeData, SingleEyeGazeData, MovingAverageSmoothingOptions>("Reduce noise - Moving average smoothing", (s, o) => s.ReduceNoise(o)),
+                new RelayFilter<SingleEyeGazeData, SingleEyeGazeData, ExponentialSmoothingOptions>("Reduce noise - Exponential smoothing", (s, o) => s.ReduceNoise(o))
             ).Execute(args);
         }
     }

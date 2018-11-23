@@ -150,15 +150,5 @@ namespace UXI.GazeToolkit
         {
             return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode();
         }
-
-
-        /// <summary>
-        /// Returns the point coordinatesin in the "X;Y;Z" format.
-        /// </summary>
-        /// <returns>String representation of the point coordinates split by a semicolon</returns>
-        public override string ToString()
-        {
-            return $"{X};{Y};{Z}";
-        }
     }
 }

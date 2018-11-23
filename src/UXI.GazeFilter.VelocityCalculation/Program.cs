@@ -35,11 +35,11 @@ namespace UXI.GazeFilter.VelocityCalculation
 
     static class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            new FilterTool<SingleEyeGazeData, EyeVelocity>
+            return new SingleFilterHost<VelocityCalculationOptions>
             (
-                new Filter<SingleEyeGazeData, EyeVelocity, VelocityCalculationOptions>("Eye velocity calculation", (s, o) => s.CalculateVelocities(o))
+                new RelayFilter<SingleEyeGazeData, EyeVelocity, VelocityCalculationOptions>("Eye velocity calculation", (s, o) => s.CalculateVelocities(o))
             ).Execute(args);
         }
     }

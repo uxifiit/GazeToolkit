@@ -35,11 +35,11 @@ namespace UXI.GazeFilter.MergeFixations
 
     static class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            new FilterTool<EyeMovement, EyeMovement>
+            return new SingleFilterHost<FixationsMergingOptions>
             (
-                new Filter<EyeMovement, EyeMovement, FixationsMergingOptions>("Merge adjacent fixations", (s, o) => s.MergeAdjacentFixations(o))
+                new RelayFilter<EyeMovement, EyeMovement, FixationsMergingOptions>("Merge adjacent fixations", (s, o) => s.MergeAdjacentFixations(o))
             ).Execute(args);
         }
     }

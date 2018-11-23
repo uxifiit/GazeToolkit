@@ -19,11 +19,11 @@ namespace UXI.GazeFilter.VelocityThresholdClassification
 
     static class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            new FilterTool<EyeVelocity, EyeMovement>
+            return new SingleFilterHost<VelocityThresholdClassificationOptions>
             (
-                new Filter<EyeVelocity, EyeMovement, VelocityThresholdClassificationOptions>("Velocity threshold classification", (s, o) => s.ClassifyByVelocity(o))
+                new RelayFilter<EyeVelocity, EyeMovement, VelocityThresholdClassificationOptions>("Velocity threshold classification", (s, o) => s.ClassifyByVelocity(o))
             ).Execute(args);
         }
     }

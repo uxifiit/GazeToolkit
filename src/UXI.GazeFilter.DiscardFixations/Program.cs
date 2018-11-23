@@ -32,11 +32,11 @@ namespace UXI.GazeFilter.DiscardFixations
 
     static class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            new FilterTool<EyeMovement, EyeMovement>
+            return new SingleFilterHost<FixationsDiscardingOptions>
             (
-                new Filter<EyeMovement, EyeMovement, FixationsDiscardingOptions>("Discard short fixations", (s, o) => s.DiscardShortFixations(o))
+                new RelayFilter<EyeMovement, EyeMovement, FixationsDiscardingOptions>("Discard short fixations", (s, o) => s.DiscardShortFixations(o))
             ).Execute(args);
         }
     }

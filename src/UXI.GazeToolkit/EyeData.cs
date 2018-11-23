@@ -10,16 +10,16 @@ namespace UXI.GazeToolkit
     {
         public static readonly EyeData Default = new EyeData(EyeValidity.Invalid, EyeSample.Empty);
 
+
         public EyeData
         (
             EyeValidity validity,
             Point2 gazePoint2D,
             Point3 gazePoint3D,
             Point3 eyePosition3D,
-            Point3 eyePosition3DRelative,
             double pupilDiameter
         )
-            : base(gazePoint2D, gazePoint3D, eyePosition3D, eyePosition3DRelative, pupilDiameter)
+            : base(gazePoint2D, gazePoint3D, eyePosition3D, pupilDiameter)
         {
             Validity = validity;
         }
