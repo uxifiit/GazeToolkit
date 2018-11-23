@@ -4,39 +4,32 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B9B59115-5855-41D3-A414-9C4B752F0D11}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{6838F42D-9E59-48A5-B04B-5B4E907C4C5C}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UXI.GazeFilter.FixationFilter</RootNamespace>
-    <AssemblyName>i-vt</AssemblyName>
+    <RootNamespace>UXI.GazeToolkit.Validation</RootNamespace>
+    <AssemblyName>UXI.GazeToolkit.Validation</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\build\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\build\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=2.3.0.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CommandLineParser.2.3.0\lib\net45\CommandLine.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,18 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="DisplayArea.cs" />
+    <Compile Include="Evaluations\AngularValidationEvaluationStrategy.cs" />
+    <Compile Include="Evaluations\IValidationEvaluationStrategy.cs" />
+    <Compile Include="Evaluations\PixelValidationEvaluationStrategy.cs" />
+    <Compile Include="Evaluations\ValidationEvaluation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValidationPoint.cs" />
+    <Compile Include="ValidationPointData.cs" />
+    <Compile Include="ValidationPointResult.cs" />
+    <Compile Include="ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\UXI.GazeFilter\UXI.GazeFilter.csproj">
-      <Project>{11a9e2de-36a1-4468-80dd-74a056d5185d}</Project>
-      <Name>UXI.GazeFilter</Name>
-    </ProjectReference>
     <ProjectReference Include="..\UXI.GazeToolkit\UXI.GazeToolkit.csproj">
       <Project>{3e77e53d-babe-4c8d-9cf4-b3fab2f8b87e}</Project>
       <Name>UXI.GazeToolkit</Name>
