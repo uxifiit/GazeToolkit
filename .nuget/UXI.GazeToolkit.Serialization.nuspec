@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>UXI.GazeToolkit.Serialization</id>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <title>UXI.GazeToolkit.Serialization</title>
     <authors>UXI Dev</authors>
     <owners>UXI FIIT STUBA</owners>
