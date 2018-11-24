@@ -80,6 +80,7 @@
     <Compile Include="Formats\Csv\CsvSerializerContext.cs" />
     <Compile Include="Formats\Csv\DataConverters\DataConverter`1.cs" />
     <Compile Include="Formats\Csv\DataConverters\DefaultDataConverter.cs" />
+    <Compile Include="Formats\Csv\DataConverters\EyeMovementDataConverter.cs" />
     <Compile Include="Formats\Csv\DataConverters\IDataConverter.cs" />
     <Compile Include="Formats\Csv\TypeConverters\DateTimeOffsetTypeConverter.cs" />
     <Compile Include="SerializationConfiguration.cs" />

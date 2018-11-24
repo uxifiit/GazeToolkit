@@ -18,19 +18,68 @@ namespace UXI.GazeToolkit
             DateTimeOffset timestamp,
             DateTimeOffset endTimestamp
         )
+            : this
+        (
+            type,
+            averageSample,
+            timestamp,
+            endTimestamp
+        )
         {
-            Samples = samples?.ToList() ?? new List<EyeVelocity>();
+            Samples = samples?.ToList() ?? Samples;
+        }
 
-            Timestamp = timestamp;
 
-            MovementType = type;
+        public EyeMovement
+        (
+            EyeMovementType type,
+            EyeSample averageSample,
+            DateTimeOffset timestamp,
+            DateTimeOffset endTimestamp
+        )
+            : this
+        (
+            type,
+            timestamp,
+            endTimestamp
+        )
+        {
             AverageSample = averageSample;
+        }
 
+
+        public EyeMovement
+        (
+            EyeMovementType type,
+            Point2 gazePoint,
+            DateTimeOffset timestamp,
+            DateTimeOffset endTimestamp
+        )
+            : this
+        (
+            type,
+            timestamp,
+            endTimestamp
+        )
+        {
+            position = gazePoint;
+        }
+
+
+        private EyeMovement
+        (
+            EyeMovementType type,
+            DateTimeOffset timestamp,
+            DateTimeOffset endTimestamp
+        )
+        {
+            MovementType = type;
+            Timestamp = timestamp;
             EndTimestamp = endTimestamp;
         }
 
 
-        public List<EyeVelocity> Samples { get; }
+        public List<EyeVelocity> Samples { get; } = new List<EyeVelocity>();
 
 
         public DateTimeOffset Timestamp { get; }
@@ -42,7 +91,8 @@ namespace UXI.GazeToolkit
         public TimeSpan Duration => EndTimestamp.Subtract(Timestamp);
 
 
-        public Point2 Position => AverageSample?.GazePoint2D ?? Point2.Zero;
+        private Point2? position;
+        public Point2 Position => position ?? AverageSample?.GazePoint2D ?? Point2.Zero;
 
 
         public EyeSample AverageSample { get; }

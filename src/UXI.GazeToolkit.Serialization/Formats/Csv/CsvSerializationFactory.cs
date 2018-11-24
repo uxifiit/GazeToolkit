@@ -66,7 +66,8 @@ namespace UXI.GazeToolkit.Serialization.Csv
 
         public List<IDataConverter> DefaultConverters { get; } = new List<IDataConverter>()
         {
-            new DefaultDataConverter()
+            new EyeMovementDataConverter()
+            //new DefaultDataConverter()
         };
 
 

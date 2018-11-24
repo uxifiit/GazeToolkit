@@ -7,7 +7,7 @@ using CsvHelper;
 
 namespace UXI.GazeToolkit.Serialization.Csv.DataConverters
 {
-    class DefaultDataConverter : IDataConverter
+    public class DefaultDataConverter : IDataConverter
     {
         public virtual bool CanRead { get; } = true;
 

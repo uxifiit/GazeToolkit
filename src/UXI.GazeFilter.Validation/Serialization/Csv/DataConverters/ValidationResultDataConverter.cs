@@ -17,6 +17,8 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.DataConverters
     public class ValidationResultDataConverter : DataConverter<ValidationResult>
     {
         public override bool CanRead => false;
+
+
         public override bool CanWrite => true;
 
 
