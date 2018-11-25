@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UXI.GazeToolkit.Serialization;
 
-namespace UXI.GazeFilter
+namespace UXI.GazeFilter.Statistics
 {
     public interface IFilterStatistics
     {
@@ -16,6 +16,4 @@ namespace UXI.GazeFilter
         Type DataType { get; }
         FileFormat DefaultFormat { get; }
     }
-
-    
 }

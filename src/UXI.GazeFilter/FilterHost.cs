@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UXI.GazeFilter.Extensions;
+using UXI.GazeFilter.Statistics;
 using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Serialization.Converters;
 
