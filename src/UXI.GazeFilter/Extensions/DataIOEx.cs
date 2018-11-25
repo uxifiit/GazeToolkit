@@ -19,5 +19,13 @@ namespace UXI.GazeFilter
         {
             return io.WriteOutput(data, options.OutputFile, options.OutputFileFormat == FileFormat.Default ? options.InputFileFormat : options.OutputFileFormat, dataType, configuration);
         }
+
+
+        public static void WriteOutput(this DataIO io, IEnumerable<object> data, BaseOptions options, FileFormat defaultFormat, Type dataType, SerializationConfiguration configuration)
+        {
+            var format = options.LogFileFormat == FileFormat.Default ? defaultFormat : options.LogFileFormat;
+
+            io.WriteOutput(data, options.LogFile, format, dataType, configuration);
+        }
     }
 }

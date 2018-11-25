@@ -15,6 +15,8 @@ namespace UXI.GazeToolkit.Serialization.Csv
 {
     public class CsvSerializationFactory : IDataSerializationFactory
     {
+        private readonly bool _ignoreDefaultConverters;
+
         public CsvSerializationFactory() { }
 
         public CsvSerializationFactory(IDictionary<Type, ITypeConverter> typeConverters, bool replaceDefaultConverters, params IDataConverter[] converters)
@@ -25,35 +27,32 @@ namespace UXI.GazeToolkit.Serialization.Csv
             : this(null, false, converters.AsEnumerable())
         { }
 
-        public CsvSerializationFactory(bool replaceDefaultConverters, params IDataConverter[] converters)
-            : this(null, replaceDefaultConverters, converters.AsEnumerable())
+        public CsvSerializationFactory(bool ignoreDefaultConverters, params IDataConverter[] converters)
+            : this(null, ignoreDefaultConverters, converters.AsEnumerable())
         { }
 
-        public CsvSerializationFactory(IDictionary<Type, ITypeConverter> typeConverters, bool replaceDefaultConverters, IEnumerable<IDataConverter> converters)
+        public CsvSerializationFactory(IDictionary<Type, ITypeConverter> typeConverters, bool ignoreDefaultConverters, IEnumerable<IDataConverter> converters)
         {
             if (typeConverters != null)
             {
                 foreach (var typeConverterPair in typeConverters)
                 {
-                    if (DefaultTypeConverters.ContainsKey(typeConverterPair.Key))
+                    if (TypeConverters.ContainsKey(typeConverterPair.Key))
                     {
-                        DefaultTypeConverters[typeConverterPair.Key] = typeConverterPair.Value;
+                        TypeConverters[typeConverterPair.Key] = typeConverterPair.Value;
                     }
                     else
                     {
-                        DefaultTypeConverters.Add(typeConverterPair.Key, typeConverterPair.Value);
+                        TypeConverters.Add(typeConverterPair.Key, typeConverterPair.Value);
                     }
                 }
             }
 
-            if (replaceDefaultConverters)
-            {
-                DefaultConverters.Clear();
-            }
+            _ignoreDefaultConverters = ignoreDefaultConverters;
 
             if (converters != null)
             {
-                DefaultConverters.AddRange(converters);
+                Converters.AddRange(converters);
             }
         }
 
@@ -61,14 +60,17 @@ namespace UXI.GazeToolkit.Serialization.Csv
         public FileFormat Format => FileFormat.CSV;
 
 
-        public Dictionary<Type, ITypeConverter> DefaultTypeConverters { get; } = new Dictionary<Type, ITypeConverter>();
+        public Dictionary<Type, ITypeConverter> TypeConverters { get; } = new Dictionary<Type, ITypeConverter>();
 
 
-        public List<IDataConverter> DefaultConverters { get; } = new List<IDataConverter>()
+        public List<IDataConverter> Converters { get; } = new List<IDataConverter>();
+
+
+        public ReadOnlyCollection<IDataConverter> DefaultConverters { get; } = new List<IDataConverter>()
         {
-            new EyeMovementDataConverter()
-            //new DefaultDataConverter()
-        };
+            new EyeMovementDataConverter(),
+            new DefaultDataConverter()
+        }.AsReadOnly();
 
 
         public IDataReader CreateReaderForType(TextReader reader, Type dataType, SerializationConfiguration configuration)
@@ -93,10 +95,16 @@ namespace UXI.GazeToolkit.Serialization.Csv
 
             serializer.Configuration.PrepareHeaderForMatch = header => header.ToLower();
 
-            SetupDateTimeOffsetSerialization(serializer, configuration.TimestampConverter);
-            SetupTimestampedDataSerialization(serializer, configuration.TimestampFieldName);
+            AddConverters(serializer, Converters);
+            AddTypeConverters(serializer);
 
-            SetupDefaultConverters(serializer);
+            if (_ignoreDefaultConverters == false)
+            {
+                SetupDateTimeOffsetSerialization(serializer, configuration.TimestampConverter);
+                SetupTimestampedDataSerialization(serializer, configuration.TimestampFieldName);
+
+                AddConverters(serializer, DefaultConverters);
+            }
 
             return serializer;
         }
@@ -114,14 +122,17 @@ namespace UXI.GazeToolkit.Serialization.Csv
         }
 
 
-        private void SetupDefaultConverters(CsvSerializerContext serializer)
+        private void AddTypeConverters(CsvSerializerContext serializer)
         {
-            foreach (var typeConverter in DefaultTypeConverters)
+            foreach (var typeConverter in TypeConverters)
             {
                 serializer.Configuration.TypeConverterCache.AddConverter(typeConverter.Key, typeConverter.Value);
             }
+        }
 
-            foreach (var converter in DefaultConverters)
+        private static void AddConverters(CsvSerializerContext serializer, IEnumerable<IDataConverter> converters)
+        {
+            foreach (var converter in converters)
             {
                 serializer.DataConverters.Add(converter);
             }

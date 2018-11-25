@@ -11,6 +11,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using UXI.GazeFilter.Extensions;
 using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Serialization.Converters;
 
@@ -64,14 +65,23 @@ namespace UXI.GazeFilter
             if (TryParseFilterOptions(_commandLineParser, args, out options)
                 && Filters.TryGetValue(options.GetType(), out filter))
             {
-//#if DEBUG
-//                Console.Error.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(options, Newtonsoft.Json.Formatting.Indented, new StringEnumConverter(false)));
-//#endif
+                //#if DEBUG
+                //                Console.Error.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(options, Newtonsoft.Json.Formatting.Indented, new StringEnumConverter(false)));
+                //#endif
+
                 Configure(options);
+
+                var statistics = Enumerable.Empty<IFilterStatistics>();
+                if (options.SuppressMessages == false && Context.Statistics.Any())
+                {
+                    statistics = Context.Statistics
+                                        .Where(s => s.CanCreate(filter.GetType()))
+                                        .Select(s => s.Create(filter, options));
+                }
 
                 using (var cts = new CancellationTokenSource())
                 {
-                    var execution = ExecuteAsync(filter, options, cts.Token);
+                    var execution = ExecuteAsync(filter, statistics, options, cts.Token);
 
                     Console.CancelKeyPress += (_, __) => cts.Cancel();
 
@@ -92,11 +102,12 @@ namespace UXI.GazeFilter
         protected abstract bool TryParseFilterOptions(Parser parser, string[] args, out BaseOptions options);
         
 
-        private Task ExecuteAsync(IFilter filter, BaseOptions options, CancellationToken cancellationToken)
+        private Task ExecuteAsync(IFilter filter, IEnumerable<IFilterStatistics> statistics, BaseOptions options, CancellationToken cancellationToken)
         {
             var tcs = new TaskCompletionSource<bool>();
 
             var io = new DataIO(Context.Formats);
+            var stats = statistics?.ToList() ?? Enumerable.Empty<IFilterStatistics>();
 
             Context.IO = io;
 
@@ -104,9 +115,19 @@ namespace UXI.GazeFilter
 
             io.ReadInput(options, filter.InputType, Context.Serialization)
               .SubscribeOn(NewThreadScheduler.Default)
+              .Publish().RefCount()
+              .Attach(stats.Select(s => s.InputObserver))
               .Process(filter, options)
+              .Attach(stats.Select(s => s.OutputObserver))
               .WriteOutput(io, options, filter.OutputType, Context.Serialization)
-              .Subscribe(_ => { }, e => tcs.TrySetException(e), () => tcs.TrySetResult(true));
+              .Subscribe(_ => { }, e => tcs.TrySetException(e), () =>
+              {
+                  foreach (var stat in stats)
+                  {
+                      io.WriteOutput(stat.GetResults(), options, stat.DefaultFormat, stat.DataType, Context.Serialization);
+                  }
+                  tcs.TrySetResult(true);
+              });
 
             return tcs.Task;
         }

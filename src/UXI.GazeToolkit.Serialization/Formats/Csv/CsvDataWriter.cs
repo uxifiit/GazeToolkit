@@ -66,7 +66,15 @@ namespace UXI.GazeToolkit.Serialization.Csv
         {
             if (_shouldWriteHeader)
             {
+                try
+                {
+
                 _converter.WriteCsvHeader(_writer, DataType, _serializer);
+                }
+                catch (Exception ex)
+                {
+
+                }
                 _shouldWriteHeader = false;
             }
         }

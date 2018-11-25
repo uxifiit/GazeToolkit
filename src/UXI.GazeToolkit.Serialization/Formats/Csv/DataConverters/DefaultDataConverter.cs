@@ -31,11 +31,15 @@ namespace UXI.GazeToolkit.Serialization.Csv.DataConverters
         public void WriteCsv(object data, CsvWriter writer, CsvSerializerContext serializer)
         {
             writer.WriteRecord(data);
+
+            writer.NextRecord();
         }
 
         public void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer)
         {
             writer.WriteHeader(objectType);
+
+            writer.NextRecord();
         }
     }
 }

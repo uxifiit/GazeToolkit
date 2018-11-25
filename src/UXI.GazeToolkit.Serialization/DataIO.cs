@@ -23,11 +23,6 @@ namespace UXI.GazeToolkit.Serialization
         {
             FileFormat format = EnsureCorrectFileFormat(filePath, fileFormat);
             
-            // same as nested using statements, but managed by the lifetime of observable
-            //
-            // using (TextReader reader = CreateInputReader(filePath)) 
-            // using (IDataReader dataReader = GetInputDataReader(...)) 
-            // { ...
             return Observable.Using(() => CreateInputReader(filePath), (reader) =>
             {
                 return Observable.Using(() => GetInputDataReader(reader, format, dataType, configuration), (dataReader) =>
@@ -53,6 +48,24 @@ namespace UXI.GazeToolkit.Serialization
                     });
                 });
             });
+        }
+
+
+        public IEnumerable<object> EnumerateInput(string filePath, FileFormat fileFormat, Type dataType, SerializationConfiguration configuration)
+        {
+            FileFormat format = EnsureCorrectFileFormat(filePath, fileFormat);
+
+            using (var reader = CreateInputReader(filePath))
+            using (var dataReader = GetInputDataReader(reader, format, dataType, configuration))
+            {
+                object data;
+                while (dataReader.TryRead(out data))
+                {
+                    yield return data;
+                }
+
+                yield break;
+            }
         }
 
 
@@ -90,11 +103,6 @@ namespace UXI.GazeToolkit.Serialization
         {
             FileFormat format = EnsureCorrectFileFormat(filePath, fileFormat);
 
-            // same as nested using statements, but managed by the lifetime of observable
-            //
-            // using (TextWriter writer = CreateOutputWriter(filePath)) 
-            // using (IDataWriter dataWriter = GetOutputDataWriter(...)) 
-            // { ...
             return Observable.Using(() => CreateOutputWriter(filePath), (TextWriter writer) =>
             {
                 return Observable.Using(() => GetOutputDataWriter(writer, format, dataType, configuration), (IDataWriter dataWriter) =>
@@ -103,6 +111,23 @@ namespace UXI.GazeToolkit.Serialization
                                .Do(d => dataWriter.Write(d));
                 });
             });
+        }
+
+
+        public void WriteOutput(IEnumerable<object> data, string filePath, FileFormat fileFormat, Type dataType, SerializationConfiguration configuration)
+        {
+            FileFormat format = EnsureCorrectFileFormat(filePath, fileFormat);
+
+            using (var writer = CreateOutputWriter(filePath))
+            using (var dataWriter = GetOutputDataWriter(writer, format, dataType, configuration))
+            {
+                foreach (var item in data)
+                {
+                    dataWriter.Write(item);
+                }
+
+                dataWriter.Close();
+            }
         }
 
 

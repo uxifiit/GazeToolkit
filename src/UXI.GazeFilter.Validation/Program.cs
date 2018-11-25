@@ -82,7 +82,7 @@ namespace UXI.GazeFilter.Validation
             context.Formats = new Collection<IDataSerializationFactory>()
             {
                 new JsonSerializationFactory(new DisplayAreaJsonConverter(), new DisplayAreaChangedEventJsonConverter(), new ValidationPointJsonConverter()),
-                new CsvSerializationFactory(true, new ValidationPointDataConverter(), new ValidationPointGazeDataConverter(), new ValidationResultDataConverter())
+                new CsvSerializationFactory(new ValidationPointDataConverter(), new ValidationPointGazeDataConverter(), new ValidationResultDataConverter())
             };
         }
     }

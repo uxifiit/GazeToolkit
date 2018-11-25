@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UXI.GazeFilter.Statistics;
 using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Serialization.Csv;
 using UXI.GazeToolkit.Serialization.Json;
@@ -16,6 +17,12 @@ namespace UXI.GazeFilter
         {
             new JsonSerializationFactory(),
             new CsvSerializationFactory()
+        };
+
+
+        public Collection<IFilterStatisticsFactory> Statistics { get; set; } = new Collection<IFilterStatisticsFactory>()
+        {
+            new SamplesCounterStatisticsFactory()
         };
 
 

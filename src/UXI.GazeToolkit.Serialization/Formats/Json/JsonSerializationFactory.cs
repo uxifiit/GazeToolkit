@@ -14,6 +14,8 @@ namespace UXI.GazeToolkit.Serialization.Json
 {
     public class JsonSerializationFactory : IDataSerializationFactory
     {
+        private readonly bool _ignoreDefaultConverters;
+
         public JsonSerializationFactory() { }
 
 
@@ -25,25 +27,28 @@ namespace UXI.GazeToolkit.Serialization.Json
             : this(converters.AsEnumerable())
         { }
 
-        public JsonSerializationFactory(bool replaceDefaultConverters, params JsonConverter[] converters)
-            : this(replaceDefaultConverters, converters.AsEnumerable())
+        public JsonSerializationFactory(bool ignoreDefaultConverters, params JsonConverter[] converters)
+            : this(ignoreDefaultConverters, converters.AsEnumerable())
         { }
 
-        public JsonSerializationFactory(bool replaceDefaultConverters, IEnumerable<JsonConverter> converters)
+        public JsonSerializationFactory(bool ignoreDefaultConverters, IEnumerable<JsonConverter> converters)
         {
-            if (replaceDefaultConverters)
-            {
-                DefaultConverters.Clear();
-            }
+            _ignoreDefaultConverters = ignoreDefaultConverters;
 
-            DefaultConverters.AddRange(converters);
+            if (converters != null)
+            {
+                Converters.AddRange(converters);
+            }
         }
 
 
         public FileFormat Format => FileFormat.JSON;
 
 
-        public List<JsonConverter> DefaultConverters { get; } = new List<JsonConverter>()
+        public List<JsonConverter> Converters { get; } = new List<JsonConverter>();
+
+
+        public ReadOnlyCollection<JsonConverter> DefaultConverters { get; } = new List<JsonConverter>()
         {
             new Point2Converter(),
             new Point3Converter(),
@@ -54,7 +59,7 @@ namespace UXI.GazeToolkit.Serialization.Json
             new EyeVelocityJsonConverter(),
             new EyeMovementJsonConverter(),
             new StringEnumConverter(false)
-        };
+        }.AsReadOnly();
 
 
         public IDataReader CreateReaderForType(TextReader reader, Type dataType, SerializationConfiguration configuration)
@@ -76,11 +81,16 @@ namespace UXI.GazeToolkit.Serialization.Json
         private JsonSerializer CreateSerializer(SerializationConfiguration configuration)
         {
             var serializer = new JsonSerializer();
-           
-            SetupDateTimeOffsetSerialization(serializer, configuration.TimestampConverter);
-            SetupTimestampedDataSerialization(serializer, configuration.TimestampFieldName);
 
-            SetupDefaultConverters(serializer);
+            AddConverters(serializer, Converters);
+
+            if (_ignoreDefaultConverters == false)
+            {
+                SetupDateTimeOffsetSerialization(serializer, configuration.TimestampConverter);
+                SetupTimestampedDataSerialization(serializer, configuration.TimestampFieldName);
+
+                AddConverters(serializer, DefaultConverters);
+            }
 
             return serializer;
         }
@@ -115,9 +125,9 @@ namespace UXI.GazeToolkit.Serialization.Json
         }
 
 
-        private void SetupDefaultConverters(JsonSerializer serializer)
+        private static void AddConverters(JsonSerializer serializer, IEnumerable<JsonConverter> converters)
         {
-            foreach (var converter in DefaultConverters)
+            foreach (var converter in converters)
             {
                 serializer.Converters.Add(converter);
             }
