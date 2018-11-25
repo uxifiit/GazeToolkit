@@ -21,6 +21,8 @@ namespace UXI.GazeToolkit.Serialization
 
         public IObservable<object> ReadInput(string filePath, FileFormat fileFormat, Type dataType, SerializationConfiguration configuration)
         {
+            FileFormat format = EnsureCorrectFileFormat(filePath, fileFormat);
+            
             // same as nested using statements, but managed by the lifetime of observable
             //
             // using (TextReader reader = CreateInputReader(filePath)) 
@@ -28,7 +30,7 @@ namespace UXI.GazeToolkit.Serialization
             // { ...
             return Observable.Using(() => CreateInputReader(filePath), (reader) =>
             {
-                return Observable.Using(() => GetInputDataReader(reader, fileFormat, dataType, configuration), (dataReader) =>
+                return Observable.Using(() => GetInputDataReader(reader, format, dataType, configuration), (dataReader) =>
                 {
                     return Observable.Create<object>(observer =>
                     {
@@ -86,6 +88,8 @@ namespace UXI.GazeToolkit.Serialization
 
         public IObservable<object> WriteOutput(IObservable<object> data, string filePath, FileFormat fileFormat, Type dataType, SerializationConfiguration configuration)
         {
+            FileFormat format = EnsureCorrectFileFormat(filePath, fileFormat);
+
             // same as nested using statements, but managed by the lifetime of observable
             //
             // using (TextWriter writer = CreateOutputWriter(filePath)) 
@@ -93,7 +97,7 @@ namespace UXI.GazeToolkit.Serialization
             // { ...
             return Observable.Using(() => CreateOutputWriter(filePath), (TextWriter writer) =>
             {
-                return Observable.Using(() => GetOutputDataWriter(writer, fileFormat, dataType, configuration), (IDataWriter dataWriter) =>
+                return Observable.Using(() => GetOutputDataWriter(writer, format, dataType, configuration), (IDataWriter dataWriter) =>
                 {
                     return data.Finally(dataWriter.Close)
                                .Do(d => dataWriter.Write(d));
@@ -129,6 +133,25 @@ namespace UXI.GazeToolkit.Serialization
             }
 
             return outputWriter;
+        }
+
+
+        public FileFormat EnsureCorrectFileFormat(string filename, FileFormat requestedFormat)
+        {
+            string extension = Path.GetExtension(filename)?.ToLower();
+
+            if (String.IsNullOrWhiteSpace(extension) == false)
+            {
+                var matchingFormat = _formats.Where(f => f.Key.ToString().ToLower() == extension)
+                                             .Select(f => f.Value)
+                                             .FirstOrDefault();
+
+                return matchingFormat != null && matchingFormat.Format != requestedFormat
+                     ? matchingFormat.Format
+                     : requestedFormat;
+            }
+
+            return requestedFormat;
         }
     }
 }
