@@ -22,6 +22,7 @@ mkdir Build
 for %%p in (
 	UXI.GazeToolkit
 	UXI.GazeToolkit.Serialization
+	UXI.GazeFilter
 ) do (
 	call "%nuget%" pack ".nuget\%%p.nuspec" -Symbols -OutputDirectory build -Properties Configuration=%config% 
 )
