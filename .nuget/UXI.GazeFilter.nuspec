@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>UXI.GazeFilter</id>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <title>UXI.Filter</title>
     <authors>UXI Dev</authors>
     <owners>UXI FIIT STUBA</owners>
