@@ -19,18 +19,7 @@ namespace UXI.GazeFilter.Validation
     public class ValidationOptions : BaseOptions
     {
         [Value(1, HelpText = "Path to the input file with validation points.", MetaName = "input validation points file", MetaValue = "POINTS_FILE", Required = true)]
-        public string ValidationPointsFile { get; set; }
-        
-        //public FileFormat ValidationPointsFileFormat { get; set; }
-
-        //[Value(1, Default = null, HelpText = "Path to the input file with gaze data.", MetaName = "input gaze data file", MetaValue = "GAZE_FILE", Required = false)]
-        //public string GazeDataFile { get; set; }
-
-        //[Option('o', "output", Default = null, HelpText = "Path to the file for the results output.", Required = false)]
-        //public string OutputResultsFile { get; set; }
-
-        //[Option('p', "points", Default = null, HelpText = "Filepath for the points output.", Required = false)]
-        //public string OutputPointsFile { get; set; }
+        public string ValidationPointsFile { get; set; } 
     }
 
 
