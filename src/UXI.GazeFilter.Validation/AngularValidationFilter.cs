@@ -48,10 +48,13 @@ namespace UXI.GazeFilter.Validation
             }
             else
             {
-                context.IO.ReadInput(displayAreaFile, FileFormat.JSON, typeof(DisplayAreaChangedEvent), context.Serialization)
-                          .OfType<DisplayAreaChangedEvent>()
-                          .Do(ev => _displayAreaEvents.Add(ev))
-                          .Wait();
+                var events = context.IO.ReadInput(displayAreaFile, FileFormat.JSON, typeof(DisplayAreaChangedEvent), context.Serialization)
+                                       .OfType<DisplayAreaChangedEvent>();
+
+                foreach (var ev in events)
+                {
+                    _displayAreaEvents.Add(ev);
+                }
             }
         }
 

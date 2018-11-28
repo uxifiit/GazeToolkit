@@ -38,6 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{DF27FA
 		.nuget\UXI.GazeFilter.nuspec = .nuget\UXI.GazeFilter.nuspec
 		.nuget\UXI.GazeToolkit.nuspec = .nuget\UXI.GazeToolkit.nuspec
 		.nuget\UXI.GazeToolkit.Serialization.nuspec = .nuget\UXI.GazeToolkit.Serialization.nuspec
+		.nuget\UXI.GazeToolkit.Serialization.Reactive.nuspec = .nuget\UXI.GazeToolkit.Serialization.Reactive.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UXI.GazeFilter.FixationFilter", "src\UXI.GazeFilter.FixationFilter\UXI.GazeFilter.FixationFilter.csproj", "{B9B59115-5855-41D3-A414-9C4B752F0D11}"
@@ -55,6 +56,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UXI.GazeToolkit.Test", "test\UXI.GazeToolkit.Test\UXI.GazeToolkit.Test.csproj", "{2C782C22-3CA1-4C0A-BDF4-C4FBE996F3E9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UXI.GazeToolkit.Serialization.Test", "test\UXI.GazeToolkit.Serialization.Test\UXI.GazeToolkit.Serialization.Test.csproj", "{8DC905FB-2243-4214-8E64-A90D852B689D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UXI.GazeToolkit.Serialization.Reactive", "src\UXI.GazeToolkit.Serialization.Reactive\UXI.GazeToolkit.Serialization.Reactive.csproj", "{69BD3E7D-8F97-4F1C-8AD6-F6DB042E277E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -171,6 +174,12 @@ Global
 		{8DC905FB-2243-4214-8E64-A90D852B689D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DC905FB-2243-4214-8E64-A90D852B689D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DC905FB-2243-4214-8E64-A90D852B689D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69BD3E7D-8F97-4F1C-8AD6-F6DB042E277E}.ClickOnce|Any CPU.ActiveCfg = Release|Any CPU
+		{69BD3E7D-8F97-4F1C-8AD6-F6DB042E277E}.ClickOnce|Any CPU.Build.0 = Release|Any CPU
+		{69BD3E7D-8F97-4F1C-8AD6-F6DB042E277E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69BD3E7D-8F97-4F1C-8AD6-F6DB042E277E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69BD3E7D-8F97-4F1C-8AD6-F6DB042E277E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69BD3E7D-8F97-4F1C-8AD6-F6DB042E277E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

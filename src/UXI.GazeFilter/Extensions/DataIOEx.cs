@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UXI.GazeToolkit.Serialization;
+using UXI.GazeToolkit.Serialization.Reactive.Extensions;
 
 namespace UXI.GazeFilter
 {
@@ -11,7 +12,7 @@ namespace UXI.GazeFilter
     {
         public static IObservable<object> ReadInput(this DataIO io, BaseOptions options, Type dataType, SerializationConfiguration configuration)
         {
-            return io.ReadInput(options.InputFile, options.InputFileFormat, dataType, configuration);
+            return io.ReadInputAsObservable(options.InputFile, options.InputFileFormat, dataType, configuration);
         }
 
 

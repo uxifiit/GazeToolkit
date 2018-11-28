@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,43 +17,11 @@ namespace UXI.GazeToolkit.Serialization
         }
 
 
-        public IObservable<object> ReadInput(string filePath, FileFormat fileFormat, Type dataType, SerializationConfiguration configuration)
-        {
-            FileFormat format = EnsureCorrectFileFormat(filePath, fileFormat);
-            
-            return Observable.Using(() => CreateInputReader(filePath), (reader) =>
-            {
-                return Observable.Using(() => GetInputDataReader(reader, format, dataType, configuration), (dataReader) =>
-                {
-                    return Observable.Create<object>(observer =>
-                    {
-                        try
-                        {
-                            object data;
-                            while (dataReader.TryRead(out data))
-                            {
-                                observer.OnNext(data);
-                            }
-
-                            observer.OnCompleted();
-                        }
-                        catch (Exception ex)
-                        {
-                            observer.OnError(ex);
-                        }
-
-                        return Disposable.Empty;
-                    });
-                });
-            });
-        }
-
-
-        public IEnumerable<object> EnumerateInput(string filePath, FileFormat fileFormat, Type dataType, SerializationConfiguration configuration)
+        public IEnumerable<object> ReadInput(string filePath, FileFormat fileFormat, Type dataType, SerializationConfiguration configuration)
         {
             FileFormat format = EnsureCorrectFileFormat(filePath, fileFormat);
 
-            using (var reader = CreateInputReader(filePath))
+            using (var reader = FileHelper.CreateInputReader(filePath))
             using (var dataReader = GetInputDataReader(reader, format, dataType, configuration))
             {
                 object data;
@@ -69,7 +35,7 @@ namespace UXI.GazeToolkit.Serialization
         }
 
 
-        private IDataReader GetInputDataReader(TextReader reader, FileFormat fileType, Type dataType, SerializationConfiguration configuration)
+        public IDataReader GetInputDataReader(TextReader reader, FileFormat fileType, Type dataType, SerializationConfiguration configuration)
         {
             IDataSerializationFactory factory;
 
@@ -82,43 +48,12 @@ namespace UXI.GazeToolkit.Serialization
         }
 
 
-        private static TextReader CreateInputReader(string targetPath)
-        {
-            TextReader reader;
-            if (String.IsNullOrWhiteSpace(targetPath))
-            {
-                reader = Console.In;
-            }
-            else
-            {
-                var fileStream = new FileStream(targetPath, FileMode.Open, FileAccess.Read);
-                reader = new StreamReader(fileStream);
-            }
-
-            return reader;
-        }
-
-
-        public IObservable<object> WriteOutput(IObservable<object> data, string filePath, FileFormat fileFormat, Type dataType, SerializationConfiguration configuration)
-        {
-            FileFormat format = EnsureCorrectFileFormat(filePath, fileFormat);
-
-            return Observable.Using(() => CreateOutputWriter(filePath), (TextWriter writer) =>
-            {
-                return Observable.Using(() => GetOutputDataWriter(writer, format, dataType, configuration), (IDataWriter dataWriter) =>
-                {
-                    return data.Finally(dataWriter.Close)
-                               .Do(d => dataWriter.Write(d));
-                });
-            });
-        }
-
-
+     
         public void WriteOutput(IEnumerable<object> data, string filePath, FileFormat fileFormat, Type dataType, SerializationConfiguration configuration)
         {
             FileFormat format = EnsureCorrectFileFormat(filePath, fileFormat);
 
-            using (var writer = CreateOutputWriter(filePath))
+            using (var writer = FileHelper.CreateOutputWriter(filePath))
             using (var dataWriter = GetOutputDataWriter(writer, format, dataType, configuration))
             {
                 foreach (var item in data)
@@ -131,7 +66,7 @@ namespace UXI.GazeToolkit.Serialization
         }
 
 
-        private IDataWriter GetOutputDataWriter(TextWriter writer, FileFormat fileType, Type dataType, SerializationConfiguration configuration)
+        public IDataWriter GetOutputDataWriter(TextWriter writer, FileFormat fileType, Type dataType, SerializationConfiguration configuration)
         {
             IDataSerializationFactory factory;
 
@@ -141,23 +76,6 @@ namespace UXI.GazeToolkit.Serialization
             }
 
             throw new ArgumentOutOfRangeException(nameof(fileType));
-        }
-
-
-        private static TextWriter CreateOutputWriter(string targetPath)
-        {
-            TextWriter outputWriter;
-            if (String.IsNullOrWhiteSpace(targetPath))
-            {
-                outputWriter = Console.Out;
-            }
-            else
-            {
-                var fileStream = new FileStream(targetPath, FileMode.Create, FileAccess.Write);
-                outputWriter = new StreamWriter(fileStream);
-            }
-
-            return outputWriter;
         }
 
 

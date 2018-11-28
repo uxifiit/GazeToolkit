@@ -26,10 +26,13 @@ namespace UXI.GazeFilter.Validation
             //    Console.Error.WriteLine($"Validation points file not found at: {options.ValidationPointsFile}");
             //    return null;
             //}
-            context.IO.ReadInput(options.ValidationPointsFile, FileFormat.CSV, typeof(ValidationPoint), context.Serialization)
-                      .OfType<ValidationPoint>()
-                      .Do(point => _points.Add(point))
-                      .Wait();
+            var points = context.IO.ReadInput(options.ValidationPointsFile, FileFormat.CSV, typeof(ValidationPoint), context.Serialization)
+                                   .OfType<ValidationPoint>();
+
+            foreach (var point in points)
+            {
+                _points.Add(point);
+            }
 
             _points.Sort((a, b) => a.StartTime.CompareTo(b.StartTime));
         }

@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{11A9E2DE-36A1-4468-80DD-74A056D5185D}</ProjectGuid>
+    <ProjectGuid>{69BD3E7D-8F97-4F1C-8AD6-F6DB042E277E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UXI.GazeFilter</RootNamespace>
-    <AssemblyName>UXI.GazeFilter</AssemblyName>
+    <RootNamespace>UXI.GazeToolkit.Serialization.Reactive</RootNamespace>
+    <AssemblyName>UXI.GazeToolkit.Serialization.Reactive</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,31 +31,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandLine, Version=2.3.0.0, Culture=neutral, PublicKeyToken=de6f01bd326f8c32, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CommandLineParser.2.3.0\lib\net45\CommandLine.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Reactive.Core, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Reactive.Core.3.1.1\lib\net45\System.Reactive.Core.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Interfaces, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Reactive.Interfaces.3.1.1\lib\net45\System.Reactive.Interfaces.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Linq, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Reactive.Linq.3.1.1\lib\net45\System.Reactive.Linq.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.PlatformServices, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Reactive.PlatformServices.3.1.1\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Reactive.Windows.Threading, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="System.Xml.Linq" />
@@ -67,49 +58,18 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseOptions.cs" />
-    <Compile Include="Exceptions\FilterTypeMismatchException.cs" />
     <Compile Include="Extensions\DataIOEx.cs" />
-    <Compile Include="Extensions\IObservableEx.cs" />
-    <Compile Include="FilterContext.cs" />
-    <Compile Include="FilterHost.cs" />
-    <Compile Include="FilterPipeline`3.cs" />
-    <Compile Include="Statistics\IFilterStatistics.cs" />
-    <Compile Include="Filter`3.cs" />
-    <Compile Include="IFilter.cs" />
-    <Compile Include="Statistics\IFilterStatisticsFactory.cs" />
-    <Compile Include="MultiFilterHost.cs" />
+    <Compile Include="Extensions\IDataWriterEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RelayFilter`3.cs" />
-    <Compile Include="SingleFilterHost`1.cs" />
-    <Compile Include="Statistics\SamplesCounterStatisticsFactory.cs" />
-    <Compile Include="Statistics\SamplesCount.cs" />
-    <Compile Include="Statistics\SamplesCounterStatistics.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\UXI.GazeToolkit.Serialization.Reactive\UXI.GazeToolkit.Serialization.Reactive.csproj">
-      <Project>{69bd3e7d-8f97-4f1c-8ad6-f6db042e277e}</Project>
-      <Name>UXI.GazeToolkit.Serialization.Reactive</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UXI.GazeToolkit.Serialization\UXI.GazeToolkit.Serialization.csproj">
-      <Project>{05114c37-2752-400e-b797-a38c5891bfde}</Project>
-      <Name>UXI.GazeToolkit.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UXI.GazeToolkit\UXI.GazeToolkit.csproj">
-      <Project>{3E77E53D-BABE-4C8D-9CF4-B3FAB2F8B87E}</Project>
-      <Name>UXI.GazeToolkit</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\UXI.GazeToolkit.Serialization\UXI.GazeToolkit.Serialization.csproj">
+      <Project>{05114c37-2752-400e-b797-a38c5891bfde}</Project>
+      <Name>UXI.GazeToolkit.Serialization</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
