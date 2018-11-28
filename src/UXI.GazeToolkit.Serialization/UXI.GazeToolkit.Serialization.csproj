@@ -71,6 +71,7 @@
     <Compile Include="Converters\TimestampFromTicksConverter.cs" />
     <Compile Include="Converters\TimestampFromTimeSpanConverter.cs" />
     <Compile Include="Converters\TimestampStringConverterResolver.cs" />
+    <Compile Include="DataAccess.cs" />
     <Compile Include="Extensions\IDataReaderEx.cs" />
     <Compile Include="Extensions\IDataWriterEx.cs" />
     <Compile Include="FileFormat.cs" />

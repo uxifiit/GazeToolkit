@@ -15,16 +15,24 @@ namespace UXI.GazeToolkit.Serialization.Json
     public class JsonSerializationFactory : IDataSerializationFactory
     {
         private readonly bool _ignoreDefaultConverters;
+        private readonly Action<JsonSerializer, DataAccess> _configureSerializerCallback;
 
         public JsonSerializationFactory() { }
 
-
-        public JsonSerializationFactory(IEnumerable<JsonConverter> converters)
-            : this(false, converters)
+        public JsonSerializationFactory(params JsonConverter[] converters)
+           : this(converters.AsEnumerable())
         { }
 
-        public JsonSerializationFactory(params JsonConverter[] converters)
-            : this(converters.AsEnumerable())
+        public JsonSerializationFactory(IEnumerable<JsonConverter> converters)
+            : this(null, false, converters)
+        { }
+
+        public JsonSerializationFactory(Action<JsonSerializer, DataAccess> serializerConfig, params JsonConverter[] converters)
+            : this(serializerConfig, converters.AsEnumerable())
+        { }
+
+        public JsonSerializationFactory(Action<JsonSerializer, DataAccess> serializerConfig, IEnumerable<JsonConverter> converters)
+            : this(serializerConfig, false, converters)
         { }
 
         public JsonSerializationFactory(bool ignoreDefaultConverters, params JsonConverter[] converters)
@@ -32,7 +40,16 @@ namespace UXI.GazeToolkit.Serialization.Json
         { }
 
         public JsonSerializationFactory(bool ignoreDefaultConverters, IEnumerable<JsonConverter> converters)
+            : this(null, ignoreDefaultConverters, converters)
+        { }
+
+        public JsonSerializationFactory(Action<JsonSerializer, DataAccess> serializerConfig, bool ignoreDefaultConverters, params JsonConverter[] converters)
+            : this(serializerConfig, ignoreDefaultConverters, converters.AsEnumerable())
+        { }
+
+        public JsonSerializationFactory(Action<JsonSerializer, DataAccess> serializerConfig, bool ignoreDefaultConverters, IEnumerable<JsonConverter> converters)
         {
+            _configureSerializerCallback = serializerConfig;
             _ignoreDefaultConverters = ignoreDefaultConverters;
 
             if (converters != null)
@@ -66,6 +83,8 @@ namespace UXI.GazeToolkit.Serialization.Json
         {
             var serializer = CreateSerializer(configuration);
 
+            _configureSerializerCallback?.Invoke(serializer, DataAccess.Read);
+
             return new JsonDataReader(reader, dataType, serializer);
         }
 
@@ -74,13 +93,15 @@ namespace UXI.GazeToolkit.Serialization.Json
         {
             var serializer = CreateSerializer(configuration);
 
+            _configureSerializerCallback?.Invoke(serializer, DataAccess.Write);
+
             return new JsonDataWriter(writer, serializer);
         }
 
 
         private JsonSerializer CreateSerializer(SerializationConfiguration configuration)
         {
-            var serializer = new JsonSerializer();
+            var serializer = CreateJsonSerializer();
 
             AddConverters(serializer, Converters);
 
@@ -131,6 +152,15 @@ namespace UXI.GazeToolkit.Serialization.Json
             {
                 serializer.Converters.Add(converter);
             }
+        }
+
+
+        public static JsonSerializer CreateJsonSerializer()
+        {
+            return new JsonSerializer()
+            {
+                Culture = System.Globalization.CultureInfo.GetCultureInfo("en-US")
+            };
         }
     }
 }
