@@ -22,9 +22,8 @@ namespace UXI.GazeToolkit.Serialization.Csv
     
         public CsvDataWriter(TextWriter writer, Type dataType, CsvSerializerContext serializer)
         {
-            _writer = new CsvWriter(writer, serializer.Configuration);
-            
             _serializer = serializer;
+            _writer = new CsvWriter(writer, serializer.Configuration);
 
             _converter = serializer.DataConverters.FirstOrDefault(c => c.CanConvert(dataType));
 

@@ -27,12 +27,12 @@ namespace UXI.GazeToolkit.Serialization.Json
             : this(null, false, converters)
         { }
 
-        public JsonSerializationFactory(Action<JsonSerializer, DataAccess> serializerConfig, params JsonConverter[] converters)
-            : this(serializerConfig, converters.AsEnumerable())
+        public JsonSerializationFactory(Action<JsonSerializer, DataAccess> configureSerializer, params JsonConverter[] converters)
+            : this(configureSerializer, converters.AsEnumerable())
         { }
 
-        public JsonSerializationFactory(Action<JsonSerializer, DataAccess> serializerConfig, IEnumerable<JsonConverter> converters)
-            : this(serializerConfig, false, converters)
+        public JsonSerializationFactory(Action<JsonSerializer, DataAccess> configureSerializer, IEnumerable<JsonConverter> converters)
+            : this(configureSerializer, false, converters)
         { }
 
         public JsonSerializationFactory(bool ignoreDefaultConverters, params JsonConverter[] converters)
@@ -43,13 +43,13 @@ namespace UXI.GazeToolkit.Serialization.Json
             : this(null, ignoreDefaultConverters, converters)
         { }
 
-        public JsonSerializationFactory(Action<JsonSerializer, DataAccess> serializerConfig, bool ignoreDefaultConverters, params JsonConverter[] converters)
-            : this(serializerConfig, ignoreDefaultConverters, converters.AsEnumerable())
+        public JsonSerializationFactory(Action<JsonSerializer, DataAccess> configureSerializer, bool ignoreDefaultConverters, params JsonConverter[] converters)
+            : this(configureSerializer, ignoreDefaultConverters, converters.AsEnumerable())
         { }
 
-        public JsonSerializationFactory(Action<JsonSerializer, DataAccess> serializerConfig, bool ignoreDefaultConverters, IEnumerable<JsonConverter> converters)
+        public JsonSerializationFactory(Action<JsonSerializer, DataAccess> configureSerializer, bool ignoreDefaultConverters, IEnumerable<JsonConverter> converters)
         {
-            _configureSerializerCallback = serializerConfig;
+            _configureSerializerCallback = configureSerializer;
             _ignoreDefaultConverters = ignoreDefaultConverters;
 
             if (converters != null)

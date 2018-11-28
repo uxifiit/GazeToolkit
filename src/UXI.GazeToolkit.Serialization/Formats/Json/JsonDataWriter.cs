@@ -21,10 +21,13 @@ namespace UXI.GazeToolkit.Serialization.Json
 
             _writer = new JsonTextWriter(writer);
 
+            _writer.Culture = serializer.Culture;
             _writer.DateTimeZoneHandling = serializer.DateTimeZoneHandling;
             _writer.DateFormatHandling = serializer.DateFormatHandling;
 
             _writer.WriteStartArray();
+
+            _writer.AutoCompleteOnClose = true;
         }
 
 

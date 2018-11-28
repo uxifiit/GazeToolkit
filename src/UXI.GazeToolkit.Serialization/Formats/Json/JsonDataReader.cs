@@ -18,10 +18,12 @@ namespace UXI.GazeToolkit.Serialization.Json
         public JsonDataReader(TextReader reader, Type dataType, JsonSerializer serializer)
         {
             _serializer = serializer;
-            _reader = new JsonTextReader(reader);
-
-            _reader.DateTimeZoneHandling = serializer.DateTimeZoneHandling;
-            _reader.DateParseHandling = serializer.DateParseHandling;
+            _reader = new JsonTextReader(reader)
+            {
+                Culture = serializer.Culture,
+                DateTimeZoneHandling = serializer.DateTimeZoneHandling,
+                DateParseHandling = serializer.DateParseHandling
+            };
 
             DataType = dataType;
         }

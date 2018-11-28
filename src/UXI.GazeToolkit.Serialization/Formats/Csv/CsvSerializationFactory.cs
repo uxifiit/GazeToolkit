@@ -1,5 +1,5 @@
 ﻿using CsvHelper;
-using CsvHelper.TypeConversion;
+using CsvHelper.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,38 +16,41 @@ namespace UXI.GazeToolkit.Serialization.Csv
     public class CsvSerializationFactory : IDataSerializationFactory
     {
         private readonly bool _ignoreDefaultConverters;
+        private readonly Action<Configuration, DataAccess> _configureSerializerCallback;
 
         public CsvSerializationFactory() { }
 
-        public CsvSerializationFactory(IDictionary<Type, ITypeConverter> typeConverters, bool replaceDefaultConverters, params IDataConverter[] converters)
-            : this(typeConverters, replaceDefaultConverters, converters.AsEnumerable())
+        public CsvSerializationFactory(params IDataConverter[] converters)
+            : this(converters.AsEnumerable())
         { }
 
-        public CsvSerializationFactory(params IDataConverter[] converters)
-            : this(null, false, converters.AsEnumerable())
+        public CsvSerializationFactory(IEnumerable<IDataConverter> converters)
+            : this(null, false, converters)
+        { }
+
+        public CsvSerializationFactory(Action<Configuration, DataAccess> configureSerializer, params IDataConverter[] converters)
+            : this(configureSerializer, converters.AsEnumerable())
+        { }
+
+        public CsvSerializationFactory(Action<Configuration, DataAccess> configureSerializer, IEnumerable<IDataConverter> converters)
+            : this(configureSerializer, false, converters)
         { }
 
         public CsvSerializationFactory(bool ignoreDefaultConverters, params IDataConverter[] converters)
-            : this(null, ignoreDefaultConverters, converters.AsEnumerable())
+            : this(ignoreDefaultConverters, converters.AsEnumerable())
         { }
 
-        public CsvSerializationFactory(IDictionary<Type, ITypeConverter> typeConverters, bool ignoreDefaultConverters, IEnumerable<IDataConverter> converters)
-        {
-            if (typeConverters != null)
-            {
-                foreach (var typeConverterPair in typeConverters)
-                {
-                    if (TypeConverters.ContainsKey(typeConverterPair.Key))
-                    {
-                        TypeConverters[typeConverterPair.Key] = typeConverterPair.Value;
-                    }
-                    else
-                    {
-                        TypeConverters.Add(typeConverterPair.Key, typeConverterPair.Value);
-                    }
-                }
-            }
+        public CsvSerializationFactory(bool ignoreDefaultConverters, IEnumerable<IDataConverter> converters)
+            : this(null, ignoreDefaultConverters, converters)
+        { }
 
+        public CsvSerializationFactory(Action<Configuration, DataAccess> configureSerializer, bool replaceDefaultConverters, params IDataConverter[] converters)
+           : this(configureSerializer, replaceDefaultConverters, converters.AsEnumerable())
+        { }
+
+        public CsvSerializationFactory(Action<Configuration, DataAccess> configureSerializer, bool ignoreDefaultConverters, IEnumerable<IDataConverter> converters)
+        {
+            _configureSerializerCallback = configureSerializer;
             _ignoreDefaultConverters = ignoreDefaultConverters;
 
             if (converters != null)
@@ -58,9 +61,6 @@ namespace UXI.GazeToolkit.Serialization.Csv
 
 
         public FileFormat Format => FileFormat.CSV;
-
-
-        public Dictionary<Type, ITypeConverter> TypeConverters { get; } = new Dictionary<Type, ITypeConverter>();
 
 
         public List<IDataConverter> Converters { get; } = new List<IDataConverter>();
@@ -77,6 +77,8 @@ namespace UXI.GazeToolkit.Serialization.Csv
         {
             var serializer = CreateSerializer(configuration);
 
+            _configureSerializerCallback?.Invoke(serializer.Configuration, DataAccess.Read);
+
             return new CsvDataReader(reader, dataType, serializer);
         }
 
@@ -85,18 +87,17 @@ namespace UXI.GazeToolkit.Serialization.Csv
         {
             var serializer = CreateSerializer(configuration);
 
+            _configureSerializerCallback?.Invoke(serializer.Configuration, DataAccess.Write);
+
             return new CsvDataWriter(writer, dataType, serializer);
         }
 
 
         private CsvSerializerContext CreateSerializer(SerializationConfiguration configuration)
         {
-            var serializer = new CsvSerializerContext();
-
-            serializer.Configuration.PrepareHeaderForMatch = header => header.ToLower();
+            var serializer = CreateCsvSerializerContext();
 
             AddConverters(serializer, Converters);
-            AddTypeConverters(serializer);
 
             if (_ignoreDefaultConverters == false)
             {
@@ -122,20 +123,23 @@ namespace UXI.GazeToolkit.Serialization.Csv
         }
 
 
-        private void AddTypeConverters(CsvSerializerContext serializer)
-        {
-            foreach (var typeConverter in TypeConverters)
-            {
-                serializer.Configuration.TypeConverterCache.AddConverter(typeConverter.Key, typeConverter.Value);
-            }
-        }
-
         private static void AddConverters(CsvSerializerContext serializer, IEnumerable<IDataConverter> converters)
         {
             foreach (var converter in converters)
             {
                 serializer.DataConverters.Add(converter);
             }
+        }
+
+
+        public static CsvSerializerContext CreateCsvSerializerContext()
+        {
+            var serializer = new CsvSerializerContext();
+
+            serializer.Configuration.PrepareHeaderForMatch = header => header.ToLower();
+            serializer.Configuration.CultureInfo = System.Globalization.CultureInfo.GetCultureInfo("en-US");
+
+            return serializer;
         }
     }
 }
