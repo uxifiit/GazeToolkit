@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,25 +16,25 @@ namespace UXI.GazeToolkit.Serialization.Json
         private readonly JsonTextWriter _writer;
         private bool _isOpen = true;
 
+        private ConcurrentQueue<object> _cache = new ConcurrentQueue<object>();
+
         public JsonDataWriter(TextWriter writer, JsonSerializer serializer)
         {
             _serializer = serializer;
 
-            _writer = new JsonTextWriter(writer);
-
-            _writer.Culture = serializer.Culture;
-            _writer.DateTimeZoneHandling = serializer.DateTimeZoneHandling;
-            _writer.DateFormatHandling = serializer.DateFormatHandling;
-
-            _writer.WriteStartArray();
-
-            _writer.AutoCompleteOnClose = true;
+            _writer = new JsonTextWriter(writer)
+            {
+                Culture = serializer.Culture,
+                DateTimeZoneHandling = serializer.DateTimeZoneHandling,
+                DateFormatHandling = serializer.DateFormatHandling,
+                AutoCompleteOnClose = true
+            };
         }
 
 
         public bool CanWrite(Type objectType)
         {
-            return _isOpen; 
+            return _isOpen;
         }
 
 
@@ -41,8 +42,15 @@ namespace UXI.GazeToolkit.Serialization.Json
         {
             if (_isOpen)
             {
+                object cachedData;
+                if (_cache != null && _cache.TryDequeue(out cachedData))
+                {
+                    _cache = null;
+
+                    _serializer.Serialize(_writer, cachedData);
+                }
+
                 _isOpen = false;
-                _writer.WriteEndArray();
                 _writer.Flush();
             }
             _writer.Close();
@@ -53,10 +61,28 @@ namespace UXI.GazeToolkit.Serialization.Json
         {
             if (_isOpen)
             {
+                if (_cache != null)
+                {
+                    object cachedData = null;
+                    if (_cache?.IsEmpty == true)
+                    {
+                        _cache.Enqueue(data);
+                        return;
+                    }
+                    else if (_cache?.TryDequeue(out cachedData) == true)
+                    {
+                        _cache = null;
+
+                        _writer.WriteStartArray();
+
+                        _serializer.Serialize(_writer, cachedData);
+                    }
+                }
+
                 _serializer.Serialize(_writer, data);
             }
         }
-
+        
 
         private bool _disposed = false;
 

@@ -58,6 +58,7 @@
     <Compile Include="Converters\TimestampFromTimeSpanConverterTest.cs" />
     <Compile Include="Converters\TimestampStringConverterResolverTest.cs" />
     <Compile Include="Json\Converters\Point2ConverterTest.cs" />
+    <Compile Include="Json\JsonDataWriterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
