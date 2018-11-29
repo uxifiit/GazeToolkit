@@ -19,8 +19,8 @@ namespace UXI.GazeToolkit.Serialization.Csv
 
         public CsvDataReader(TextReader reader, Type dataType, CsvSerializerContext serializer)
         {
-            _reader = new CsvReader(reader, serializer.Configuration);
             _serializer = serializer;
+            _reader = new CsvReader(reader, serializer.Configuration);
 
             _converter = serializer.DataConverters.FirstOrDefault(c => c.CanConvert(dataType)); // TODO ?? DefaultCsvConverter ?
 
