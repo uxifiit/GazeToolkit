@@ -67,6 +67,7 @@ Use [Issues](issues) to request features, report bugs, or discuss ideas.
 
 * [Rx.NET](https://github.com/Reactive-Extensions/Rx.NET)
 * [Json.NET](https://github.com/JamesNK/Newtonsoft.Json)
+* [CsvHelper](https://github.com/JoshClose/CsvHelper)
 * [CommandLineParser](https://github.com/commandlineparser/commandline)
 
 ## Authors
