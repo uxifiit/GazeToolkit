@@ -31,8 +31,8 @@ namespace UXI.GazeFilter.Validation
         protected override void Initialize(AngularOptions options, FilterContext context)
         {
             string displayAreaFile = String.IsNullOrWhiteSpace(options.DisplayAreaFile)
-                                     ? ResolveDisplayAreaFilepath(options.InputFile)
-                                     : options.DisplayAreaFile;
+                                   ? ResolveDisplayAreaFilepath(options.InputFile)
+                                   : options.DisplayAreaFile;
 
             if (File.Exists(displayAreaFile) == false)
             {
