@@ -2,43 +2,38 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using UXI.GazeToolkit;
-using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Utils;
 using UXI.GazeToolkit.Validation;
 using UXI.Serialization.Csv;
 using UXI.Serialization.Csv.Converters;
 
-namespace UXI.GazeFilter.Validation.Serialization.Csv.DataConverters
+namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
 {
-    public class ValidationResultCsvConverter : CsvConverter<ValidationResult>
+    public class ValidationPointDataCsvConverter : CsvConverter<ValidationPointData>
     {
         public override bool CanRead => false;
 
 
-        public override bool CanWrite => true;
-
-
         public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
+            // Validation,Point,X,Y,<GazeData>
             writer.WriteField(naming.Get(nameof(ValidationPoint.Validation)));
             writer.WriteField(naming.Get(nameof(ValidationPoint.Point)));
 
             serializer.WriteHeader<Point2>(writer, naming);
-            
-            serializer.WriteHeader<EyeValidationPointResult>(writer, naming, nameof(ValidationPointResult.LeftEye));
-            serializer.WriteHeader<EyeValidationPointResult>(writer, naming, nameof(ValidationPointResult.RightEye));
+
+            serializer.WriteHeader<GazeData>(writer, naming);
         }
 
 
-        protected override void WriteCsv(ValidationResult data, CsvWriter writer, CsvSerializerContext serializer)
+        protected override void WriteCsv(ValidationPointData data, CsvWriter writer, CsvSerializerContext serializer)
         {
             bool isNextRecord = false;
 
-            foreach (var point in data.Points)
+            foreach (var sample in data.Data)
             {
                 if (isNextRecord)
                 {
@@ -47,15 +42,12 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.DataConverters
 
                 isNextRecord = true;
 
-                writer.WriteField(point.Point.Validation);
-                writer.WriteField(point.Point.Point);
+                writer.WriteField(data.Point.Validation);
+                writer.WriteField(data.Point.Point);
 
-                serializer.Serialize(writer, point.Point.Position);
+                serializer.Serialize(writer, data.Point.Position);
 
-                serializer.Serialize(writer, point.LeftEye);
-                serializer.Serialize(writer, point.RightEye);
-
-                writer.NextRecord();
+                serializer.Serialize(writer, sample);
             }
         }
 

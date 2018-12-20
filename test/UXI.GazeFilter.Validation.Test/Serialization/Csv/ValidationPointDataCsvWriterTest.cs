@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UXI.GazeFilter.Validation.Serialization.Csv.DataConverters;
+using UXI.GazeFilter.Validation.Serialization.Csv.Converters;
 using UXI.GazeToolkit;
 using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Serialization.Converters;
@@ -23,9 +23,18 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         // If such value was contained in a data field, the CsvWriter would escape quotes and we would split the final output string at the right positions.
         private const string NewLineDelimiter = "<\"CR\">";
 
-        private const string ExpectedHeaderLine = "Validation,Point,X,Y,Timestamp,LeftValidity,LeftGazePointX,LeftGazePointY,LeftDistance,RightValidity,RightGazePointX,RightGazePointY,RightDistance";
+        private const string ExpectedHeaderLine = "Validation,Point,X,Y,Timestamp,LeftValidity,LeftGazePoint2DX,LeftGazePoint2DY,LeftGazePoint3DX,LeftGazePoint3DY,LeftGazePoint3DZ,LeftEyePosition3DX,LeftEyePosition3DY,LeftEyePosition3DZ,LeftPupilDiameter,RightValidity,RightGazePoint2DX,RightGazePoint2DY,RightGazePoint3DX,RightGazePoint3DY,RightGazePoint3DZ,RightEyePosition3DX,RightEyePosition3DY,RightEyePosition3DZ,RightPupilDiameter";
         private static DateTimeOffset startTime = DateTimeOffset.MinValue.Add(TimeSpan.FromMilliseconds(800));
-                     
+
+        private static readonly string[] ExpectedSampleCsv = new[]
+        {
+             ExpectedHeaderLine
+           , "1,1,0.1,0.5,0,Valid,0.11,0.58,-180.11,-152.8,580.14,-180.11,-152.8,0,5.14,Valid,0.14,0.65,-180.11,-152.8,604.2,-180.11,-152.8,0,5.14"
+           , "1,1,0.1,0.5,16.666,Valid,0.13,0.51,-180.11,-152.8,550,180.11,-152.8,0,5.14,Valid,0.12,0.56,-180.11,-152.8,634.5,-180.11,-152.8,0,5.14"
+           , "1,2,0.5,0.9,16.666,Valid,0.11,0.58,-180.11,-152.8,580.14,-180.11,-152.8,0,5.14,Invalid,-0.1,-0.1,0,0,0,0,0,0,0"
+           , "1,2,0.5,0.9,33.332,Invalid,-0.1,-0.1,0,0,0,0,0,0,0,Invalid,-0.1,-0.1,0,0,0,0,0,0,0"
+        };
+
         private static readonly ValidationPointData[] SampleData = new[]
         {
             new ValidationPointData
@@ -68,16 +77,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
             )
         };
 
-        private static readonly string[] ExpectedSampleCsv = new[]
-        {
-             ExpectedHeaderLine
-           , "1,1,0.1,0.5,0,Valid,0.11,0.58,580.14,Valid,0.14,0.65,604.2"
-           , "1,1,0.1,0.5,16.666,Valid,0.13,0.51,550,Valid,0.12,0.56,634.5"
-           , "1,2,0.5,0.9,16.666,Valid,0.11,0.58,580.14,Invalid,-0.1,-0.1,0"
-           , "1,2,0.5,0.9,33.332,Invalid,-0.1,-0.1,0,Invalid,-0.1,-0.1,0"
-        };
-
-
+    
         private string[] SplitOutput(StringBuilder stringBuilder)
         {
             return stringBuilder.ToString().Split(new string[] { NewLineDelimiter }, StringSplitOptions.RemoveEmptyEntries).ToArray();
@@ -155,6 +155,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
             string[] actualLines = SplitOutput(sb);
 
             AssertLines(expectedLines, actualLines);
+
         }
 
 

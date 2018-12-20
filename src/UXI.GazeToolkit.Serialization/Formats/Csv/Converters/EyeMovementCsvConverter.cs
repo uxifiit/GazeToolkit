@@ -11,11 +11,6 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {
     public class EyeMovementCsvConverter : CsvConverter<EyeMovement>
     {
-        public override bool CanRead => true;
-
-        public override bool CanWrite => true;
-
-
         public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             serializer.WriteHeader<ITimestampedData>(writer, naming);

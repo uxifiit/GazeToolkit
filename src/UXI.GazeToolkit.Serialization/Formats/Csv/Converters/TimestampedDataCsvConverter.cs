@@ -13,7 +13,6 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
     {
         private readonly string _timestampFieldName;
 
-
         public TimestampedDataCsvConverter()
         {
             _timestampFieldName = nameof(TimestampedData.Timestamp);

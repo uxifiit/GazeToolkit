@@ -9,7 +9,7 @@ using UXI.Serialization.Csv.Converters;
 
 namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {
-    class SingleEyeGazeDataCsvConverter : CsvConverter<SingleEyeGazeData>
+    public class SingleEyeGazeDataCsvConverter : CsvConverter<SingleEyeGazeData>
     {
         public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {

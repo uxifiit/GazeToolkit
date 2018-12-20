@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UXI.GazeFilter.Validation.Serialization.Csv.DataConverters;
+using UXI.GazeFilter.Validation.Serialization.Csv.Converters;
 using UXI.Serialization;
 using UXI.Serialization.Csv;
 using UXI.Serialization.Csv.Converters;

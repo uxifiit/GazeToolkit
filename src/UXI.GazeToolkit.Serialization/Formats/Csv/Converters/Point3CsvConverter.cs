@@ -11,11 +11,6 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {
     public class Point3CsvConverter : CsvConverter<Point3>
     {
-        public override bool CanRead => true;
-
-        public override bool CanWrite => true;
-
-
         public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             writer.WriteField(naming.Get(nameof(Point3.X)));

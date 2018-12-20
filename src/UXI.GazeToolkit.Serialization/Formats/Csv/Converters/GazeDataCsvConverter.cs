@@ -11,17 +11,12 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {
     public class GazeDataCsvConverter : CsvConverter<GazeData>
     {
-        public override bool CanRead => true;
-
-        public override bool CanWrite => true;
-
-
         public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             serializer.WriteHeader<ITimestampedData>(writer, naming);
 
-            serializer.WriteHeader<EyeData>(writer, naming, nameof(GazeData.LeftEye));
-            serializer.WriteHeader<EyeData>(writer, naming, nameof(GazeData.RightEye));
+            serializer.WriteHeader<EyeData>(writer, naming, "Left");
+            serializer.WriteHeader<EyeData>(writer, naming, "Right");
         }
 
 
@@ -38,8 +33,8 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
         {
             var timestampedData = serializer.Deserialize<ITimestampedData>(reader, naming);
 
-            var leftEye = serializer.Deserialize<EyeData>(reader, naming, nameof(GazeData.LeftEye));
-            var rightEye = serializer.Deserialize<EyeData>(reader, naming, nameof(GazeData.RightEye));
+            var leftEye = serializer.Deserialize<EyeData>(reader, naming, "Left");
+            var rightEye = serializer.Deserialize<EyeData>(reader, naming, "Right");
 
             return new GazeData(leftEye, rightEye, timestampedData.Timestamp);
         }

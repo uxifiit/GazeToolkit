@@ -8,14 +8,11 @@ using UXI.GazeToolkit.Validation;
 using UXI.Serialization.Csv;
 using UXI.Serialization.Csv.Converters;
 
-namespace UXI.GazeFilter.Validation.Serialization.Csv.DataConverters
+namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
 {
     class EyeValidationPointResultCsvConverter : CsvConverter<EyeValidationPointResult>
     {
         public override bool CanRead => false;
-
-
-        public override bool CanWrite => true;
 
 
         public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)

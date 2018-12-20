@@ -9,11 +9,12 @@ using UXI.GazeToolkit.Validation;
 using UXI.Serialization.Csv;
 using UXI.Serialization.Csv.Converters;
 
-namespace UXI.GazeFilter.Validation.Serialization.Csv.DataConverters
+namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
 {
     public class ValidationPointCsvConverter : CsvConverter<ValidationPoint>
     {
-        public override bool CanRead => true;
+        public override bool CanWrite => false;
+
 
         public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
@@ -29,10 +30,12 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.DataConverters
             return new ValidationPoint(validation, point, position, startTime, endTime);
         }
 
+
         protected override void WriteCsv(ValidationPoint data, CsvWriter writer, CsvSerializerContext serializer)
         {
             throw new NotSupportedException();
         }
+
 
         public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {

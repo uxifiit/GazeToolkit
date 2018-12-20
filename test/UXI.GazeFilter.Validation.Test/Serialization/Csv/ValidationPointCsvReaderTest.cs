@@ -7,7 +7,7 @@ using UXI.GazeToolkit.Serialization.Converters;
 using UXI.GazeToolkit.Validation;
 using System.Linq;
 using System.Runtime.Serialization;
-using UXI.GazeFilter.Validation.Serialization.Csv.DataConverters;
+using UXI.GazeFilter.Validation.Serialization.Csv.Converters;
 using UXI.GazeToolkit.Serialization.Csv.TypeConverters;
 using UXI.GazeToolkit.Serialization.Csv;
 using UXI.Serialization.Csv;
