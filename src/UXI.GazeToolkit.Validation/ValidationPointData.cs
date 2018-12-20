@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace UXI.GazeToolkit.Validation
 {
-    public class ValidationPointGaze
+    public class ValidationPointData
     {
-        public ValidationPointGaze(ValidationPoint point, IEnumerable<GazeData> data)
+        public ValidationPointData(ValidationPoint point, IEnumerable<GazeData> data)
         {
             Point = point;
-            Gaze = data?.ToList() ?? Enumerable.Empty<GazeData>();
+            Data = data?.ToList() ?? Enumerable.Empty<GazeData>();
         }
 
         public ValidationPoint Point { get; }
 
-        public IEnumerable<GazeData> Gaze { get; }
+        public IEnumerable<GazeData> Data { get; }
     }
 }

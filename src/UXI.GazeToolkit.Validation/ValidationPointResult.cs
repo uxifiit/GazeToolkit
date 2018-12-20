@@ -8,14 +8,16 @@ namespace UXI.GazeToolkit.Validation
 {
     public class ValidationPointResult
     {
-        internal ValidationPointResult(Point2 targetPoint, EyeValidationPointResult leftEye, EyeValidationPointResult rightEye)
+        internal ValidationPointResult(ValidationPoint point, EyeValidationPointResult leftEye, EyeValidationPointResult rightEye)
         {
-            TargetPoint2D = targetPoint;
+            Point = point;
+            //Point = point;
+            //Position = position;
             LeftEye = leftEye;
             RightEye = rightEye;
         }
 
-        public Point2 TargetPoint2D { get; }
+        public ValidationPoint Point { get; }
 
         public EyeValidationPointResult LeftEye { get; }
 

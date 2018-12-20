@@ -34,9 +34,9 @@ namespace UXI.GazeToolkit.Validation.Evaluations
         }
 
 
-        public ValidationPointResult Evaluate(ValidationPointGaze point)
+        public ValidationPointResult Evaluate(ValidationPointData point)
         {
-            var validData = point.Gaze
+            var validData = point.Data
                                  .Where(d => d.LeftEye.Validity == EyeValidity.Valid && d.RightEye.Validity == EyeValidity.Valid)
                                  .ToList();
 
@@ -45,15 +45,15 @@ namespace UXI.GazeToolkit.Validation.Evaluations
 
             return new ValidationPointResult
             (
-                targetPoint: point.Point.Point,
+                point: point.Point,
 
                 leftEye: validLeftEyeData.Count() > 1
                          ? new EyeValidationPointResult()
                          {
-                             Accuracy = EvaluateAccuracy(validLeftEyeData, point.Point.Point),
+                             Accuracy = EvaluateAccuracy(validLeftEyeData, point.Point.Position),
                              PrecisionSD = EvaluatePrecisionSD(validLeftEyeData),
                              PrecisionRMS = EvaluatePrecisionRMS(validLeftEyeData),
-                             ValidRatio = (double)validLeftEyeData.Count / point.Gaze.Count(),
+                             ValidRatio = (double)validLeftEyeData.Count / point.Data.Count(),
                              Distance = CalculateDistance(validLeftEyeData)
                          }
                          : new EyeValidationPointResult() { ValidRatio = 0 },
@@ -61,10 +61,10 @@ namespace UXI.GazeToolkit.Validation.Evaluations
                 rightEye: validRightEyeData.Count() > 1
                           ? new EyeValidationPointResult()
                           {
-                              Accuracy = EvaluateAccuracy(validRightEyeData, point.Point.Point),
+                              Accuracy = EvaluateAccuracy(validRightEyeData, point.Point.Position),
                               PrecisionSD = EvaluatePrecisionSD(validRightEyeData),
                               PrecisionRMS = EvaluatePrecisionRMS(validRightEyeData),
-                              ValidRatio = (double)validRightEyeData.Count / point.Gaze.Count(),
+                              ValidRatio = (double)validRightEyeData.Count / point.Data.Count(),
                               Distance = CalculateDistance(validRightEyeData)
                           }
                           : new EyeValidationPointResult() { ValidRatio = 0 }

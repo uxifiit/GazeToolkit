@@ -11,10 +11,11 @@ using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Validation;
 using UXI.GazeToolkit.Extensions;
 using UXI.GazeToolkit.Validation.Evaluations;
+using UXI.Serialization;
 
 namespace UXI.GazeFilter.Validation
 {
-    public class AngularValidationFilter : Filter<ValidationPointGaze, ValidationResult, AngularOptions>
+    public class AngularValidationFilter : Filter<ValidationPointData, ValidationResult, AngularOptions>
     {
         private readonly List<DisplayAreaChangedEvent> _displayAreaEvents = new List<DisplayAreaChangedEvent>();
 
@@ -58,7 +59,7 @@ namespace UXI.GazeFilter.Validation
             }
         }
 
-        protected override IObservable<ValidationResult> Process(IObservable<ValidationPointGaze> data, AngularOptions options)
+        protected override IObservable<ValidationResult> Process(IObservable<ValidationPointData> data, AngularOptions options)
         {
             var defaultDisplayArea = _displayAreaEvents.Select(e => e.DisplayArea).FirstOrDefault();
 
@@ -73,7 +74,7 @@ namespace UXI.GazeFilter.Validation
 
                            var strategy = new AngularValidationEvaluationStrategy(displayArea);
 
-                           return ValidationEvaluation.Evaluate(validation.First().Point.Validation, validation, strategy);
+                           return ValidationEvaluation.Evaluate(validation, strategy);
                        });
         }
     }

@@ -8,13 +8,10 @@ namespace UXI.GazeToolkit.Validation
 {
     public class ValidationResult
     {
-        public ValidationResult(int id, IEnumerable<ValidationPointResult> points)
+        public ValidationResult(IEnumerable<ValidationPointResult> points)
         {
-            Id = id;
             Points = points.ToList();
         }
-
-        public int Id { get; }
 
         public List<ValidationPointResult> Points { get; }
     }

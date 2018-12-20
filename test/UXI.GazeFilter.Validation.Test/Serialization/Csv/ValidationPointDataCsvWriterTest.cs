@@ -7,10 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using UXI.GazeFilter.Validation.Serialization.Csv.DataConverters;
 using UXI.GazeToolkit;
+using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Serialization.Converters;
 using UXI.GazeToolkit.Serialization.Csv;
 using UXI.GazeToolkit.Serialization.Csv.TypeConverters;
 using UXI.GazeToolkit.Validation;
+using UXI.Serialization.Csv;
 
 namespace UXI.GazeFilter.Validation.Serialization.Csv
 {
@@ -24,11 +26,11 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         private const string ExpectedHeaderLine = "Validation,Point,X,Y,Timestamp,LeftValidity,LeftGazePointX,LeftGazePointY,LeftDistance,RightValidity,RightGazePointX,RightGazePointY,RightDistance";
         private static DateTimeOffset startTime = DateTimeOffset.MinValue.Add(TimeSpan.FromMilliseconds(800));
                      
-        private static readonly ValidationPointGaze[] SampleData = new[]
+        private static readonly ValidationPointData[] SampleData = new[]
         {
-            new ValidationPointGaze
+            new ValidationPointData
             (
-                new ValidationPoint(1, new GazeToolkit.Point2(0.1, 0.5), startTime, startTime.AddSeconds(1)),
+                new ValidationPoint(1, 1, new GazeToolkit.Point2(0.1, 0.5), startTime, startTime.AddSeconds(1)),
                 new GazeData[]
                 {
                     new GazeData
@@ -45,9 +47,9 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
                     )
                 }
             ),
-            new ValidationPointGaze
+            new ValidationPointData
             (
-                new ValidationPoint(1, new GazeToolkit.Point2(0.5, 0.9), startTime.AddSeconds(2), startTime.AddSeconds(3)),
+                new ValidationPoint(1, 1, new GazeToolkit.Point2(0.5, 0.9), startTime.AddSeconds(2), startTime.AddSeconds(3)),
                 new GazeData[]
                 {
                     new GazeData
@@ -95,18 +97,21 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [TestMethod]
         public void Write_SinglePointSingleData()
         {
-            var timestampConverter = TimestampStringConverterResolver.Default.CreateDefaultConverter();
-            var context = new CsvSerializerContext() { TimestampConverter = timestampConverter };
-            context.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetTypeConverter(timestampConverter));
-            context.DataConverters.Add(new ValidationPointGazeDataConverter());
+            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.CreateDefaultConverter() };
+            var serialization = new CsvSerializationFactory
+            (
+                new CsvDataConvertersSerializationConfiguration(),
+                new CsvTimestampSerializationConfiguration(),
+                new CsvConvertersSerializationConfiguration(new ValidationPointDataCsvConverter())
+            );
 
-            IEnumerable<ValidationPointGaze> data = SampleData.Take(1).Select(p => new ValidationPointGaze(p.Point, p.Gaze.Take(1)));
+            IEnumerable<ValidationPointData> data = SampleData.Take(1).Select(p => new ValidationPointData(p.Point, p.Data.Take(1)));
             string[] expectedLines = ExpectedSampleCsv.Take(2).ToArray();
 
             StringBuilder sb = new StringBuilder();
 
             using (var output = new StringWriter(sb) { NewLine = NewLineDelimiter })
-            using (var writer = new CsvDataWriter(output, typeof(ValidationPointGaze), context))
+            using (var writer = serialization.CreateWriterForType(output, typeof(ValidationPointData), settings))
             {
                 foreach (var point in data)
                 {
@@ -124,18 +129,21 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [TestMethod]
         public void Write_SinglePointMultipleData()
         {
-            var timestampConverter = TimestampStringConverterResolver.Default.CreateDefaultConverter();
-            var context = new CsvSerializerContext() { TimestampConverter = timestampConverter };
-            context.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetTypeConverter(timestampConverter));
-            context.DataConverters.Add(new ValidationPointGazeDataConverter());
+            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.CreateDefaultConverter() };
+            var serialization = new CsvSerializationFactory
+            (
+                new CsvDataConvertersSerializationConfiguration(),
+                new CsvTimestampSerializationConfiguration(),
+                new CsvConvertersSerializationConfiguration(new ValidationPointDataCsvConverter())
+            );
 
-            IEnumerable<ValidationPointGaze> data = SampleData.Take(1);
+            IEnumerable<ValidationPointData> data = SampleData.Take(1);
             string[] expectedLines = ExpectedSampleCsv.Take(3).ToArray();
 
             StringBuilder sb = new StringBuilder();
 
             using (var output = new StringWriter(sb) { NewLine = NewLineDelimiter })
-            using (var writer = new CsvDataWriter(output, typeof(ValidationPointGaze), context))
+            using (var writer = serialization.CreateWriterForType(output, typeof(ValidationPointData), settings))
             {
                 foreach (var point in data)
                 {
@@ -153,18 +161,21 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [TestMethod]
         public void Write_MultiplePointsMultipleData()
         {
-            var timestampConverter = TimestampStringConverterResolver.Default.CreateDefaultConverter();
-            var context = new CsvSerializerContext() { TimestampConverter = timestampConverter };
-            context.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetTypeConverter(timestampConverter));
-            context.DataConverters.Add(new ValidationPointGazeDataConverter());
+            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.CreateDefaultConverter() };
+            var serialization = new CsvSerializationFactory
+            (
+                new CsvDataConvertersSerializationConfiguration(),
+                new CsvTimestampSerializationConfiguration(),
+                new CsvConvertersSerializationConfiguration(new ValidationPointDataCsvConverter())
+            );
 
-            IEnumerable<ValidationPointGaze> data = SampleData;
+            IEnumerable<ValidationPointData> data = SampleData;
             string[] expectedLines = ExpectedSampleCsv.ToArray();
 
             StringBuilder sb = new StringBuilder();
 
             using (var output = new StringWriter(sb) { NewLine = NewLineDelimiter })
-            using (var writer = new CsvDataWriter(output, typeof(ValidationPointGaze), context))
+            using (var writer = serialization.CreateWriterForType(output, typeof(ValidationPointData), settings))
             {
                 foreach (var point in data)
                 {
@@ -182,18 +193,21 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [TestMethod]
         public void Write_NoRecord()
         {
-            var timestampConverter = TimestampStringConverterResolver.Default.CreateDefaultConverter();
-            var context = new CsvSerializerContext() { TimestampConverter = timestampConverter };
-            context.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetTypeConverter(timestampConverter));
-            context.DataConverters.Add(new ValidationPointGazeDataConverter());
+            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.CreateDefaultConverter() };
+            var serialization = new CsvSerializationFactory
+            (
+                new CsvDataConvertersSerializationConfiguration(),
+                new CsvTimestampSerializationConfiguration(),
+                new CsvConvertersSerializationConfiguration(new ValidationPointDataCsvConverter())
+            );
 
-            IEnumerable<ValidationPointGaze> data = Enumerable.Empty<ValidationPointGaze>();
+            IEnumerable<ValidationPointData> data = Enumerable.Empty<ValidationPointData>();
             string[] expectedLines = ExpectedSampleCsv.Take(1).ToArray();
 
             StringBuilder sb = new StringBuilder();
 
             using (var output = new StringWriter(sb) { NewLine = NewLineDelimiter })
-            using (var writer = new CsvDataWriter(output, typeof(ValidationPointGaze), context))
+            using (var writer = serialization.CreateWriterForType(output, typeof(ValidationPointData), settings))
             {
                 foreach (var point in data)
                 {

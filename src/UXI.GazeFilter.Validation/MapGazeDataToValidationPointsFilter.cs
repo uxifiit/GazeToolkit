@@ -10,10 +10,11 @@ using UXI.GazeToolkit;
 using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Validation;
 using UXI.GazeToolkit.Extensions;
+using UXI.Serialization;
 
 namespace UXI.GazeFilter.Validation
 {
-    public class MapGazeDataToValidationPointsFilter<TValidationOptions> : Filter<GazeData, ValidationPointGaze, TValidationOptions>
+    public class MapGazeDataToValidationPointsFilter<TValidationOptions> : Filter<GazeData, ValidationPointData, TValidationOptions>
         where TValidationOptions : ValidationOptions
     {
         private readonly List<ValidationPoint> _points = new List<ValidationPoint>();
@@ -38,9 +39,9 @@ namespace UXI.GazeFilter.Validation
         }
 
 
-        protected override IObservable<ValidationPointGaze> Process(IObservable<GazeData> data, TValidationOptions options)
+        protected override IObservable<ValidationPointData> Process(IObservable<GazeData> data, TValidationOptions options)
         {
-            return Observable.Create<ValidationPointGaze>(observer =>
+            return Observable.Create<ValidationPointData>(observer =>
             {
                 var points = _points.GetEnumerator();
                 if (points.MoveNext())
@@ -58,7 +59,7 @@ namespace UXI.GazeFilter.Validation
                         }
                         else if (gaze.Timestamp > endTime)
                         {
-                            observer.OnNext(new ValidationPointGaze(currentPoint, pointData));
+                            observer.OnNext(new ValidationPointData(currentPoint, pointData));
                             pointData = new List<GazeData>();
                             currentPoint = null;
 
@@ -77,7 +78,7 @@ namespace UXI.GazeFilter.Validation
                     {
                         if (currentPoint != null)
                         {
-                            observer.OnNext(new ValidationPointGaze(currentPoint, pointData));
+                            observer.OnNext(new ValidationPointData(currentPoint, pointData));
                         }
                         observer.OnCompleted();
                     });
