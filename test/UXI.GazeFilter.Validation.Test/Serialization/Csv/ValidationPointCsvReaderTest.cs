@@ -12,7 +12,6 @@ using UXI.GazeToolkit.Serialization.Csv.TypeConverters;
 using UXI.GazeToolkit.Serialization.Csv;
 using UXI.Serialization.Csv;
 using UXI.Serialization.Extensions;
-using UXI.GazeToolkit.Serialization.Formats.Csv.Converters;
 using UXI.GazeToolkit.Serialization;
 
 namespace UXI.GazeFilter.Validation.Serialization.Csv

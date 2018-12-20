@@ -5,8 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UXI.GazeToolkit;
-using UXI.GazeToolkit.Serialization.Formats.Csv;
-using UXI.GazeToolkit.Serialization.Formats.Csv.Converters;
 using UXI.GazeToolkit.Utils;
 using UXI.GazeToolkit.Validation;
 using UXI.Serialization.Csv;

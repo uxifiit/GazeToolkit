@@ -9,7 +9,7 @@ using UXI.Serialization.Csv.Converters;
 
 namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {
-    public class TimestampedDataCsvConverter : CsvConverter<TimestampedData>
+    public class TimestampedDataCsvConverter : CsvConverter<ITimestampedData>
     {
         private readonly string _timestampFieldName;
 
@@ -32,6 +32,12 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
         }
 
 
+        public override bool CanConvert(Type objectType)
+        {
+            return base.CanConvert(objectType) || objectType == typeof(TimestampedData);
+        }
+
+
         public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             writer.WriteField(naming.Get(_timestampFieldName));
@@ -46,7 +52,7 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
         }
 
        
-        protected override void WriteCsv(TimestampedData data, CsvWriter writer, CsvSerializerContext serializer)
+        protected override void WriteCsv(ITimestampedData data, CsvWriter writer, CsvSerializerContext serializer)
         {
             writer.WriteField(data.Timestamp);
         }

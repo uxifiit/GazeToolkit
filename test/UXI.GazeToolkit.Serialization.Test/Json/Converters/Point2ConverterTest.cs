@@ -20,7 +20,7 @@ namespace UXI.GazeToolkit.Serialization.Json.Converters
         public void Initialize()
         {
             serializer = new JsonSerializer();
-            serializer.Converters.Add(new Point2Converter());
+            serializer.Converters.Add(new Point2JsonConverter());
         }
 
 

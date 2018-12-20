@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UXI.GazeFilter.Validation.Serialization.Json.Converter;
-using UXI.GazeToolkit.Serialization.Formats.Csv.Converters;
 using UXI.GazeToolkit.Serialization.Json.Converters;
 using UXI.Serialization;
 using UXI.Serialization.Json;

@@ -6,14 +6,14 @@ using Newtonsoft.Json;
 
 namespace UXI.GazeToolkit.Serialization.Json.Converters
 {
-    public class TimestampedDataJsonConverter : GenericJsonConverter<TimestampedData>
+    public class TimestampedDataJsonConverter : GenericJsonConverter<ITimestampedData>
     {
         private readonly string _timestampFieldName;
 
 
         public TimestampedDataJsonConverter()
         {
-            _timestampFieldName = nameof(TimestampedData.Timestamp);
+            _timestampFieldName = nameof(ITimestampedData.Timestamp);
         }
 
 
@@ -35,7 +35,7 @@ namespace UXI.GazeToolkit.Serialization.Json.Converters
         }
 
 
-        protected override TimestampedData Convert(JToken token, JsonSerializer serializer)
+        protected override ITimestampedData Convert(JToken token, JsonSerializer serializer)
         {
             JObject obj = (JObject)token;
 

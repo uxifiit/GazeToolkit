@@ -7,16 +7,22 @@ using CsvHelper;
 using UXI.Serialization.Csv;
 using UXI.Serialization.Csv.Converters;
 
-namespace UXI.GazeToolkit.Serialization.Formats.Csv.Converters
+namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {
     public class EyeVelocityCsvConverter : CsvConverter<EyeVelocity>
     {
+        public override bool CanRead => true;
+
+        public override bool CanWrite => true;
+
+
         public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             writer.WriteField(naming.Get(nameof(EyeVelocity.Velocity)));
 
             serializer.WriteHeader<SingleEyeGazeData>(writer, naming);
         }
+
 
         public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
@@ -27,11 +33,12 @@ namespace UXI.GazeToolkit.Serialization.Formats.Csv.Converters
             return new EyeVelocity(velocity, eye);
         }
 
+
         protected override void WriteCsv(EyeVelocity data, CsvWriter writer, CsvSerializerContext serializer)
         {
             writer.WriteField(data.Velocity);
 
-            serializer.Serialize(writer, data.Eye);
+            serializer.Serialize<SingleEyeGazeData>(writer, data.Eye);
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UXI.GazeToolkit.Serialization.Formats.Csv.Converters;
 using UXI.GazeToolkit.Serialization.Json.Converters;
 using UXI.Serialization;
 using UXI.Serialization.Json;
@@ -17,7 +16,7 @@ namespace UXI.GazeToolkit.Serialization.Json
         public JsonDataConvertersSerializationConfiguration()
             : base
             (
-                new Point2Converter(),
+                new Point2JsonConverter(),
                 new Point3JsonConverter(),
                 new EyeSampleJsonConverter(),
                 new EyeDataJsonConverter(),

@@ -15,9 +15,14 @@ namespace UXI.GazeToolkit.Serialization.Csv
         public CsvDataConvertersSerializationConfiguration()
             : base
             (
-                new EyeMovementCsvConverter(),
                 new Point2CsvConverter(),
-                new Point3CsvConverter()
+                new Point3CsvConverter(),
+                new EyeSampleCsvConverter(),
+                new EyeDataCsvConverter(),
+                new GazeDataCsvConverter(),
+                new SingleEyeGazeDataCsvConverter(),
+                new EyeVelocityCsvConverter(),
+                new EyeMovementCsvConverter()
             )
         { }
     }

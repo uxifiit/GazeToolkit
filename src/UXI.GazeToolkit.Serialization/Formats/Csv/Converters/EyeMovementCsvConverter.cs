@@ -18,7 +18,8 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 
         public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
-            writer.WriteField(naming.Get(nameof(EyeMovement.Timestamp)));
+            serializer.WriteHeader<ITimestampedData>(writer, naming);
+
             writer.WriteField(naming.Get(nameof(EyeMovement.MovementType)));
             writer.WriteField(naming.Get(nameof(EyeMovement.Duration)));
 
@@ -33,7 +34,8 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 
         public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
-            var timestamp = reader.GetField<DateTimeOffset>(naming.Get(nameof(EyeMovement.Timestamp)));
+            var timestampedData = serializer.Deserialize<ITimestampedData>(reader, naming);
+
             var movementType = reader.GetField<EyeMovementType>(naming.Get(nameof(EyeMovement.MovementType)));
             var duration = reader.GetField<double>(naming.Get(nameof(EyeMovement.Duration)));
 
@@ -54,8 +56,8 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
                     eyePosition3D,
                     pupilDiameter
                 ),
-                timestamp,
-                timestamp.AddMilliseconds(duration)
+                timestampedData.Timestamp,
+                timestampedData.Timestamp.AddMilliseconds(duration)
             );
 
             return movement;
@@ -64,7 +66,8 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 
         protected override void WriteCsv(EyeMovement data, CsvWriter writer, CsvSerializerContext serializer)
         {
-            writer.WriteField(data.Timestamp);
+            serializer.Serialize<ITimestampedData>(writer, data);
+
             writer.WriteField(data.MovementType);
             writer.WriteField(data.Duration.TotalMilliseconds);
 

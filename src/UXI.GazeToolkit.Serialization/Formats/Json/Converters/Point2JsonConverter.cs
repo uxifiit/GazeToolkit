@@ -10,7 +10,7 @@ using UXI.Serialization.Json.Extensions;
 
 namespace UXI.GazeToolkit.Serialization.Json.Converters
 {
-    public class Point2Converter : GenericJsonConverter<Point2>
+    public class Point2JsonConverter : GenericJsonConverter<Point2>
     {
         protected override Point2 Convert(JToken token, JsonSerializer serializer)
         {

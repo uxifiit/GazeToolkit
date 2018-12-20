@@ -11,6 +11,11 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {
     public class EyeSampleCsvConverter : CsvConverter<EyeSample>
     {
+        public override bool CanRead => true;
+
+        public override bool CanWrite => true;
+
+
         public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             serializer.WriteHeader<Point2>(writer, naming, nameof(EyeSample.GazePoint2D));
@@ -19,6 +24,7 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 
             writer.WriteField(naming.Get(nameof(EyeSample.PupilDiameter)));
         }
+
 
         public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
@@ -36,7 +42,6 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
                 pupilDiameter
             );
         }
-
 
 
         protected override void WriteCsv(EyeSample data, CsvWriter writer, CsvSerializerContext serializer)

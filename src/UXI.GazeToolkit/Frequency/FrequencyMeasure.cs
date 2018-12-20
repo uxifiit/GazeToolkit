@@ -38,13 +38,13 @@ namespace UXI.GazeToolkit.Frequency
         }
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<TimestampedData> data, TimeSpan timeWindow)
+        public static IObservable<int> MeasureFrequency(this IObservable<ITimestampedData> data, TimeSpan timeWindow)
         {
             return MeasureFrequency(data.Select(d => d.Timestamp), timeWindow);
         }
 
 
-        public static IObservable<int> MeasureFrequency(this IObservable<TimestampedData> data, IFrequencyMeasureOptions options)
+        public static IObservable<int> MeasureFrequency(this IObservable<ITimestampedData> data, IFrequencyMeasureOptions options)
         {
             return MeasureFrequency(data.Select(d => d.Timestamp), options.TimeWindow);
         }

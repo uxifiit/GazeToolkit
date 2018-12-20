@@ -18,7 +18,7 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 
         public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
-            serializer.WriteHeader<TimestampedData>(writer, naming);
+            serializer.WriteHeader<ITimestampedData>(writer, naming);
 
             serializer.WriteHeader<EyeData>(writer, naming, nameof(GazeData.LeftEye));
             serializer.WriteHeader<EyeData>(writer, naming, nameof(GazeData.RightEye));
@@ -27,16 +27,16 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 
         protected override void WriteCsv(GazeData data, CsvWriter writer, CsvSerializerContext serializer)
         {
-            serializer.Serialize<TimestampedData>(writer, data);
+            serializer.Serialize<ITimestampedData>(writer, data);
 
-            serializer.Serialize(writer, data.LeftEye);
-            serializer.Serialize(writer, data.RightEye);
+            serializer.Serialize<EyeData>(writer, data.LeftEye);
+            serializer.Serialize<EyeData>(writer, data.RightEye);
         }
 
 
         public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
-            var timestampedData = serializer.Deserialize<TimestampedData>(reader, naming);
+            var timestampedData = serializer.Deserialize<ITimestampedData>(reader, naming);
 
             var leftEye = serializer.Deserialize<EyeData>(reader, naming, nameof(GazeData.LeftEye));
             var rightEye = serializer.Deserialize<EyeData>(reader, naming, nameof(GazeData.RightEye));
