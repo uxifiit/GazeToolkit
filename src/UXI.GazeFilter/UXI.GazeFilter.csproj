@@ -97,6 +97,7 @@
     <Compile Include="Statistics\SamplesCounterStatisticsFactory.cs" />
     <Compile Include="Statistics\SamplesCount.cs" />
     <Compile Include="Statistics\SamplesCounterStatistics.cs" />
+    <Compile Include="Statistics\Serialization\SamplesCountCsvConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UXI.GazeToolkit.Serialization\UXI.GazeToolkit.Serialization.csproj">
