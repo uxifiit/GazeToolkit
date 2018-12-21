@@ -7,10 +7,12 @@ using UXI.GazeToolkit.Serialization.Converters;
 using UXI.GazeToolkit.Validation;
 using System.Linq;
 using System.Runtime.Serialization;
-using UXI.GazeToolkit.Serialization.Extensions;
-using UXI.GazeFilter.Validation.Serialization.Csv.DataConverters;
+using UXI.GazeFilter.Validation.Serialization.Csv.Converters;
 using UXI.GazeToolkit.Serialization.Csv.TypeConverters;
 using UXI.GazeToolkit.Serialization.Csv;
+using UXI.Serialization.Csv;
+using UXI.Serialization.Extensions;
+using UXI.GazeToolkit.Serialization;
 
 namespace UXI.GazeFilter.Validation.Serialization.Csv
 {
@@ -67,10 +69,13 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [TestMethod]
         public void ReadAll_RecordsWithDateTimestamp()
         {
-            var timestampConverter = TimestampStringConverterResolver.Default.Resolve("date");
-            var context = new CsvSerializerContext() { TimestampConverter = timestampConverter };
-            context.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetTypeConverter(timestampConverter));
-            context.DataConverters.Add(new ValidationPointDataConverter());
+            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.Resolve("date") };
+            var serialization = new CsvSerializationFactory
+            (
+                new CsvDataConvertersSerializationConfiguration(),
+                new CsvTimestampSerializationConfiguration(),
+                new CsvConvertersSerializationConfiguration(new ValidationPointCsvConverter())
+            );
 
             DateTimeOffset startTimestamp = new DateTimeOffset(2018, 11, 20, 12, 08, 28, 477, TimeSpan.FromHours(2));
             DateTimeOffset startA = startTimestamp;
@@ -85,23 +90,23 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
             string[] lines = new[]
             {
                 "Validation,Point,X,Y,StartTime,EndTime"
-            ,  $"1,1,0.1,0.1,{context.TimestampConverter.ConvertBack(startA)},{context.TimestampConverter.ConvertBack(endA)}"
-            ,  $"2,1,0.5,0.9,{context.TimestampConverter.ConvertBack(startB)},{context.TimestampConverter.ConvertBack(endB)}"
-            ,  $"3,1,0.9,0.1,{context.TimestampConverter.ConvertBack(startC)},{context.TimestampConverter.ConvertBack(endC)}"
+            ,  $"1,1,0.1,0.1,{settings.TimestampConverter.ConvertBack(startA)},{settings.TimestampConverter.ConvertBack(endA)}"
+            ,  $"2,1,0.5,0.9,{settings.TimestampConverter.ConvertBack(startB)},{settings.TimestampConverter.ConvertBack(endB)}"
+            ,  $"3,1,0.9,0.1,{settings.TimestampConverter.ConvertBack(startC)},{settings.TimestampConverter.ConvertBack(endC)}"
             };
 
             string input = String.Join(Environment.NewLine, lines);
 
             using (var inputReader = new StringReader(input))
-            using (var reader = new CsvDataReader(inputReader, typeof(ValidationPoint), context))
+            using (var reader = serialization.CreateReaderForType(inputReader, typeof(ValidationPoint), settings))
             {
                 var records = reader.ReadAll<ValidationPoint>().ToList();
 
                 Assert.AreEqual(3, records.Count);
 
-                AssertRecord(new ValidationPoint(1, new GazeToolkit.Point2(0.1, 0.1), startA, endA), records[0]);
-                AssertRecord(new ValidationPoint(2, new GazeToolkit.Point2(0.5, 0.9), startB, endB), records[1]);
-                AssertRecord(new ValidationPoint(3, new GazeToolkit.Point2(0.9, 0.1), startC, endC), records[2]);
+                AssertRecord(new ValidationPoint(1, 1, new GazeToolkit.Point2(0.1, 0.1), startA, endA), records[0]);
+                AssertRecord(new ValidationPoint(2, 1, new GazeToolkit.Point2(0.5, 0.9), startB, endB), records[1]);
+                AssertRecord(new ValidationPoint(3, 1, new GazeToolkit.Point2(0.9, 0.1), startC, endC), records[2]);
             }
         }
 
@@ -109,10 +114,13 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [TestMethod]
         public void ReadAll_RecordsWithDateTimestampInQuotes()
         {
-            var timestampConverter = TimestampStringConverterResolver.Default.Resolve("date");
-            var context = new CsvSerializerContext() { TimestampConverter = timestampConverter };
-            context.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetTypeConverter(timestampConverter));
-            context.DataConverters.Add(new ValidationPointDataConverter());
+            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.Resolve("date") };
+            var serialization = new CsvSerializationFactory
+            (
+                new CsvDataConvertersSerializationConfiguration(),
+                new CsvTimestampSerializationConfiguration(),
+                new CsvConvertersSerializationConfiguration(new ValidationPointCsvConverter())
+            );
 
             DateTimeOffset startTimeA = new DateTimeOffset(2018, 11, 20, 12, 08, 28, 477, TimeSpan.FromHours(2));
             DateTimeOffset endTimeA = startTimeA.AddSeconds(1);
@@ -126,23 +134,23 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
             string[] lines = new[]
             {
                 "Validation,Point,X,Y,StartTime,EndTime"
-            ,  $"1,1,0.1,0.1,\"{context.TimestampConverter.ConvertBack(startTimeA)}\",\"{context.TimestampConverter.ConvertBack(endTimeA)}\""
-            ,  $"2,1,0.5,0.9,\"{context.TimestampConverter.ConvertBack(startTimeB)}\",\"{context.TimestampConverter.ConvertBack(endTimeB)}\""
-            ,  $"3,1,0.9,0.1,\"{context.TimestampConverter.ConvertBack(startTimeC)}\",\"{context.TimestampConverter.ConvertBack(endTimeC)}\""
+            ,  $"1,1,0.1,0.1,\"{settings.TimestampConverter.ConvertBack(startTimeA)}\",\"{settings.TimestampConverter.ConvertBack(endTimeA)}\""
+            ,  $"2,1,0.5,0.9,\"{settings.TimestampConverter.ConvertBack(startTimeB)}\",\"{settings.TimestampConverter.ConvertBack(endTimeB)}\""
+            ,  $"3,1,0.9,0.1,\"{settings.TimestampConverter.ConvertBack(startTimeC)}\",\"{settings.TimestampConverter.ConvertBack(endTimeC)}\""
             };
 
             string input = String.Join(Environment.NewLine, lines);
 
             using (var inputReader = new StringReader(input))
-            using (var reader = new CsvDataReader(inputReader, typeof(ValidationPoint), context))
+            using (var reader = serialization.CreateReaderForType(inputReader, typeof(ValidationPoint), settings))
             {
                 var records = reader.ReadAll<ValidationPoint>().ToList();
 
                 Assert.AreEqual(3, records.Count);
 
-                AssertRecord(new ValidationPoint(1, new GazeToolkit.Point2(0.1, 0.1), startTimeA, endTimeA), records[0]);
-                AssertRecord(new ValidationPoint(2, new GazeToolkit.Point2(0.5, 0.9), startTimeB, endTimeB), records[1]);
-                AssertRecord(new ValidationPoint(3, new GazeToolkit.Point2(0.9, 0.1), startTimeC, endTimeC), records[2]);
+                AssertRecord(new ValidationPoint(1, 1, new GazeToolkit.Point2(0.1, 0.1), startTimeA, endTimeA), records[0]);
+                AssertRecord(new ValidationPoint(2, 1, new GazeToolkit.Point2(0.5, 0.9), startTimeB, endTimeB), records[1]);
+                AssertRecord(new ValidationPoint(3, 1, new GazeToolkit.Point2(0.9, 0.1), startTimeC, endTimeC), records[2]);
             }
         }
 
@@ -150,10 +158,13 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [TestMethod]
         public void ReadAll_RecordsWithTicksTimestamp()
         {
-            var timestampConverter = TimestampStringConverterResolver.Default.Resolve("ticks");
-            var context = new CsvSerializerContext() { TimestampConverter = timestampConverter };
-            context.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetTypeConverter(timestampConverter));
-            context.DataConverters.Add(new ValidationPointDataConverter());
+            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.Resolve("ticks") };
+            var serialization = new CsvSerializationFactory
+            (
+                new CsvDataConvertersSerializationConfiguration(),
+                new CsvTimestampSerializationConfiguration(),
+                new CsvConvertersSerializationConfiguration(new ValidationPointCsvConverter())
+            );
 
             long startTimeA = new DateTimeOffset(2018, 11, 20, 12, 08, 28, 477, TimeSpan.FromHours(2)).Ticks;
             long endTimeA = startTimeA + TimeSpan.FromSeconds(1).Ticks;
@@ -175,15 +186,15 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
             string input = String.Join(Environment.NewLine, lines);
 
             using (var inputReader = new StringReader(input))
-            using (var reader = new CsvDataReader(inputReader, typeof(ValidationPoint), context))
+            using (var reader = serialization.CreateReaderForType(inputReader, typeof(ValidationPoint), settings))
             {
                 var records = reader.ReadAll<ValidationPoint>().ToList();
 
                 Assert.AreEqual(3, records.Count);
 
-                AssertRecord(new ValidationPoint(1, new GazeToolkit.Point2(0.1, 0.1), new DateTimeOffset(startTimeA, TimeSpan.Zero), new DateTimeOffset(endTimeA, TimeSpan.Zero)), records[0]);
-                AssertRecord(new ValidationPoint(2, new GazeToolkit.Point2(0.5, 0.9), new DateTimeOffset(startTimeB, TimeSpan.Zero), new DateTimeOffset(endTimeB, TimeSpan.Zero)), records[1]);
-                AssertRecord(new ValidationPoint(3, new GazeToolkit.Point2(0.9, 0.1), new DateTimeOffset(startTimeC, TimeSpan.Zero), new DateTimeOffset(endTimeC, TimeSpan.Zero)), records[2]);
+                AssertRecord(new ValidationPoint(1, 1, new GazeToolkit.Point2(0.1, 0.1), new DateTimeOffset(startTimeA, TimeSpan.Zero), new DateTimeOffset(endTimeA, TimeSpan.Zero)), records[0]);
+                AssertRecord(new ValidationPoint(2, 1, new GazeToolkit.Point2(0.5, 0.9), new DateTimeOffset(startTimeB, TimeSpan.Zero), new DateTimeOffset(endTimeB, TimeSpan.Zero)), records[1]);
+                AssertRecord(new ValidationPoint(3, 1, new GazeToolkit.Point2(0.9, 0.1), new DateTimeOffset(startTimeC, TimeSpan.Zero), new DateTimeOffset(endTimeC, TimeSpan.Zero)), records[2]);
             }
         }
 
@@ -192,6 +203,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         {
             Assert.AreEqual(expected.Validation, actual.Validation);
             Assert.AreEqual(expected.Point, actual.Point);
+            Assert.AreEqual(expected.Position, actual.Position);
             Assert.AreEqual(expected.StartTime, actual.StartTime);
             Assert.AreEqual(expected.EndTime, actual.EndTime);
         }
@@ -200,10 +212,13 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [TestMethod]
         public void ReadAll_Empty_NoResult()
         {
-            var timestampConverter = TimestampStringConverterResolver.Default.Resolve("date");
-            var context = new CsvSerializerContext() { TimestampConverter = timestampConverter };
-            context.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetTypeConverter(timestampConverter));
-            context.DataConverters.Add(new ValidationPointDataConverter());
+            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.Resolve("date") };
+            var serialization = new CsvSerializationFactory
+            (
+                new CsvDataConvertersSerializationConfiguration(),
+                new CsvTimestampSerializationConfiguration(),
+                new CsvConvertersSerializationConfiguration(new ValidationPointCsvConverter())
+            );
 
             string[] lines = new[]
             {
@@ -213,7 +228,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
             string input = String.Join(Environment.NewLine, lines);
 
             using (var inputReader = new StringReader(input))
-            using (var reader = new CsvDataReader(inputReader, typeof(ValidationPoint), context))
+            using (var reader = serialization.CreateReaderForType(inputReader, typeof(ValidationPoint), settings))
             {
                 var records = reader.ReadAll<ValidationPoint>().ToList();
 
@@ -225,17 +240,20 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [TestMethod]
         public void ReadAll_EmptyWithoutHeader_NoResult()
         {
-            var timestampConverter = TimestampStringConverterResolver.Default.CreateDefaultConverter();
-            var context = new CsvSerializerContext() { TimestampConverter = timestampConverter };
-            context.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetTypeConverter(timestampConverter));
-            context.DataConverters.Add(new ValidationPointDataConverter());
+            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.Resolve("date") };
+            var serialization = new CsvSerializationFactory
+            (
+                new CsvDataConvertersSerializationConfiguration(),
+                new CsvTimestampSerializationConfiguration(),
+                new CsvConvertersSerializationConfiguration(new ValidationPointCsvConverter())
+            );
 
             string[] lines = new string[0];
 
             string input = String.Join(Environment.NewLine, lines);
 
             using (var inputReader = new StringReader(input))
-            using (var reader = new CsvDataReader(inputReader, typeof(ValidationPoint), context))
+            using (var reader = serialization.CreateReaderForType(inputReader, typeof(ValidationPoint), settings))
             {
                 var records = reader.ReadAll<ValidationPoint>().ToList();
 
@@ -248,10 +266,13 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [ExpectedException(typeof(SerializationException))]
         public void ReadAll_MissingFieldInRecord_ExceptionThrown()
         {
-            var timestampConverter = TimestampStringConverterResolver.Default.Resolve("ticks");
-            var context = new CsvSerializerContext() { TimestampConverter = timestampConverter };
-            context.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetTypeConverter(timestampConverter));
-            context.DataConverters.Add(new ValidationPointDataConverter());
+            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.Resolve("date") };
+            var serialization = new CsvSerializationFactory
+            (
+                new CsvDataConvertersSerializationConfiguration(),
+                new CsvTimestampSerializationConfiguration(),
+                new CsvConvertersSerializationConfiguration(new ValidationPointCsvConverter())
+            );
 
             long startTimeA = new DateTimeOffset(2018, 11, 20, 12, 08, 28, 477, TimeSpan.FromHours(2)).Ticks;
             long endTimeA = startTimeA + TimeSpan.FromSeconds(1).Ticks;
@@ -269,7 +290,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
             string input = String.Join(Environment.NewLine, lines);
 
             using (var inputReader = new StringReader(input))
-            using (var reader = new CsvDataReader(inputReader, typeof(ValidationPoint), context))
+            using (var reader = serialization.CreateReaderForType(inputReader, typeof(ValidationPoint), settings))
             {
                 var records = reader.ReadAll<ValidationPoint>().ToList();
             }

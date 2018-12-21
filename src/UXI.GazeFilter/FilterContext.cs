@@ -8,15 +8,26 @@ using UXI.GazeFilter.Statistics;
 using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Serialization.Csv;
 using UXI.GazeToolkit.Serialization.Json;
+using UXI.Serialization;
+using UXI.Serialization.Csv;
+using UXI.Serialization.Json;
 
 namespace UXI.GazeFilter
 {
     public class FilterContext
     {
-        public Collection<IDataSerializationFactory> Formats { get; set; } = new Collection<IDataSerializationFactory>()
+        public Collection<ISerializationFactory> Formats { get; set; } = new Collection<ISerializationFactory>()
         {
-            new JsonSerializationFactory(),
-            new CsvSerializationFactory()
+            new JsonSerializationFactory
+            (
+                new JsonTimestampSerializationConfiguration(), 
+                new JsonDataConvertersSerializationConfiguration()
+            ),
+            new CsvSerializationFactory
+            (
+                new CsvTimestampSerializationConfiguration(),
+                new CsvDataConvertersSerializationConfiguration()
+            )
         };
 
 
@@ -26,7 +37,7 @@ namespace UXI.GazeFilter
         };
 
 
-        public SerializationConfiguration Serialization { get; set; } = new SerializationConfiguration();
+        public SerializationSettings Serialization { get; set; } = new SerializationSettings();
 
 
         public DataIO IO { get; set; } = null;

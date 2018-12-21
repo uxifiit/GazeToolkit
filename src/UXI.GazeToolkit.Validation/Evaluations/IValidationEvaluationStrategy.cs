@@ -8,6 +8,6 @@ namespace UXI.GazeToolkit.Validation.Evaluations
 {
     public interface IValidationEvaluationStrategy
     {
-        ValidationPointResult Evaluate(ValidationPointGaze validationPoint);
+        ValidationPointResult Evaluate(ValidationPointData validationPoint);
     }
 }

@@ -13,8 +13,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using UXI.GazeFilter.Extensions;
 using UXI.GazeFilter.Statistics;
-using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Serialization.Converters;
+using UXI.Serialization;
 
 namespace UXI.GazeFilter
 {
@@ -22,6 +22,8 @@ namespace UXI.GazeFilter
     {
         private readonly StringWriter _help;
         private readonly Parser _commandLineParser;
+
+        private readonly Action<FilterContext, BaseOptions> _configureAction;
 
         public FilterHost(IEnumerable<IFilter> filters)
         {
@@ -45,10 +47,10 @@ namespace UXI.GazeFilter
         }
 
         
-        public FilterHost(Action<FilterContext> configure, IEnumerable<IFilter> filters)
+        public FilterHost(Action<FilterContext, BaseOptions> configureAction, IEnumerable<IFilter> filters)
             : this(filters)
         {
-            configure?.Invoke(Context);
+            _configureAction = configureAction;
         }
 
 
@@ -107,10 +109,14 @@ namespace UXI.GazeFilter
         {
             var tcs = new TaskCompletionSource<bool>();
 
-            var io = new DataIO(Context.Formats);
             var stats = statistics?.ToList() ?? Enumerable.Empty<IFilterStatistics>();
 
-            Context.IO = io;
+            if (Context.IO == null)
+            {
+                Context.IO = new DataIO(Context.Formats);
+            }
+
+            var io = Context.IO;
 
             filter.Initialize(options, Context);
 
@@ -138,6 +144,8 @@ namespace UXI.GazeFilter
         {
             Context.Serialization.TimestampConverter = TimestampStringConverterResolver.Default.Resolve(options.TimestampFormat);
             Context.Serialization.TimestampFieldName = options.TimestampFieldName;
+
+            _configureAction?.Invoke(Context, options);
         }
     }
 }

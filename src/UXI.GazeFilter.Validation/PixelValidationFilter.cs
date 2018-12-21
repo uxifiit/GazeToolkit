@@ -14,7 +14,7 @@ using UXI.GazeToolkit.Validation.Evaluations;
 
 namespace UXI.GazeFilter.Validation
 {
-    public class PixelValidationFilter : Filter<ValidationPointGaze, ValidationResult, PixelOptions>
+    public class PixelValidationFilter : Filter<ValidationPointData, ValidationResult, PixelOptions>
     {
         private static Point2 ReadScreenResolution(PixelOptions options)
         {
@@ -38,7 +38,7 @@ namespace UXI.GazeFilter.Validation
         protected override void Initialize(PixelOptions options, FilterContext context) { }
 
 
-        protected override IObservable<ValidationResult> Process(IObservable<ValidationPointGaze> data, PixelOptions options)
+        protected override IObservable<ValidationResult> Process(IObservable<ValidationPointData> data, PixelOptions options)
         {
             Point2 resolution = ReadScreenResolution(options);
 
@@ -47,7 +47,7 @@ namespace UXI.GazeFilter.Validation
             return data.Buffer((a, b) => a.Point.Validation != b.Point.Validation)
                        .Select(validation =>
                        {
-                           return ValidationEvaluation.Evaluate(validation.First().Point.Validation, validation, strategy);
+                           return ValidationEvaluation.Evaluate(validation, strategy);
                        });
         }
     }

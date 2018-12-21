@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UXI.GazeToolkit;
 
-namespace UXI.GazeToolkit.Serialization
+namespace UXI.GazeToolkit
 {
     public class TimestampedData : ITimestampedData
     {

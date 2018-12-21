@@ -8,10 +8,12 @@ using Newtonsoft.Json.Linq;
 using UXI.GazeToolkit;
 using UXI.GazeToolkit.Serialization.Json.Converters;
 using UXI.GazeToolkit.Validation;
+using UXI.Serialization.Json.Converters;
+using UXI.Serialization.Json.Extensions;
 
 namespace UXI.GazeFilter.Validation.Serialization.Json.Converter
 {
-    public class DisplayAreaJsonConverter : GazeToolkit.Serialization.Json.Converters.JsonConverter<DisplayArea>
+    public class DisplayAreaJsonConverter : GenericJsonConverter<DisplayArea>
     {
         protected override DisplayArea Convert(JToken token, JsonSerializer serializer)
         {
@@ -27,7 +29,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Json.Converter
 
 
 
-    public class DisplayAreaChangedEventJsonConverter : GazeToolkit.Serialization.Json.Converters.JsonConverter<DisplayAreaChangedEvent>
+    public class DisplayAreaChangedEventJsonConverter : GenericJsonConverter<DisplayAreaChangedEvent>
     {
         protected override DisplayAreaChangedEvent Convert(JToken token, JsonSerializer serializer)
         {
@@ -35,12 +37,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Json.Converter
 
             var displayArea = obj.ToObject<DisplayArea>(serializer);
 
-            var timestamp = DateTimeOffset.MinValue;
-            JToken timestampToken;
-            if (obj.TryGetValue("Timestamp", out timestampToken))
-            {
-                timestamp = timestampToken.ToObject<DateTimeOffset>(serializer);
-            }
+            var timestamp = obj.GetValueOrDefault<DateTimeOffset>(nameof(DisplayAreaChangedEvent.Timestamp), serializer);
 
             return new DisplayAreaChangedEvent(displayArea, timestamp);
         }

@@ -5,13 +5,15 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UXI.GazeFilter.Validation.Serialization.Csv.DataConverters;
+using UXI.GazeFilter.Validation.Serialization.Csv.Converters;
 using UXI.GazeFilter.Validation.Serialization.Json.Converter;
 using UXI.GazeToolkit;
 using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Serialization.Csv;
 using UXI.GazeToolkit.Serialization.Json;
 using UXI.GazeToolkit.Validation;
+using UXI.GazeToolkit.Validation.Serialization.Csv;
+using UXI.GazeToolkit.Validation.Serialization.Json;
 
 namespace UXI.GazeFilter.Validation
 {
@@ -51,7 +53,7 @@ namespace UXI.GazeFilter.Validation
         {
             return new MultiFilterHost
             (
-                context => Configure(context),
+                (context, options) => Configure(context, options),
                 new MapGazeDataToValidationPointsFilter<ValidationOptions>(),
                 new FilterPipeline<GazeData, ValidationResult, AngularOptions>
                 (
@@ -66,13 +68,17 @@ namespace UXI.GazeFilter.Validation
             ).Execute(args);
         }
 
-        private static void Configure(FilterContext context)
+        private static void Configure(FilterContext context, BaseOptions options)
         {
-            context.Formats = new Collection<IDataSerializationFactory>()
-            {
-                new JsonSerializationFactory(new DisplayAreaJsonConverter(), new DisplayAreaChangedEventJsonConverter(), new ValidationPointJsonConverter()),
-                new CsvSerializationFactory(new ValidationPointDataConverter(), new ValidationPointGazeDataConverter(), new ValidationResultDataConverter())
-            };
+            context.Formats
+                   .FirstOrDefault(f => f.Format == UXI.Serialization.FileFormat.JSON)?
+                   .Configurations
+                   .Add(new JsonValidationDataConvertersSerializationConfiguration());
+
+            context.Formats
+                   .FirstOrDefault(f => f.Format == UXI.Serialization.FileFormat.CSV)?
+                   .Configurations
+                   .Add(new CsvValidationDataConvertersSerializationConfiguration());
         }
     }
 }
