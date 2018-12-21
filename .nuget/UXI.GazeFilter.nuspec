@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>UXI.GazeFilter</id>
-    <version>1.4.0-alpha</version>
+    <version>1.4.1-alpha</version>
     <title>UXI.Filter</title>
     <authors>UXI Dev</authors>
     <owners>UXI FIIT STUBA</owners>
@@ -15,7 +15,7 @@
     <dependencies>
       <dependency id="UXI.GazeToolkit" version="1.1.4" />
       <dependency id="UXI.GazeToolkit.Serialization" version="1.4.0-alpha" />
-      <dependency id="UXI.Serialization" version="0.9.2-alpha" />
+      <dependency id="UXI.Serialization" version="0.9.3-alpha" />
       <dependency id="UXI.Serialization.Reactive" version="0.9.2-alpha" />
       <dependency id="System.Reactive" version="3.1.1" />
       <dependency id="CommandLineParser" version="2.3.0" />
