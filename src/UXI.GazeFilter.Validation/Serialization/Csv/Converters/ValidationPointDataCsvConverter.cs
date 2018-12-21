@@ -25,6 +25,8 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
 
             serializer.WriteHeader<Point2>(writer, naming);
 
+            writer.WriteField(naming.Get("RelativeTimestamp"));
+
             serializer.WriteHeader<GazeData>(writer, naming);
         }
 
@@ -46,6 +48,8 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
                 writer.WriteField(data.Point.Point);
 
                 serializer.Serialize(writer, data.Point.Position);
+
+                writer.WriteField(sample.Timestamp.Subtract(data.Point.StartTime).TotalMilliseconds);
 
                 serializer.Serialize(writer, sample);
             }
