@@ -129,11 +129,19 @@ namespace UXI.GazeFilter
               .WriteOutput(io, options, filter.OutputType, Context.Serialization)
               .Subscribe(_ => { }, e => tcs.TrySetException(e), () =>
               {
-                  foreach (var stat in stats)
+                  try
                   {
-                      io.WriteOutput(stat.GetResults(), options, stat.DefaultFormat, stat.DataType, Context.Serialization);
+                      foreach (var stat in stats)
+                      {
+                          io.WriteOutput(stat.GetResults(), options, stat.DefaultFormat, stat.DataType, Context.Serialization);
+                      }
+
+                      tcs.TrySetResult(true);
                   }
-                  tcs.TrySetResult(true);
+                  catch (Exception ex)
+                  {
+                      tcs.TrySetException(ex);
+                  }
               });
 
             return tcs.Task;

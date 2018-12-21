@@ -10,13 +10,13 @@ namespace UXI.GazeFilter.Statistics
     {
         public SamplesCount(string filterName, int inputSamples, int outputSamples, TimeSpan runtime)
         {
-            FilterName = filterName;
+            Filter = filterName;
             InputSamples = inputSamples;
             OutputSamples = outputSamples;
             Runtime = runtime;
         }
 
-        public string FilterName { get; }
+        public string Filter { get; }
                                        
         public int InputSamples { get; }
                                        

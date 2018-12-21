@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UXI.GazeFilter.Statistics;
+using UXI.GazeFilter.Statistics.Serialization;
 using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Serialization.Csv;
 using UXI.GazeToolkit.Serialization.Json;
@@ -20,13 +21,22 @@ namespace UXI.GazeFilter
         {
             new JsonSerializationFactory
             (
+#if DEBUG
+                new RelaySerializationConfiguration<Newtonsoft.Json.JsonSerializer>((serializer, access, _) =>
+                {
+                    serializer.Formatting = Newtonsoft.Json.Formatting.Indented;
+
+                    return serializer;
+                }),
+#endif
                 new JsonTimestampSerializationConfiguration(), 
                 new JsonDataConvertersSerializationConfiguration()
             ),
             new CsvSerializationFactory
             (
                 new CsvTimestampSerializationConfiguration(),
-                new CsvDataConvertersSerializationConfiguration()
+                new CsvDataConvertersSerializationConfiguration(),
+                new CsvConvertersSerializationConfiguration(new SamplesCountCsvConverter())
             )
         };
 

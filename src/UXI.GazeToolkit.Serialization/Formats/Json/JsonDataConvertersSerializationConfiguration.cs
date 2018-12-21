@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace UXI.GazeToolkit.Serialization.Json
         public JsonDataConvertersSerializationConfiguration()
             : base
             (
+                new StringEnumConverter(false),
                 new Point2JsonConverter(),
                 new Point3JsonConverter(),
                 new EyeSampleJsonConverter(),
