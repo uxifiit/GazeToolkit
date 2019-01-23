@@ -51,8 +51,6 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
 
                 serializer.Serialize(writer, point.LeftEye);
                 serializer.Serialize(writer, point.RightEye);
-
-                writer.NextRecord();
             }
         }
 
