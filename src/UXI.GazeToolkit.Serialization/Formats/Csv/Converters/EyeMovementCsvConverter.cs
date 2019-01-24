@@ -20,7 +20,7 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 
             serializer.WriteHeader<Point2>(writer, naming, nameof(EyeMovement.Position));
 
-            serializer.WriteHeader<Point3>(writer, naming, nameof(EyeSample.GazePoint2D));
+            serializer.WriteHeader<Point3>(writer, naming, nameof(EyeSample.GazePoint3D));
             serializer.WriteHeader<Point3>(writer, naming, nameof(EyeSample.EyePosition3D));
 
             writer.WriteField(naming.Get(nameof(EyeSample.PupilDiameter)));
@@ -34,6 +34,7 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
             var movementType = reader.GetField<EyeMovementType>(naming.Get(nameof(EyeMovement.MovementType)));
             var duration = reader.GetField<double>(naming.Get(nameof(EyeMovement.Duration)));
 
+            // TODO null value handling
             var position = serializer.Deserialize<Point2>(reader, naming, nameof(EyeMovement.Position));
 
             var gazePoint3D = serializer.Deserialize<Point3>(reader, naming, nameof(EyeSample.GazePoint3D));
@@ -68,10 +69,30 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 
             serializer.Serialize(writer, data.Position);
 
-            serializer.Serialize(writer, data.AverageSample?.GazePoint3D); // TODO handle nullables in CSV serialization
-            serializer.Serialize(writer, data.AverageSample?.EyePosition3D);
+            // TODO add proper handling of nullables to CSV serialization
+            // until then workaround:
+            if (data.AverageSample != null)
+            {
+                serializer.Serialize(writer, data.AverageSample.GazePoint3D); 
+                serializer.Serialize(writer, data.AverageSample.EyePosition3D);
 
-            writer.WriteField(data.AverageSample?.PupilDiameter);
+                writer.WriteField(data.AverageSample.PupilDiameter);
+            }
+            else
+            {
+                // GazePoint3D
+                writer.WriteField(String.Empty);
+                writer.WriteField(String.Empty);
+                writer.WriteField(String.Empty);
+
+                // EyePosition3D
+                writer.WriteField(String.Empty);
+                writer.WriteField(String.Empty);
+                writer.WriteField(String.Empty);
+
+                // PupilDiameter
+                writer.WriteField(String.Empty);
+            }
         }
     }
 }
