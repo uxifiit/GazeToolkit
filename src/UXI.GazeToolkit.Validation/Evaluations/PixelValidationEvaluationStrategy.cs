@@ -52,7 +52,9 @@ namespace UXI.GazeToolkit.Validation.Evaluations
                              Accuracy = EvaluateAccuracy(validLeftEyeData, point.Point.Position),
                              PrecisionSD = EvaluatePrecisionSD(validLeftEyeData),
                              PrecisionRMS = EvaluatePrecisionRMS(validLeftEyeData),
-                             ValidRatio = (double)validLeftEyeData.Count / validData.Count
+                             ValidRatio = (double)validLeftEyeData.Count / validData.Count,
+                             Distance = CalculateDistance(validLeftEyeData),
+                             PupilDiameter = CalculatePupilDiameter(validLeftEyeData)
                          }
                          : new EyeValidationPointResult() { ValidRatio = 0 },
                          
@@ -62,7 +64,9 @@ namespace UXI.GazeToolkit.Validation.Evaluations
                               Accuracy = EvaluateAccuracy(validRightEyeData, point.Point.Position),
                               PrecisionSD = EvaluatePrecisionSD(validRightEyeData),
                               PrecisionRMS = EvaluatePrecisionRMS(validRightEyeData),
-                              ValidRatio = (double)validRightEyeData.Count / validData.Count
+                              ValidRatio = (double)validRightEyeData.Count / validData.Count,
+                              Distance = CalculateDistance(validRightEyeData),
+                              PupilDiameter = CalculatePupilDiameter(validRightEyeData)
                           }
                           : new EyeValidationPointResult() { ValidRatio = 0 }
             );
@@ -114,6 +118,28 @@ namespace UXI.GazeToolkit.Validation.Evaluations
             );
 
             return rms;
+        }
+
+
+        private double? CalculateDistance(List<EyeData> eyeData)
+        {
+            if (eyeData.Any())
+            {
+                return eyeData.Average(eye => PointUtils.Vectors.GetLength(PointUtils.Vectors.GetVector(eye.EyePosition3D, eye.GazePoint3D)));
+            }
+
+            return null;
+        }
+
+
+        private double? CalculatePupilDiameter(List<EyeData> validRightEyeData)
+        {
+            if (validRightEyeData.Any())
+            {
+                return validRightEyeData.Average(eye => eye.PupilDiameter);
+            }
+
+            return null;
         }
     }
 }

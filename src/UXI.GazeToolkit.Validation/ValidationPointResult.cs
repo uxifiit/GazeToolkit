@@ -36,5 +36,7 @@ namespace UXI.GazeToolkit.Validation
         public double? PrecisionRMS { get; internal set; }
 
         public double? Distance { get; internal set; }
+
+        public double? PupilDiameter { get; internal set; }
     }
 }

@@ -28,6 +28,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
             writer.WriteField(naming.Get(nameof(EyeValidationPointResult.Accuracy)));
             writer.WriteField(naming.Get(nameof(EyeValidationPointResult.ValidRatio)));
             writer.WriteField(naming.Get(nameof(EyeValidationPointResult.Distance)));
+            writer.WriteField(naming.Get(nameof(EyeValidationPointResult.PupilDiameter)));
         }
 
 
@@ -38,6 +39,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
             writer.WriteField(data.Accuracy);
             writer.WriteField(data.ValidRatio);
             writer.WriteField(data.Distance);
+            writer.WriteField(data.PupilDiameter);
         }
     }
 }
