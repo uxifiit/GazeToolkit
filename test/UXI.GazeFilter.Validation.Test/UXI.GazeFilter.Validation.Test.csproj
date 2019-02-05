@@ -45,7 +45,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="UXI.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\UXI.Serialization.0.9.3-alpha\lib\net45\UXI.Serialization.dll</HintPath>
+      <HintPath>..\..\packages\UXI.Serialization.1.0.0\lib\net45\UXI.Serialization.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <Choose>

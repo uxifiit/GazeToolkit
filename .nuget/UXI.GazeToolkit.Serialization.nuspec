@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>UXI.GazeToolkit.Serialization</id>
-    <version>1.4.2-alpha</version>
+    <version>1.4.3</version>
     <title>UXI.GazeToolkit.Serialization</title>
     <authors>UXI Dev</authors>
     <owners>UXI FIIT STUBA</owners>
@@ -14,7 +14,7 @@
     <tags>gaze toolkit fixations serialization csv json</tags>
     <dependencies>
       <dependency id="UXI.GazeToolkit" version="1.1.4" />
-      <dependency id="UXI.Serialization" version="0.9.3-alpha" />
+      <dependency id="UXI.Serialization" version="1.0.0" />
       <dependency id="CsvHelper" version="9.2.3" />
       <dependency id="Newtonsoft.Json" version="11.0.2" />
     </dependencies>
