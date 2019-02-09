@@ -13,7 +13,7 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
     {
         double VelocityThreshold { get; }
 
-        //AveragingStrategy
+        // TODO AveragingStrategy
     }
 
 
@@ -73,80 +73,6 @@ namespace UXI.GazeToolkit.Fixations.VelocityThreshold
                                  return new EyeMovement(movementType, current, averageSample, startTimestamp, endTimestamp);
                              });
         }
-
-     
-
-            //.Buffer(2, 1)
-            //.Scan()
-
-            //.Select(tuple =>
-            //{
-            //    EyeVelocity start = current.First();
-            //    EyeVelocity end = current.Last();
-
-            //    long startTrackerTicks = start.Eye.TrackerTicks;
-            //    TimeSpan startTime = start.Eye.Timestamp;
-
-            //    long endTrackerTicks = end.Eye.TrackerTicks;
-            //    TimeSpan endTime = end.Eye.Timestamp;
-
-            //    EyeMovementType movement = ClassifyMovement(start, velocityThreshold);
-
-
-            //    if (last != EyeMovement.Empty && last.Samples.Any())
-            //    {
-            //        long averageTicksDiff = Math.Max(0, (startTrackerTicks - last.EndTrackerTicks) / 2);
-            //        TimeSpan averageTimestampDiff = TimeSpan.FromTicks(Math.Max(0, (startTime.Ticks - last.EndTime.Ticks) / 2));
-
-            //        last.EndTrackerTicks += averageTicksDiff;
-            //        last.EndTime = last.EndTime.Add(averageTimestampDiff);
-
-            //        startTrackerTicks -= averageTicksDiff;
-            //        startTime = startTime.Subtract(averageTimestampDiff);
-            //    }
-
-            //    EyeSample averageSample = null;
-            //    if (movement == EyeMovementType.Fixation)
-            //    {
-            //        averageSample = EyeSampleUtils.Average(current.Select(s => s.Eye));
-            //    }
-
-            //    return new EyeMovement(movement, current, averageSample, startTrackerTicks, startTime, endTrackerTicks, endTime);
-            //});
-            //.Scan(EyeMovement.Empty, (last, current) =>
-            //{
-            //    EyeVelocity start = current.First();
-            //    EyeVelocity end = current.Last();
-
-            //    long startTrackerTicks = start.Eye.TrackerTicks;
-            //    TimeSpan startTime = start.Eye.Timestamp;
-
-            //    long endTrackerTicks = end.Eye.TrackerTicks;
-            //    TimeSpan endTime = end.Eye.Timestamp;
-
-            //    EyeMovementType movement = ClassifyMovement(start, velocityThreshold);
-
-
-            //    if (last != EyeMovement.Empty && last.Samples.Any())
-            //    {
-            //        long averageTicksDiff = Math.Max(0, (startTrackerTicks - last.EndTrackerTicks) / 2);
-            //        TimeSpan averageTimestampDiff = TimeSpan.FromTicks(Math.Max(0, (startTime.Ticks - last.EndTime.Ticks) / 2));
-
-            //        last.EndTrackerTicks += averageTicksDiff;
-            //        last.EndTime = last.EndTime.Add(averageTimestampDiff);
-
-            //        startTrackerTicks -= averageTicksDiff;
-            //        startTime = startTime.Subtract(averageTimestampDiff);
-            //    }
-
-            //    EyeSample averageSample = null;
-            //    if (movement == EyeMovementType.Fixation)
-            //    {
-            //        averageSample = EyeSampleUtils.Average(current.Select(s => s.Eye));
-            //    }
-
-            //    return new EyeMovement(movement, current, averageSample, startTrackerTicks, startTime, endTrackerTicks, endTime);
-            //});
 
 
         public static IObservable<EyeMovement> ClassifyByVelocity(this IObservable<EyeVelocity> velocities, IVelocityThresholdClassificationOptions options)
