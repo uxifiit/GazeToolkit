@@ -7,6 +7,7 @@ using UXI.GazeToolkit.Serialization.Converters;
 using UXI.GazeToolkit.Serialization.Csv.Converters;
 using UXI.GazeToolkit.Serialization.Csv.TypeConverters;
 using UXI.Serialization;
+using UXI.Serialization.Configurations;
 using UXI.Serialization.Csv;
 using UXI.Serialization.Csv.Converters;
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using UXI.GazeFilter.Validation.Serialization.Csv.Converters;
 using UXI.Serialization;
 using UXI.Serialization.Csv;
+using UXI.Serialization.Csv.Configurations;
 using UXI.Serialization.Csv.Converters;
 
 namespace UXI.GazeToolkit.Validation.Serialization.Csv

@@ -10,7 +10,9 @@ using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Serialization.Csv;
 using UXI.GazeToolkit.Serialization.Json;
 using UXI.Serialization;
+using UXI.Serialization.Configurations;
 using UXI.Serialization.Csv;
+using UXI.Serialization.Csv.Configurations;
 using UXI.Serialization.Json;
 
 namespace UXI.GazeFilter

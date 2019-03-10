@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UXI.GazeToolkit.Serialization.Converters;
 using UXI.GazeToolkit.Serialization.Json.Converters;
 using UXI.Serialization;
+using UXI.Serialization.Configurations;
 
 namespace UXI.GazeToolkit.Serialization.Json
 {

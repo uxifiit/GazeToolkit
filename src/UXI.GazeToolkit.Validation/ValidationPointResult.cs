@@ -27,13 +27,25 @@ namespace UXI.GazeToolkit.Validation
 
     public class EyeValidationPointResult
     {
-        public double? Accuracy { get; internal set; }
+        internal EyeValidationPointResult() { }
 
-        public double ValidRatio { get; internal set; }
+        public EyeValidationPointResult(double? accuracy, double? precisionSD, double? precisionRMS, double validRatio, double? distance, double? pupilDiameter)
+        {
+            Accuracy = accuracy;
+            PrecisionSD = precisionSD;
+            PrecisionRMS = precisionRMS;
+            ValidRatio = validRatio;
+            Distance = distance;
+            PupilDiameter = pupilDiameter;
+        }
+
+        public double? Accuracy { get; internal set; }
 
         public double? PrecisionSD { get; internal set; }
 
         public double? PrecisionRMS { get; internal set; }
+
+        public double ValidRatio { get; internal set; }
 
         public double? Distance { get; internal set; }
 

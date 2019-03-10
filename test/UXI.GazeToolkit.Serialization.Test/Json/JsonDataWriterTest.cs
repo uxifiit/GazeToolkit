@@ -105,7 +105,6 @@ namespace UXI.GazeToolkit.Serialization.Json
                 using (var writer = new JsonDataWriter(sw, serializer))
                 {
                     writer.Write(new object());
-
                 }
 
                 Assert.AreEqual(expected, sw.ToString());

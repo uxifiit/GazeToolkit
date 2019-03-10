@@ -13,6 +13,8 @@ using UXI.GazeToolkit.Serialization.Csv;
 using UXI.Serialization.Csv;
 using UXI.Serialization.Extensions;
 using UXI.GazeToolkit.Serialization;
+using UXI.Serialization.Csv.Configurations;
+using UXI.Serialization.Configurations;
 
 namespace UXI.GazeFilter.Validation.Serialization.Csv
 {
@@ -22,28 +24,6 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
     [TestClass]
     public class ValidationPointCsvReaderTest
     {
-        public ValidationPointCsvReaderTest()
-        {
-        }
-
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
         #region Additional test attributes
         //
         // You can use the following additional attributes as you write your tests:
@@ -261,14 +241,15 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
             }
         }
 
-        
+        // TODO Distinguish required fields in CSV serialization for decision whether throw exception or not. Current solution is not sufficient for the case, when member of a class (nullable type) cannot be deserialized
         [TestMethod]
         [ExpectedException(typeof(SerializationException))]
         public void ReadAll_MissingFieldInRecord_ExceptionThrown()
         {
-            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.Resolve("date") };
+            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.Resolve("ticks") };
             var serialization = new CsvSerializationFactory
             (
+                new RelaySerializationConfiguration<CsvSerializerContext>((serializer, _, __) => { serializer.ThrowOnFailedDeserialize = true; return serializer; }),
                 new CsvDataConvertersSerializationConfiguration(),
                 new CsvTimestampSerializationConfiguration(),
                 new CsvConvertersSerializationConfiguration(new ValidationPointCsvConverter())
@@ -278,7 +259,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
             long endTimeA = startTimeA + TimeSpan.FromSeconds(1).Ticks;
 
             long startTimeB = endTimeA + TimeSpan.FromSeconds(1).Ticks;
-            // long endTimeB = startTimeB + TimeSpan.FromSeconds(1).Ticks;
+            // endTimeB is the missing field
 
             string[] lines = new[]
             {

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UXI.GazeToolkit.Serialization.Json.Converters;
 using UXI.Serialization;
 using UXI.Serialization.Json;
+using UXI.Serialization.Json.Configurations;
 using UXI.Serialization.Json.Converters;
 
 namespace UXI.GazeToolkit.Serialization.Json

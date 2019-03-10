@@ -34,7 +34,7 @@ namespace UXI.GazeToolkit.Fixations
                                     if (lastFixation != null && nextFixation != null)
                                     {
                                         var timeBetweenFixations = (nextFixation.Timestamp - lastFixation.EndTimestamp);
-                                        if (timeBetweenFixations <= maxTimeBetweenFixations) // DELETE (maxTimeBetweenFixations.Ticks / 10)
+                                        if (timeBetweenFixations <= maxTimeBetweenFixations)
                                         {
                                             var lastSample = lastFixation.Samples.Last().Eye;
                                             var nextSample = nextFixation.Samples.First().Eye;

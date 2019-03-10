@@ -11,7 +11,27 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {
     public class GazeDataCsvConverter : CsvConverter<GazeData>
     {
-        public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override bool TryRead(CsvReader reader, CsvSerializerContext serializer, CsvHeaderNamingContext naming, ref GazeData result)
+        {
+            ITimestampedData timestampedData;
+            EyeData leftEye;
+            EyeData rightEye;
+            
+            if (
+                    TryGetMember<ITimestampedData>(reader, serializer, naming, out timestampedData)
+                 && TryGetMember<EyeData>(reader, serializer, naming, "Left",  out leftEye)
+                 && TryGetMember<EyeData>(reader, serializer, naming, "Right", out rightEye)
+               )
+            {
+                result = new GazeData(leftEye, rightEye, timestampedData.Timestamp);
+                return true;
+            }
+
+            return false;
+        }
+
+
+        protected override void WriteHeader(CsvWriter writer, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             serializer.WriteHeader<ITimestampedData>(writer, naming);
 
@@ -20,23 +40,12 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
         }
 
 
-        protected override void WriteCsv(GazeData data, CsvWriter writer, CsvSerializerContext serializer)
+        protected override void Write(GazeData data, CsvWriter writer, CsvSerializerContext serializer)
         {
             serializer.Serialize<ITimestampedData>(writer, data);
 
             serializer.Serialize<EyeData>(writer, data.LeftEye);
             serializer.Serialize<EyeData>(writer, data.RightEye);
-        }
-
-
-        public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
-        {
-            var timestampedData = serializer.Deserialize<ITimestampedData>(reader, naming);
-
-            var leftEye = serializer.Deserialize<EyeData>(reader, naming, "Left");
-            var rightEye = serializer.Deserialize<EyeData>(reader, naming, "Right");
-
-            return new GazeData(leftEye, rightEye, timestampedData.Timestamp);
         }
     }
 }

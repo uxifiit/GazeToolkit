@@ -51,15 +51,11 @@ namespace UXI.GazeToolkit.Serialization.Converters
             }
         }
 
-        // TODO add support for ticks with floating point
         public DateTimeOffset Convert(string value)
         {
             long ticks = Int64.Parse(value);
 
             ticks *= (long)Precision;
-
-            // TODO
-            // check size and increase/decrease to .NET DateTime ticks
 
             return new DateTimeOffset(ticks, TimeZoneInfo.Utc.BaseUtcOffset);
         }

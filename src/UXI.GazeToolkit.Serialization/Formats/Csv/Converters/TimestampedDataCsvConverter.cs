@@ -37,21 +37,27 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
         }
 
 
-        public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override bool TryRead(CsvReader reader, CsvSerializerContext serializer, CsvHeaderNamingContext naming, ref ITimestampedData result)
+        {
+            DateTimeOffset timestamp; 
+
+            if (reader.TryGetField<DateTimeOffset>(naming.Get(_timestampFieldName), out timestamp))
+            {
+                result = new TimestampedData(timestamp);
+                return true;
+            }
+
+            return false;
+        }
+
+
+        protected override void WriteHeader(CsvWriter writer, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             writer.WriteField(naming.Get(_timestampFieldName));
         }
-
-
-        public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
-        {
-            var timestamp = reader.GetField<DateTimeOffset>(naming.Get(_timestampFieldName));
-
-            return new TimestampedData(timestamp);
-        }
-
        
-        protected override void WriteCsv(ITimestampedData data, CsvWriter writer, CsvSerializerContext serializer)
+
+        protected override void Write(ITimestampedData data, CsvWriter writer, CsvSerializerContext serializer)
         {
             writer.WriteField(data.Timestamp);
         }

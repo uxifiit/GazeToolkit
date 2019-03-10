@@ -11,7 +11,7 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {
     public class EyeDataCsvConverter : CsvConverter<EyeData>
     {
-        public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override void WriteHeader(CsvWriter writer, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             writer.WriteField(naming.Get(nameof(EyeData.Validity)));
 
@@ -19,21 +19,29 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
         }
 
 
-        public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override bool TryRead(CsvReader reader, CsvSerializerContext serializer, CsvHeaderNamingContext naming, ref EyeData result)
         {
-            var validity = reader.GetField<EyeValidity>(naming.Get(nameof(EyeData.Validity)));
+            EyeValidity validity;
+            EyeSample sample;
 
-            var sample = serializer.Deserialize<EyeSample>(reader, naming);
+            if (
+                    reader.TryGetField<EyeValidity>(naming.Get(nameof(EyeData.Validity)), out validity)
+                 && TryGetMember<EyeSample>(reader, serializer, naming, out sample)
+               )
+            {
+                result = new EyeData
+                (
+                    validity,
+                    sample
+                );
+                return true;
+            }
 
-            return new EyeData
-            (
-                validity,
-                sample
-            );
+            return false;
         }
 
 
-        protected override void WriteCsv(EyeData data, CsvWriter writer, CsvSerializerContext serializer)
+        protected override void Write(EyeData data, CsvWriter writer, CsvSerializerContext serializer)
         {
             writer.WriteField(data.Validity);
 
