@@ -92,7 +92,7 @@ namespace UXI.GazeToolkit
 
 
         private Point2? position;
-        public Point2 Position => position ?? AverageSample?.GazePoint2D ?? Point2.Zero;
+        public Point2? Position => position ?? AverageSample?.GazePoint2D;
 
 
         public EyeSample AverageSample { get; }

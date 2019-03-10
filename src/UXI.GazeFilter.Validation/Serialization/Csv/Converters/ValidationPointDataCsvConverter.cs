@@ -17,7 +17,13 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
         public override bool CanRead => false;
 
 
-        public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override bool TryRead(CsvReader reader, CsvSerializerContext serializer, CsvHeaderNamingContext naming, ref ValidationPointData result)
+        {
+            throw new NotSupportedException();
+        }
+
+
+        protected override void WriteHeader(CsvWriter writer, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             // Validation,Point,X,Y,<GazeData>
             writer.WriteField(naming.Get(nameof(ValidationPoint.Validation)));
@@ -31,7 +37,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
         }
 
 
-        protected override void WriteCsv(ValidationPointData data, CsvWriter writer, CsvSerializerContext serializer)
+        protected override void Write(ValidationPointData data, CsvWriter writer, CsvSerializerContext serializer)
         {
             bool isNextRecord = false;
 
@@ -53,12 +59,6 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
 
                 serializer.Serialize(writer, sample);
             }
-        }
-
-
-        public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
-        {
-            throw new NotSupportedException();
         }
     }
 }

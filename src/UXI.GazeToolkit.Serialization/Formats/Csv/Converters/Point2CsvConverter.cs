@@ -11,28 +11,32 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {
     public class Point2CsvConverter : CsvConverter<Point2>
     {
-        public override bool CanRead => true;
+        protected override bool TryRead(CsvReader reader, CsvSerializerContext serializer, CsvHeaderNamingContext naming, ref Point2 result)
+        {
+            double x;
+            double y;
+            
+            if (
+                    reader.TryGetField<double>(naming.Get(nameof(Point2.X)), out x)
+                 && reader.TryGetField<double>(naming.Get(nameof(Point2.Y)), out y)
+               )
+            {
+                result = new Point2(x, y);
+                return true;
+            }
 
-        public override bool CanWrite => true;
+            return false;
+        }
 
 
-        public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override void WriteHeader(CsvWriter writer, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             writer.WriteField(naming.Get(nameof(Point2.X)));
             writer.WriteField(naming.Get(nameof(Point2.Y)));
         }
 
 
-        public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
-        {
-            var x = reader.GetField<double>(naming.Get(nameof(Point2.X)));
-            var y = reader.GetField<double>(naming.Get(nameof(Point2.Y)));
-
-            return new Point2(x, y);
-        }
-
-
-        protected override void WriteCsv(Point2 data, CsvWriter writer, CsvSerializerContext serializer)
+        protected override void Write(Point2 data, CsvWriter writer, CsvSerializerContext serializer)
         {
             writer.WriteField(data.X);
             writer.WriteField(data.Y);

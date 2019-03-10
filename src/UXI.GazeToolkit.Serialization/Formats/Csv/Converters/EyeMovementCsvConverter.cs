@@ -11,88 +11,58 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {
     public class EyeMovementCsvConverter : CsvConverter<EyeMovement>
     {
-        public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override void WriteHeader(CsvWriter writer, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             serializer.WriteHeader<ITimestampedData>(writer, naming);
 
             writer.WriteField(naming.Get(nameof(EyeMovement.MovementType)));
             writer.WriteField(naming.Get(nameof(EyeMovement.Duration)));
 
-            serializer.WriteHeader<Point2>(writer, naming, nameof(EyeMovement.Position));
-
-            serializer.WriteHeader<Point3>(writer, naming, nameof(EyeSample.GazePoint3D));
-            serializer.WriteHeader<Point3>(writer, naming, nameof(EyeSample.EyePosition3D));
-
-            writer.WriteField(naming.Get(nameof(EyeSample.PupilDiameter)));
+            serializer.WriteHeader<EyeSample>(writer, naming, "Average");
         }
 
 
-        public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override bool TryRead(CsvReader reader, CsvSerializerContext serializer, CsvHeaderNamingContext naming, ref EyeMovement result)
         {
-            var timestampedData = serializer.Deserialize<ITimestampedData>(reader, naming);
+            ITimestampedData timestampedData;
 
-            var movementType = reader.GetField<EyeMovementType>(naming.Get(nameof(EyeMovement.MovementType)));
-            var duration = reader.GetField<double>(naming.Get(nameof(EyeMovement.Duration)));
+            EyeMovementType movementType;
+            double duration;
 
-            // TODO null value handling
-            var position = serializer.Deserialize<Point2>(reader, naming, nameof(EyeMovement.Position));
+            EyeSample averageSample;
 
-            var gazePoint3D = serializer.Deserialize<Point3>(reader, naming, nameof(EyeSample.GazePoint3D));
-            var eyePosition3D = serializer.Deserialize<Point3>(reader, naming, nameof(EyeSample.EyePosition3D));
+            if (
+                    TryGetMember<ITimestampedData>(reader, serializer, naming, out timestampedData)
 
-            var pupilDiameter = reader.GetField<double>(naming.Get(nameof(EyeSample.PupilDiameter)));
+                 && reader.TryGetField<EyeMovementType>(naming.Get(nameof(EyeMovement.MovementType)), out movementType)
+                 && reader.TryGetField<double>(naming.Get(nameof(EyeMovement.Duration)), out duration)
 
-            var movement = new EyeMovement
-            (
-                movementType,
-                new EyeSample
+                 && TryGetMember<EyeSample>(reader, serializer, naming, "Average", out averageSample)
+               )
+            {
+                result = new EyeMovement
                 (
-                    position,
-                    gazePoint3D,
-                    eyePosition3D,
-                    pupilDiameter
-                ),
-                timestampedData.Timestamp,
-                timestampedData.Timestamp.AddMilliseconds(duration)
-            );
+                    movementType,
+                    averageSample,
+                    timestampedData.Timestamp,
+                    timestampedData.Timestamp.AddMilliseconds(duration)
+                );
 
-            return movement;
+                return true;
+            }
+
+            return false;
         }
 
 
-        protected override void WriteCsv(EyeMovement data, CsvWriter writer, CsvSerializerContext serializer)
+        protected override void Write(EyeMovement data, CsvWriter writer, CsvSerializerContext serializer)
         {
             serializer.Serialize<ITimestampedData>(writer, data);
 
             writer.WriteField(data.MovementType);
             writer.WriteField(data.Duration.TotalMilliseconds);
 
-            serializer.Serialize(writer, data.Position);
-
-            // TODO add proper handling of nullables to CSV serialization
-            // until then workaround:
-            if (data.AverageSample != null)
-            {
-                serializer.Serialize(writer, data.AverageSample.GazePoint3D); 
-                serializer.Serialize(writer, data.AverageSample.EyePosition3D);
-
-                writer.WriteField(data.AverageSample.PupilDiameter);
-            }
-            else
-            {
-                // GazePoint3D
-                writer.WriteField(String.Empty);
-                writer.WriteField(String.Empty);
-                writer.WriteField(String.Empty);
-
-                // EyePosition3D
-                writer.WriteField(String.Empty);
-                writer.WriteField(String.Empty);
-                writer.WriteField(String.Empty);
-
-                // PupilDiameter
-                writer.WriteField(String.Empty);
-            }
+            serializer.Serialize<EyeSample>(writer, data.AverageSample);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {
     public class EyeSampleCsvConverter : CsvConverter<EyeSample>
     {
-        public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override void WriteHeader(CsvWriter writer, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             serializer.WriteHeader<Point2>(writer, naming, nameof(EyeSample.GazePoint2D));
             serializer.WriteHeader<Point3>(writer, naming, nameof(EyeSample.GazePoint3D));
@@ -21,25 +21,38 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
         }
 
 
-        public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override bool TryRead(CsvReader reader, CsvSerializerContext serializer, CsvHeaderNamingContext naming, ref EyeSample result)
         {
-            var gazePoint2D = serializer.Deserialize<Point2>(reader, naming, nameof(EyeData.GazePoint2D));
-            var gazePoint3D = serializer.Deserialize<Point3>(reader, naming, nameof(EyeData.GazePoint3D));
-            var eyePosition3D = serializer.Deserialize<Point3>(reader, naming, nameof(EyeData.EyePosition3D));
+            Point2 gazePoint2D;
+            Point3 gazePoint3D;
+            Point3 eyePosition3D;
 
-            var pupilDiameter = reader.GetField<double>(naming.Get(nameof(EyeData.PupilDiameter)));
+            double pupilDiameter;
 
-            return new EyeSample
-            (
-                gazePoint2D, 
-                gazePoint3D,
-                eyePosition3D, 
-                pupilDiameter
-            );
+            if (
+                    TryGetMember<Point2>(reader, serializer, naming, nameof(EyeData.GazePoint2D), out gazePoint2D)
+                 && TryGetMember<Point3>(reader, serializer, naming, nameof(EyeData.GazePoint3D), out gazePoint3D)
+                 && TryGetMember<Point3>(reader, serializer, naming, nameof(EyeData.EyePosition3D), out eyePosition3D)
+
+                 && reader.TryGetField<double>(naming.Get(nameof(EyeData.PupilDiameter)), out pupilDiameter)
+               )
+            {
+                result = new EyeSample
+                (
+                    gazePoint2D, 
+                    gazePoint3D,
+                    eyePosition3D, 
+                    pupilDiameter
+                );
+
+                return true;
+            }
+
+            return false;
         }
 
 
-        protected override void WriteCsv(EyeSample data, CsvWriter writer, CsvSerializerContext serializer)
+        protected override void Write(EyeSample data, CsvWriter writer, CsvSerializerContext serializer)
         {
             serializer.Serialize(writer, data.GazePoint2D);
             serializer.Serialize(writer, data.GazePoint3D);

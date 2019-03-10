@@ -75,8 +75,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="UXI.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\UXI.Serialization.1.0.0\lib\net45\UXI.Serialization.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\UXI.Serialization.1.5.2\lib\net45\UXI.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -97,7 +96,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UXI.GazeFilter\UXI.GazeFilter.csproj">

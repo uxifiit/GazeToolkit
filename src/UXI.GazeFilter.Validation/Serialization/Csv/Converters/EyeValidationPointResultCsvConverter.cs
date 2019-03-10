@@ -12,31 +12,56 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
 {
     class EyeValidationPointResultCsvConverter : CsvConverter<EyeValidationPointResult>
     {
-        public override bool CanRead => false;
-
-
-        public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override bool TryRead(CsvReader reader, CsvSerializerContext serializer, CsvHeaderNamingContext naming, ref EyeValidationPointResult result)
         {
-            throw new NotSupportedException();
+            double? accuracy;
+            double? precisionSD;
+            double? precisionRMS;
+            double validRatio;
+            double? distance;
+            double? pupilDiameter;
+
+            if (
+                   reader.TryGetField<double?>(naming.Get(nameof(EyeValidationPointResult.Accuracy)), out accuracy)
+                && reader.TryGetField<double?>(naming.Get(nameof(EyeValidationPointResult.PrecisionSD)), out precisionSD)
+                && reader.TryGetField<double?>(naming.Get(nameof(EyeValidationPointResult.PrecisionRMS)), out precisionRMS)
+                && reader.TryGetField<double>(naming.Get(nameof(EyeValidationPointResult.ValidRatio)), out validRatio)
+                && reader.TryGetField<double?>(naming.Get(nameof(EyeValidationPointResult.Distance)), out distance)
+                && reader.TryGetField<double?>(naming.Get(nameof(EyeValidationPointResult.PupilDiameter)), out pupilDiameter)
+               )
+            {
+                result = new EyeValidationPointResult
+                (
+                    accuracy,
+                    precisionSD,
+                    precisionRMS,
+                    validRatio,
+                    distance,
+                    pupilDiameter
+                );
+                return true;
+            }
+
+            return false;
         }
 
 
-        public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override void WriteHeader(CsvWriter writer, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
-            writer.WriteField(naming.Get(nameof(EyeValidationPointResult.PrecisionRMS)));
-            writer.WriteField(naming.Get(nameof(EyeValidationPointResult.PrecisionSD)));
             writer.WriteField(naming.Get(nameof(EyeValidationPointResult.Accuracy)));
+            writer.WriteField(naming.Get(nameof(EyeValidationPointResult.PrecisionSD)));
+            writer.WriteField(naming.Get(nameof(EyeValidationPointResult.PrecisionRMS)));
             writer.WriteField(naming.Get(nameof(EyeValidationPointResult.ValidRatio)));
             writer.WriteField(naming.Get(nameof(EyeValidationPointResult.Distance)));
             writer.WriteField(naming.Get(nameof(EyeValidationPointResult.PupilDiameter)));
         }
 
 
-        protected override void WriteCsv(EyeValidationPointResult data, CsvWriter writer, CsvSerializerContext serializer)
+        protected override void Write(EyeValidationPointResult data, CsvWriter writer, CsvSerializerContext serializer)
         {
-            writer.WriteField(data.PrecisionRMS);
-            writer.WriteField(data.PrecisionSD);
             writer.WriteField(data.Accuracy);
+            writer.WriteField(data.PrecisionSD);
+            writer.WriteField(data.PrecisionRMS);
             writer.WriteField(data.ValidRatio);
             writer.WriteField(data.Distance);
             writer.WriteField(data.PupilDiameter);

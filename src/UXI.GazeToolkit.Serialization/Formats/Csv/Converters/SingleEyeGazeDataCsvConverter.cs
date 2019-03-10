@@ -11,7 +11,25 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {
     public class SingleEyeGazeDataCsvConverter : CsvConverter<SingleEyeGazeData>
     {
-        public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override bool TryRead(CsvReader reader, CsvSerializerContext serializer, CsvHeaderNamingContext naming, ref SingleEyeGazeData result)
+        {
+            ITimestampedData timestampedData;
+            EyeData eyeGazeData;
+
+            if (
+                    TryGetMember<ITimestampedData>(reader, serializer, naming, out timestampedData)
+                 && TryGetMember<EyeData>(reader, serializer, naming, out eyeGazeData)
+               )
+            {
+                result = new SingleEyeGazeData(eyeGazeData, timestampedData.Timestamp);
+                return true;
+            }
+
+            return false;
+        }
+
+
+        protected override void WriteHeader(CsvWriter writer, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
             serializer.WriteHeader<ITimestampedData>(writer, naming);
 
@@ -19,19 +37,9 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
         }
 
 
-        public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override void Write(SingleEyeGazeData data, CsvWriter writer, CsvSerializerContext serializer)
         {
-            var timestampedData = serializer.Deserialize<ITimestampedData>(reader, naming);
-
-            var eyeGazeData = serializer.Deserialize<EyeData>(reader, naming);
-
-            return new SingleEyeGazeData(eyeGazeData, timestampedData.Timestamp);
-        }
-
-
-        protected override void WriteCsv(SingleEyeGazeData data, CsvWriter writer, CsvSerializerContext serializer)
-        {
-            serializer.Serialize<ITimestampedData>(writer, data); // TODO needs to be ITimestampedData
+            serializer.Serialize<ITimestampedData>(writer, data);
 
             serializer.Serialize<EyeData>(writer, data);
         }

@@ -13,33 +13,57 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
 {
     public class ValidationPointCsvConverter : CsvConverter<ValidationPoint>
     {
-        public override bool CanWrite => false;
-
-
-        public override object ReadCsv(CsvReader reader, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override bool TryRead(CsvReader reader, CsvSerializerContext serializer, CsvHeaderNamingContext naming, ref ValidationPoint result)
         {
             // Validation,Point,X,Y,StartTime,EndTime
-            int validation = reader.GetField<int>(naming.Get(nameof(ValidationPoint.Validation)));
-            int point = reader.GetField<int>(naming.Get(nameof(ValidationPoint.Point)));
+            int validation;
+            int point;
+            
+            Point2 position;
 
-            Point2 position = serializer.Deserialize<Point2>(reader, naming);
+            DateTimeOffset startTime;
+            DateTimeOffset endTime;
+            
+            if (
+                    reader.TryGetField<int>(naming.Get(nameof(ValidationPoint.Validation)), out validation)
+                 && reader.TryGetField<int>(naming.Get(nameof(ValidationPoint.Point)), out point)
+                    
+                 && TryGetMember<Point2>(reader, serializer, naming, out position)
 
-            DateTimeOffset startTime = reader.GetField<DateTimeOffset>(naming.Get(nameof(ValidationPoint.StartTime)));
-            DateTimeOffset endTime = reader.GetField<DateTimeOffset>(naming.Get(nameof(ValidationPoint.EndTime)));
+                 && reader.TryGetField<DateTimeOffset>(naming.Get(nameof(ValidationPoint.StartTime)), out startTime)
+                 && reader.TryGetField<DateTimeOffset>(naming.Get(nameof(ValidationPoint.EndTime)), out endTime)
+               )
+            {
+                result = new ValidationPoint(validation, point, position, startTime, endTime);
 
-            return new ValidationPoint(validation, point, position, startTime, endTime);
+                return true;
+            }
+
+            return false;
         }
 
 
-        protected override void WriteCsv(ValidationPoint data, CsvWriter writer, CsvSerializerContext serializer)
+        protected override void Write(ValidationPoint data, CsvWriter writer, CsvSerializerContext serializer)
         {
-            throw new NotSupportedException();
+            writer.WriteField(data.Validation);
+            writer.WriteField(data.Point);
+
+            serializer.Serialize(writer, data.Point);
+
+            writer.WriteField(data.StartTime);
+            writer.WriteField(data.EndTime);
         }
 
 
-        public override void WriteCsvHeader(CsvWriter writer, Type objectType, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
+        protected override void WriteHeader(CsvWriter writer, CsvSerializerContext serializer, CsvHeaderNamingContext naming)
         {
-            throw new NotSupportedException();
+            writer.WriteField(naming.Get(nameof(ValidationPoint.Validation)));
+            writer.WriteField(naming.Get(nameof(ValidationPoint.Point)));
+
+            serializer.WriteHeader<Point2>(writer, naming);
+
+            writer.WriteField(naming.Get(nameof(ValidationPoint.StartTime)));
+            writer.WriteField(naming.Get(nameof(ValidationPoint.EndTime)));
         }
     }
 }

@@ -44,8 +44,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="UXI.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\UXI.Serialization.1.0.0\lib\net45\UXI.Serialization.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\UXI.Serialization.1.5.2\lib\net45\UXI.Serialization.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Choose>
@@ -65,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Converters\TimestampFromTimeSpanConverterTest.cs" />
     <Compile Include="Converters\TimestampStringConverterResolverTest.cs" />
+    <Compile Include="Csv\Converters\EyeMovementCsvConverterTest.cs" />
     <Compile Include="Json\Converters\Point2ConverterTest.cs" />
     <Compile Include="Json\JsonDataWriterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

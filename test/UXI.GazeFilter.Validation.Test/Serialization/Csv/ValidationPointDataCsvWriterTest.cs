@@ -13,6 +13,7 @@ using UXI.GazeToolkit.Serialization.Csv;
 using UXI.GazeToolkit.Serialization.Csv.TypeConverters;
 using UXI.GazeToolkit.Validation;
 using UXI.Serialization.Csv;
+using UXI.Serialization.Csv.Configurations;
 
 namespace UXI.GazeFilter.Validation.Serialization.Csv
 {
