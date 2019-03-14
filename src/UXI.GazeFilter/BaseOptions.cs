@@ -30,8 +30,10 @@ namespace UXI.GazeFilter
         [Option('l', "log", Default = null, HelpText = "Path to the log file. If omitted, standard error stream is used. To suppress log messages, use the -q (--quiet) option.", Required = false)]
         public string LogFile { get; set; }
 
+
         [Option("log-format", Default = FileFormat.Default, HelpText = "Data format of the log. If not specified or the \"Default\" value used, the default format of each logger is used.", Required = false)]
         public FileFormat LogFileFormat { get; set; }
+
 
         [Option('q', "quiet", Default = false, HelpText = "Suppress filter messages.", Required = false)]
         public bool SuppressMessages { get; set; }
