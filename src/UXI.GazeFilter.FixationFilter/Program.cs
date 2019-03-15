@@ -45,8 +45,10 @@ namespace UXI.GazeFilter.FillInGaps
         [Option("denoise", Default = false, HelpText = "Reduce noise in data.", Required = false)]
         public bool IsNoiseReductionEnabled { get; set; }
         
+        
         // IExponentialSmoothingOptions
         public NoiseReductionStrategy NoiseReductionStrategy => NoiseReductionStrategy.Exponential;
+
 
         [Option('a', "denoise-alpha", Default = ExponentialSmoothingFilter.DEFAULT_ALPHA, HelpText = "Alpha parameter for Exponential fmoothing filter", Required = false)]
         public double Alpha { get; set; }
@@ -77,8 +79,10 @@ namespace UXI.GazeFilter.FillInGaps
         [Option('t', "threshold", Default = 30, HelpText = "Fixation movement classification threshold.")]
         public double VelocityThreshold { get; set; }
 
+
         [Option("merge", Default = false, HelpText = "Merge short fixations.", Required = false)]
         public bool IsMergeEnabled { get; set; }
+
 
         // IFixationsMergingOptions
         [Option("merge-max-gap", Default = 75, HelpText = "Max time between fixations used when merging adjacent fixations.")]
@@ -103,6 +107,7 @@ namespace UXI.GazeFilter.FillInGaps
 
         [Option("discard", Default = false, HelpText = "Merge short fixations.", Required = false)]
         public bool IsDiscardEnabled { get; set; }
+
 
         // IFixationsDiscardingOptions
         [Option('d', "discard-min-duration", Default = 60, HelpText = "Minimum fixation duration.")]
