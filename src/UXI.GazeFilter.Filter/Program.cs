@@ -12,18 +12,17 @@ namespace UXI.GazeFilter.Filter
 {
     public abstract class BaseFilterOptions : BaseOptions
     {
-        [Option("--json-indent", Default = false, HelpText = "Use to indent JSON output.", Required = false)]
-        public bool Indent { get; set; }
+        [Option("json-indent", Default = false, HelpText = "Use to indent JSON output.", Required = false)]
+        public bool IndentJsonOutput { get; set; }
 
 
-        [Option("from", Default = false, HelpText = "Minimum timestamp of the data. Must be in the same format as specified with the --timestamp-format option.", Required = false)]
+        [Option("timestamp-from", Default = false, HelpText = "Minimum timestamp of the data. Must be in the same format as specified with the --timestamp-format option.", Required = false)]
         public string FromTimestampString { get; set; }
 
 
         public DateTimeOffset? FromTimestamp { get; set; }
 
-
-        [Option("to", Default = false, HelpText = "Maximum timestamp of the data. Must be in the same format as specified with the --timestamp-format option.", Required = false)]
+        [Option("timestamp-to", Default = false, HelpText = "Maximum timestamp of the data. Must be in the same format as specified with the --timestamp-format option.", Required = false)]
         public string ToTimestampString { get; set; }
 
 
@@ -83,7 +82,7 @@ namespace UXI.GazeFilter.Filter
         private static void Configure(FilterContext context, BaseOptions options)
         {
             var filterOptions = (BaseFilterOptions)options;
-            if (filterOptions.Indent)
+            if (filterOptions.IndentJsonOutput)
             {
                 context.Formats
                        .FirstOrDefault(f => f.Format == Serialization.FileFormat.JSON)?
