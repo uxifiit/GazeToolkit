@@ -12,7 +12,7 @@ namespace UXI.GazeFilter.Filter
 {
     public abstract class BaseFilterOptions : BaseOptions
     {
-        [Option('i', "indent", Default = false, HelpText = "Use to indent JSON output.", Required = false)]
+        [Option("--json-indent", Default = false, HelpText = "Use to indent JSON output.", Required = false)]
         public bool Indent { get; set; }
 
 
@@ -98,12 +98,12 @@ namespace UXI.GazeFilter.Filter
 
             var timestampConverter = context.Serialization.TimestampConverter;
 
-            if (String.IsNullOrWhiteSpace(filterOptions.FromTimestampString))
+            if (String.IsNullOrWhiteSpace(filterOptions.FromTimestampString) == false)
             {
                 filterOptions.FromTimestamp = timestampConverter.Convert(filterOptions.FromTimestampString);
             }
 
-            if (String.IsNullOrWhiteSpace(filterOptions.ToTimestampString))
+            if (String.IsNullOrWhiteSpace(filterOptions.ToTimestampString) == false)
             {
                 filterOptions.ToTimestamp = timestampConverter.Convert(filterOptions.ToTimestampString);
             }
