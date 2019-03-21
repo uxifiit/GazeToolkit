@@ -10,6 +10,7 @@ namespace UXI.GazeToolkit.Serialization.Converters
     {
         public static TimestampStringConverterResolver Default { get; } = new TimestampStringConverterResolver();
 
+
         public ITimestampStringConverter Resolve(string format)
         {
             string[] formatParts = format?.Split(new char[] { ':' }, count: 2, options: StringSplitOptions.RemoveEmptyEntries);
@@ -21,7 +22,7 @@ namespace UXI.GazeToolkit.Serialization.Converters
                                                 ? CreateDefaultConverter()
                                                 : ResolveConverterFromId(converterId);
 
-            // if was not resolved and no configuration is provided but id has value,
+            // if was not resolved and no configuration is provided but converterId has value,
             // value of the converterId may be the configuration for the default converter.
             if (converter == null 
                 && String.IsNullOrWhiteSpace(configuration)

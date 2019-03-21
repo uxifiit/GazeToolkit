@@ -12,38 +12,38 @@ namespace UXI.GazeFilter
     public abstract class BaseOptions
     {
         [Value(0, HelpText = "Path to the input file. If omitted, standard input stream is used.", MetaName = "input file", MetaValue = "FILE", Required = false)]
-        public string InputFile { get; set; }
+        public virtual string InputFile { get; set; }
 
 
         [Option("format", Default = FileFormat.JSON, HelpText = "Data format of the input.")]
-        public FileFormat InputFileFormat { get; set; }
+        public virtual FileFormat InputFileFormat { get; set; }
 
 
         [Option("output-format", Default = FileFormat.Default, HelpText = "Data format of the output. If not specified or the \"Default\" value used, it is the same as input file format.", Required = false)]
-        public FileFormat OutputFileFormat { get; set; }
+        public virtual FileFormat OutputFileFormat { get; set; }
 
 
         [Option('o', "output", Default = null, HelpText = "Path to the output file. If omitted, standard output stream is used.", Required = false)]
-        public string OutputFile { get; set; }
+        public virtual string OutputFile { get; set; }
 
         
         [Option('l', "log", Default = null, HelpText = "Path to the log file. If omitted, standard error stream is used. To suppress log messages, use the -q (--quiet) option.", Required = false)]
-        public string LogFile { get; set; }
+        public virtual string LogFile { get; set; }
 
 
         [Option("log-format", Default = FileFormat.Default, HelpText = "Data format of the log. If not specified or the \"Default\" value used, the default format of each logger is used.", Required = false)]
-        public FileFormat LogFileFormat { get; set; }
+        public virtual FileFormat LogFileFormat { get; set; }
 
 
         [Option('q', "quiet", Default = false, HelpText = "Suppress log messages.", Required = false)]
-        public bool SuppressMessages { get; set; }
+        public virtual bool SuppressMessages { get; set; }
 
 
         [Option("timestamp-format", HelpText = "Format of timestamps in data.", Required = false)]
-        public string TimestampFormat { get; set; }
+        public virtual string TimestampFormat { get; set; }
 
 
         [Option("timestamp-field", HelpText = "Name of the timestamp field in the data.", Required = false)]
-        public string TimestampFieldName { get; set; }
+        public virtual string TimestampFieldName { get; set; }
     }
 }
