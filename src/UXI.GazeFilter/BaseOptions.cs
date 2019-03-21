@@ -35,7 +35,7 @@ namespace UXI.GazeFilter
         public FileFormat LogFileFormat { get; set; }
 
 
-        [Option('q', "quiet", Default = false, HelpText = "Suppress filter messages.", Required = false)]
+        [Option('q', "quiet", Default = false, HelpText = "Suppress log messages.", Required = false)]
         public bool SuppressMessages { get; set; }
 
 
