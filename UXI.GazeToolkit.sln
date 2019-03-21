@@ -56,6 +56,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UXI.GazeToolkit.Test", "tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UXI.GazeToolkit.Serialization.Test", "test\UXI.GazeToolkit.Serialization.Test\UXI.GazeToolkit.Serialization.Test.csproj", "{8DC905FB-2243-4214-8E64-A90D852B689D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UXI.GazeFilter.Filter", "src\UXI.GazeFilter.Filter\UXI.GazeFilter.Filter.csproj", "{239F00F8-1098-4E9F-8515-29861A1AE978}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		ClickOnce|Any CPU = ClickOnce|Any CPU
@@ -171,6 +173,12 @@ Global
 		{8DC905FB-2243-4214-8E64-A90D852B689D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DC905FB-2243-4214-8E64-A90D852B689D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8DC905FB-2243-4214-8E64-A90D852B689D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{239F00F8-1098-4E9F-8515-29861A1AE978}.ClickOnce|Any CPU.ActiveCfg = Release|Any CPU
+		{239F00F8-1098-4E9F-8515-29861A1AE978}.ClickOnce|Any CPU.Build.0 = Release|Any CPU
+		{239F00F8-1098-4E9F-8515-29861A1AE978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{239F00F8-1098-4E9F-8515-29861A1AE978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{239F00F8-1098-4E9F-8515-29861A1AE978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{239F00F8-1098-4E9F-8515-29861A1AE978}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -191,6 +199,7 @@ Global
 		{AB489614-6CBF-47C6-BA10-7B55048AF5F8} = {C9F59E8A-5D7D-4E0D-A870-AC0862083D8E}
 		{2C782C22-3CA1-4C0A-BDF4-C4FBE996F3E9} = {C9F59E8A-5D7D-4E0D-A870-AC0862083D8E}
 		{8DC905FB-2243-4214-8E64-A90D852B689D} = {C9F59E8A-5D7D-4E0D-A870-AC0862083D8E}
+		{239F00F8-1098-4E9F-8515-29861A1AE978} = {AEFDE157-A5F2-4843-997F-34C2C1ECC768}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5FC2B3BD-9A36-4D60-A4A6-A569353A4D43}

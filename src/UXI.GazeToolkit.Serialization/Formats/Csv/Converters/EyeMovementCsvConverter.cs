@@ -27,7 +27,7 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
             ITimestampedData timestampedData;
 
             EyeMovementType movementType;
-            double duration;
+            double durationMilliseconds;
 
             EyeSample averageSample;
 
@@ -35,17 +35,19 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
                     TryGetMember<ITimestampedData>(reader, serializer, naming, out timestampedData)
 
                  && reader.TryGetField<EyeMovementType>(naming.Get(nameof(EyeMovement.MovementType)), out movementType)
-                 && reader.TryGetField<double>(naming.Get(nameof(EyeMovement.Duration)), out duration)
+                 && reader.TryGetField<double>(naming.Get(nameof(EyeMovement.Duration)), out durationMilliseconds)
 
                  && TryGetMember<EyeSample>(reader, serializer, naming, "Average", out averageSample)
                )
             {
+                long durationTicks = (long)(durationMilliseconds * 1000 * 10);
+
                 result = new EyeMovement
                 (
                     movementType,
                     averageSample,
                     timestampedData.Timestamp,
-                    timestampedData.Timestamp.AddMilliseconds(duration)
+                    timestampedData.Timestamp.AddTicks(durationTicks)
                 );
 
                 return true;

@@ -1,16 +1,16 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("UXI.GazeFilter")]
-[assembly: AssemblyDescription("Base library for creating gaze data filter applications")]
+[assembly: AssemblyTitle("UXI.GazeFilter.Filter")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("UXI FIIT STUBA")]
-[assembly: AssemblyProduct("UXI.GazeFilter")]
-[assembly: AssemblyCopyright("Copyright © 2018 UXI FIIT STUBA")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("UXI.GazeFilter.Filter")]
+[assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("11a9e2de-36a1-4468-80dd-74a056d5185d")]
+[assembly: Guid("239f00f8-1098-4e9f-8515-29861a1ae978")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,8 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.6.1.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: InternalsVisibleTo("UXI.GazeFilter.Tests1")]
-[assembly: InternalsVisibleTo("UXI.GazeFilter.Explorables")]
-
