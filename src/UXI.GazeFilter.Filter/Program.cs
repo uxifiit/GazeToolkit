@@ -16,13 +16,14 @@ namespace UXI.GazeFilter.Filter
         public bool IndentJsonOutput { get; set; }
 
 
-        [Option("timestamp-from", Default = false, HelpText = "Minimum timestamp of the data. Must be in the same format as specified with the --timestamp-format option.", Required = false)]
+        [Option("timestamp-from", Default = null, HelpText = "Minimum timestamp of the data. Must be in the same format as specified with the --timestamp-format option.", Required = false)]
         public string FromTimestampString { get; set; }
 
 
         public DateTimeOffset? FromTimestamp { get; set; }
 
-        [Option("timestamp-to", Default = false, HelpText = "Maximum timestamp of the data. Must be in the same format as specified with the --timestamp-format option.", Required = false)]
+
+        [Option("timestamp-to", Default = null, HelpText = "Maximum timestamp of the data. Must be in the same format as specified with the --timestamp-format option.", Required = false)]
         public string ToTimestampString { get; set; }
 
 
