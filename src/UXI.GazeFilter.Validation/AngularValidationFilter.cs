@@ -12,12 +12,14 @@ using UXI.GazeToolkit.Validation;
 using UXI.GazeToolkit.Extensions;
 using UXI.GazeToolkit.Validation.Evaluations;
 using UXI.Serialization;
+using UXI.Filters;
 
 namespace UXI.GazeFilter.Validation
 {
     public class AngularValidationFilter : Filter<ValidationPointData, ValidationResult, AngularOptions>
     {
         private readonly List<DisplayAreaChangedEvent> _displayAreaEvents = new List<DisplayAreaChangedEvent>();
+
 
         private static string ResolveDisplayAreaFilepath(string eyeTrackerDataFilePath)
         {
@@ -29,10 +31,11 @@ namespace UXI.GazeFilter.Validation
             return Path.Combine(directory, eyeTrackerDisplayAreaFilename);
         }
 
+
         protected override void Initialize(AngularOptions options, FilterContext context)
         {
             string displayAreaFile = String.IsNullOrWhiteSpace(options.DisplayAreaFile)
-                                   ? ResolveDisplayAreaFilepath(options.InputFile)
+                                   ? ResolveDisplayAreaFilepath(options.InputFilePath)
                                    : options.DisplayAreaFile;
 
             if (File.Exists(displayAreaFile) == false)
@@ -49,8 +52,9 @@ namespace UXI.GazeFilter.Validation
             }
             else
             {
-                var events = context.IO.ReadInput(displayAreaFile, FileFormat.JSON, typeof(DisplayAreaChangedEvent), context.Serialization)
-                                       .OfType<DisplayAreaChangedEvent>();
+                var events = context.IO
+                                    .ReadInput(displayAreaFile, FileFormat.JSON, typeof(DisplayAreaChangedEvent), null)
+                                    .OfType<DisplayAreaChangedEvent>();
 
                 foreach (var ev in events)
                 {
@@ -59,23 +63,29 @@ namespace UXI.GazeFilter.Validation
             }
         }
 
+
         protected override IObservable<ValidationResult> Process(IObservable<ValidationPointData> data, AngularOptions options)
         {
             var defaultDisplayArea = _displayAreaEvents.Select(e => e.DisplayArea).FirstOrDefault();
 
+            if (defaultDisplayArea == null)
+            {
+                return Observable.Empty<ValidationResult>();
+            }
+
             return data.Buffer((a, b) => a.Point.Validation != b.Point.Validation)
-                       .Select(validation =>
-                       {
-                           var startTime = validation.Min(v => v.Point.StartTime);
-                           var displayArea = _displayAreaEvents.Where(e => e.Timestamp < startTime)
-                                                               .OrderBy(e => e.Timestamp)
-                                                               .Select(e => e.DisplayArea)
-                                                               .LastOrDefault() ?? defaultDisplayArea;
+                        .Select(validation =>
+                        {
+                            var startTime = validation.Min(v => v.Point.StartTime);
+                            var displayArea = _displayAreaEvents.Where(e => e.Timestamp < startTime)
+                                                                .OrderBy(e => e.Timestamp)
+                                                                .Select(e => e.DisplayArea)
+                                                                .LastOrDefault() ?? defaultDisplayArea;
 
-                           var strategy = new AngularValidationEvaluationStrategy(displayArea);
+                            var strategy = new AngularValidationEvaluationStrategy(displayArea);
 
-                           return ValidationEvaluation.Evaluate(validation, strategy);
-                       });
+                            return ValidationEvaluation.Evaluate(validation, strategy);
+                        });
         }
     }
 }

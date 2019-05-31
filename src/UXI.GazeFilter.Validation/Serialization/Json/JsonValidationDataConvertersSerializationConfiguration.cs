@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using UXI.GazeFilter.Validation.Serialization.Json.Converter;
 using UXI.GazeToolkit.Serialization.Json.Converters;
 using UXI.Serialization;
-using UXI.Serialization.Json;
-using UXI.Serialization.Json.Configurations;
-using UXI.Serialization.Json.Converters;
+using UXI.Serialization.Formats.Json;
+using UXI.Serialization.Formats.Json.Configurations;
+using UXI.Serialization.Formats.Json.Converters;
 
 namespace UXI.GazeToolkit.Validation.Serialization.Json
 {

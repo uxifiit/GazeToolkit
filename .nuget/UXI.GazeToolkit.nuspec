@@ -2,21 +2,24 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>UXI.GazeToolkit</id>
-    <version>1.2.0</version>
+    <version>2.0.0</version>
     <title>UXI.GazeToolkit</title>
-    <authors>UXI Dev</authors>
-    <owners>UXI FIIT STUBA</owners>
+    <authors>martinkonopka,uxifiit</authors>
+    <owners>uxifiit</owners>
     <projectUrl>https://github.com/uxifiit/UXI.GazeToolkit</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
+    <repository type="git" url="https://github.com/uxifiit/UXI.GazeToolkit" branch="$branch$" commit="$commit$" />
+    <copyright>Copyright © 2019 Martin Konopka and Faculty of Informatics and Information Technologies, Slovak University of Technology in Bratislava</copyright>
     <description>Toolkit for stream processing eye movement data, fixation filtering, smoothing, etc., using Reactive Extensions.</description>
-    <releaseNotes>Updated Position member of EyeMovement to be nullable.</releaseNotes>
-    <copyright>Copyright &#x00A9; 2018 UXI FIIT STUBA</copyright>
+    <releaseNotes>Public release.</releaseNotes>
     <tags>gaze toolkit fixations filter rx</tags>
     <dependencies>
       <dependency id="System.Reactive" version="3.1.1" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\src\UXI.GazeToolkit\bin\Release\UXI.GazeToolkit.dll" target="lib\net45" />
+    <file src="..\src\UXI.GazeToolkit\bin\$configuration$\UXI.GazeToolkit.dll" target="lib\net45" />
+    <file src="..\LICENSE.txt" target="" />
   </files>
 </package>

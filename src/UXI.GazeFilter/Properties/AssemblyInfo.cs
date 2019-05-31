@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("UXI.GazeFilter")]
 [assembly: AssemblyDescription("Base library for creating gaze data filter applications")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("UXI FIIT STUBA")]
+[assembly: AssemblyCompany("UXI@FIIT")]
 [assembly: AssemblyProduct("UXI.GazeFilter")]
-[assembly: AssemblyCopyright("Copyright © 2018 UXI FIIT STUBA")]
+[assembly: AssemblyCopyright("Copyright © 2019 Martin Konopka and Faculty of Informatics and Information Technologies, Slovak University of Technology in Bratislava")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,8 +32,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.6.1.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: InternalsVisibleTo("UXI.GazeFilter.Tests1")]
-[assembly: InternalsVisibleTo("UXI.GazeFilter.Explorables")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
 

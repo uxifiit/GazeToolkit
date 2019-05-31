@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
-using UXI.Serialization.Json.Extensions;
-using UXI.Serialization.Json.Converters;
+using UXI.Serialization.Formats.Json.Extensions;
+using UXI.Serialization.Formats.Json.Converters;
 using Newtonsoft.Json;
 
 namespace UXI.GazeToolkit.Serialization.Json.Converters

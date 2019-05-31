@@ -2,24 +2,27 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>UXI.GazeToolkit.Serialization</id>
-    <version>1.5.0</version>
+    <version>2.0.0</version>
     <title>UXI.GazeToolkit.Serialization</title>
-    <authors>UXI Dev</authors>
-    <owners>UXI FIIT STUBA</owners>
+    <authors>martinkonopka,uxifiit</authors>
+    <owners>uxifiit</owners>
     <projectUrl>https://github.com/uxifiit/UXI.GazeToolkit</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">LICENSE.txt</license>
+    <repository type="git" url="https://github.com/uxifiit/UXI.GazeToolkit" branch="$branch$" commit="$commit$" />
+    <copyright>Copyright © 2019 Martin Konopka and Faculty of Informatics and Information Technologies, Slovak University of Technology in Bratislava</copyright>
     <description>Support for serialization of data types in UXI.GazeToolkit.</description>
-    <releaseNotes>Added cached write to JsonDataWriter to support both array and object outputs, not just arrays.</releaseNotes>
-    <copyright>Copyright &#x00A9; 2018 UXI FIIT STUBA</copyright>
+    <releaseNotes>Public release.</releaseNotes>
     <tags>gaze toolkit fixations serialization csv json</tags>
     <dependencies>
-      <dependency id="UXI.GazeToolkit" version="1.2.0" />
-      <dependency id="UXI.Serialization" version="1.5.2" />
+      <dependency id="UXI.GazeToolkit" version="2.0.0" />
+      <dependency id="UXI.Serialization" version="2.0.1" />
       <dependency id="CsvHelper" version="9.2.3" />
       <dependency id="Newtonsoft.Json" version="11.0.2" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\src\UXI.GazeToolkit.Serialization\bin\Release\UXI.GazeToolkit.Serialization.dll" target="lib\net45" />
+    <file src="..\src\UXI.GazeToolkit.Serialization\bin\$configuration$\UXI.GazeToolkit.Serialization.dll" target="lib\net45" />
+    <file src="..\LICENSE.txt" target="" />
   </files>
 </package>

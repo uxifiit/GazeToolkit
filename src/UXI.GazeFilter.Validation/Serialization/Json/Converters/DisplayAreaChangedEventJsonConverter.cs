@@ -8,8 +8,8 @@ using Newtonsoft.Json.Linq;
 using UXI.GazeToolkit;
 using UXI.GazeToolkit.Serialization.Json.Converters;
 using UXI.GazeToolkit.Validation;
-using UXI.Serialization.Json.Converters;
-using UXI.Serialization.Json.Extensions;
+using UXI.Serialization.Formats.Json.Converters;
+using UXI.Serialization.Formats.Json.Extensions;
 
 namespace UXI.GazeFilter.Validation.Serialization.Json.Converter
 {

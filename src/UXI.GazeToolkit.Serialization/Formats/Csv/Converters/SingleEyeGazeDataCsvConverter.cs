@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CsvHelper;
-using UXI.Serialization.Csv;
-using UXI.Serialization.Csv.Converters;
+using UXI.Serialization.Formats.Csv;
+using UXI.Serialization.Formats.Csv.Converters;
 
 namespace UXI.GazeToolkit.Serialization.Csv.Converters
 {

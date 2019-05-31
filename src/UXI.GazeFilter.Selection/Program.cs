@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
+using UXI.Filters;
 using UXI.GazeFilter;
 using UXI.GazeToolkit;
 using UXI.GazeToolkit.Selection;
@@ -17,13 +18,14 @@ namespace UXI.GazeFilter.Selection
     }
 
 
+
     static class Program
     {
         static int Main(string[] args)
         {
-            return new SingleFilterHost<EyeSelectionOptions>
+            return new SingleFilterHost<GazeFilterContext, EyeSelectionOptions>
             (
-                new RelayFilter<GazeData, SingleEyeGazeData, EyeSelectionOptions>("Eye selection", (s, o) => s.SelectEye(o))
+                new RelayFilter<GazeData, SingleEyeGazeData, EyeSelectionOptions>("Eye selection", (s, o, _) => s.SelectEye(o))
             ).Execute(args);
         }
     }

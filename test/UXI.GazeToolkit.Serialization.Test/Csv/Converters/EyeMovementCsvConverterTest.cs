@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using UXI.GazeToolkit.Serialization.Converters;
-using UXI.Serialization.Csv;
-using UXI.Serialization.Csv.Configurations;
+using UXI.GazeToolkit.Serialization.Csv.TypeConverters;
+using UXI.Serialization.Configurations;
+using UXI.Serialization.Formats.Csv;
+using UXI.Serialization.Formats.Csv.Configurations;
 using UXI.Serialization.Extensions;
 
 namespace UXI.GazeToolkit.Serialization.Csv.Converters
@@ -20,7 +21,12 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
         {
             var factory = new CsvSerializationFactory
             (
-                new CsvTimestampSerializationConfiguration(),
+                new CsvTimestampedDataSerializationConfiguration("Timestamp"),
+                new RelaySerializationConfiguration<CsvSerializerContext>((serializer, access, settings) =>
+                {
+                    serializer.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetFromTicksTypeConverter());
+                    return serializer;
+                }),
                 new CsvConvertersSerializationConfiguration
                 (
                     new EyeMovementCsvConverter(), 
@@ -31,16 +37,10 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
                 )
             );
 
-            var settings = new SerializationSettings()
-            {
-                TimestampConverter = TimestampStringConverterResolver.Default.Resolve("ticks"),
-                TimestampFieldName = "Timestamp"
-            };
-
             string[] output = null;
 
             using (var result = new StringWriter())
-            using (var writer = factory.CreateWriterForType(result, typeof(EyeMovement), settings))
+            using (var writer = factory.CreateWriterForType(result, typeof(EyeMovement), null))
             {
                 writer.Write(new EyeMovement(EyeMovementType.Fixation, null, new DateTimeOffset(636818976000000000, TimeSpan.Zero), new DateTimeOffset(636818976001200000, TimeSpan.Zero)));
 
@@ -67,7 +67,13 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
         {
             var factory = new CsvSerializationFactory
             (
-                new CsvTimestampSerializationConfiguration(),
+                new CsvTimestampedDataSerializationConfiguration("Timestamp"),
+                
+                new RelaySerializationConfiguration<CsvSerializerContext>((serializer, access, settings) =>
+                {
+                    serializer.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetFromTicksTypeConverter());
+                    return serializer;
+                }),
                 new CsvConvertersSerializationConfiguration
                 (
                     new EyeMovementCsvConverter(),
@@ -77,12 +83,6 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
                     new Point3CsvConverter()
                 )
             );
-
-            var settings = new SerializationSettings()
-            {
-                TimestampConverter = TimestampStringConverterResolver.Default.Resolve("ticks"),
-                TimestampFieldName = "Timestamp"
-            };
 
             string[] csv = new[]
             {
@@ -95,7 +95,7 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
             List<EyeMovement> movements = null;
 
             using (var source = new StringReader(String.Join(Environment.NewLine, csv)))
-            using (var reader = factory.CreateReaderForType(source, typeof(EyeMovement), settings))
+            using (var reader = factory.CreateReaderForType(source, typeof(EyeMovement), null))
             {
                 movements = reader.ReadAll<EyeMovement>()?.ToList();
             }
