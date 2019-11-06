@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
+using UXI.Filters;
 using UXI.GazeFilter;
 using UXI.GazeToolkit;
 using UXI.GazeToolkit.Fixations;
@@ -14,32 +15,39 @@ using UXI.GazeToolkit.Smoothing;
 
 namespace UXI.GazeFilter.FillInGaps
 {
-    public class FixationFilterOptions : BaseOptions, IFillInGapsOptions, IEyeSelectionOptions, IExponentialSmoothingOptions, IVelocityCalculationOptions, IVelocityThresholdClassificationOptions, IFixationsMergingOptions, IFixationsDiscardingOptions
+    public class FixationFilterOptions 
+        : BaseOptions
+        , IFillInGapsOptions
+        , IEyeSelectionOptions
+        , IExponentialSmoothingOptions
+        , IVelocityCalculationOptions
+        , IVelocityThresholdClassificationOptions
+        , IFixationsMergingOptions
+        , IFixationsDiscardingOptions
     {
         [Option("fillin", Default = false, HelpText = "Interpolate gaps in data.", Required = false)]
         public bool IsFillInGapsEnabled { get; set; }
 
         // IFillInGapsOptions
         [Option("fillin-max-gap", Default = 75, HelpText = "Interpolate data in case of missing or invalid data, if the gap in data is less or equal the max gap length.", Required = false)]
-        public double MaxGapLength
+        public double MaxGapDurationMilliseconds
         {
             get
             {
-                return MaxGap.TotalMilliseconds;
+                return MaxGapDuration.TotalMilliseconds;
             }
             set
             {
-                MaxGap = TimeSpan.FromMilliseconds(value);
+                MaxGapDuration = TimeSpan.FromMilliseconds(value);
             }
         }
 
-        public TimeSpan MaxGap { get; private set; }
+        public TimeSpan MaxGapDuration { get; private set; }
 
 
         // IEyeSelectionOptions
         [Option('s', "select", Default = EyeSelectionStrategy.Average, HelpText = "Which eye should be selected for the classification.", Required = true)]
         public EyeSelectionStrategy EyeSelectionStrategy { get; set; }
-
 
 
         [Option("denoise", Default = false, HelpText = "Reduce noise in data.", Required = false)]
@@ -59,20 +67,20 @@ namespace UXI.GazeFilter.FillInGaps
         public int? DataFrequency { get; set; }
 
 
-        [Option('w', "window-side", Default = VelocityCalculationRx.DefaultTimeWindowSideMilliseconds, SetName = "frequency", HelpText = "Time window length in milliseconds to use for measuring frequency of the eye tracking data")]
-        public double TimeWindowSideLength
+        [Option('w', "window-side", Default = VelocityCalculationRx.DefaultTimeWindowHalfDurationMilliseconds, SetName = "frequency", HelpText = "Half of the time window duration in milliseconds to use for measuring frequency of the eye tracking data")]
+        public double TimeWindowHalfDurationMilliseconds
         {
             get
             {
-                return TimeWindowSide.TotalMilliseconds;
+                return TimeWindowHalfDuration.TotalMilliseconds;
             }
             set
             {
-                TimeWindowSide = TimeSpan.FromMilliseconds(value);
+                TimeWindowHalfDuration = TimeSpan.FromMilliseconds(value);
             }
         }
 
-        public TimeSpan TimeWindowSide { get; private set; }
+        public TimeSpan TimeWindowHalfDuration { get; private set; }
 
 
         // IVelocityThresholdClassificationOptions
@@ -86,7 +94,7 @@ namespace UXI.GazeFilter.FillInGaps
 
         // IFixationsMergingOptions
         [Option("merge-max-gap", Default = 75, HelpText = "Max time between fixations used when merging adjacent fixations.")]
-        public double MaxTimeBetweenFixationsLength
+        public double MaxTimeBetweenFixationsMilliseconds
         {
             get
             {
@@ -111,7 +119,7 @@ namespace UXI.GazeFilter.FillInGaps
 
         // IFixationsDiscardingOptions
         [Option('d', "discard-min-duration", Default = 60, HelpText = "Minimum fixation duration.")]
-        public double MinimumFixationDurationLength
+        public double MinimumFixationDurationMilliseconds
         {
             get
             {
@@ -131,9 +139,9 @@ namespace UXI.GazeFilter.FillInGaps
     {
         static int Main(string[] args)
         {
-            return new SingleFilterHost<FixationFilterOptions>
+            return new SingleFilterHost<GazeFilterContext, FixationFilterOptions>
             (   
-                new RelayFilter<GazeData, EyeMovement, FixationFilterOptions>("I-VT Fixation Filtering", (source, o) => {
+                new RelayFilter<GazeData, EyeMovement, FixationFilterOptions>("I-VT Fixation Filtering", (source, o, _) => {
                     var data = o.IsFillInGapsEnabled ? source.FillInGaps(o) : source;
                     var eye = data.SelectEye(o);
                     eye = o.IsNoiseReductionEnabled ? eye.ReduceNoise(o) : eye;

@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UXI.Serialization.Json;
+using UXI.Serialization.Formats.Json;
 
 namespace UXI.GazeToolkit.Serialization.Json
 {

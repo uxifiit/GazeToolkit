@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
+using UXI.Filters;
 using UXI.GazeFilter;
 using UXI.GazeToolkit;
 using UXI.GazeToolkit.Frequency;
@@ -14,7 +15,7 @@ namespace UXI.GazeFilter.Frequency
     public class FrequencyMeasureOptions : BaseOptions, IFrequencyMeasureOptions
     {
         [Option('m', "measure-frequency-window", Default = 1000d, SetName = "frequency", HelpText = "Time window length in milliseconds to use for measuring frequency of the eye tracking data")]
-        public double TimeWindowLength
+        public double TimeWindowMilliseconds
         {
             get
             {
@@ -35,9 +36,9 @@ namespace UXI.GazeFilter.Frequency
     {
         static int Main(string[] args)
         {
-            return new SingleFilterHost<FrequencyMeasureOptions>
+            return new SingleFilterHost<GazeFilterContext, FrequencyMeasureOptions>
             (
-                new RelayFilter<ITimestampedData, int, FrequencyMeasureOptions>("Frequency measure", (s, o) => s.MeasureFrequency(o))
+                new RelayFilter<ITimestampedData, int, FrequencyMeasureOptions>("Frequency measure", (s, o, _) => s.MeasureFrequency(o))
             ).Execute(args);
         }
     }

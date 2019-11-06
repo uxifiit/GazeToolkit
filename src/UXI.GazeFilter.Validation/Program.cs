@@ -14,6 +14,11 @@ using UXI.GazeToolkit.Serialization.Json;
 using UXI.GazeToolkit.Validation;
 using UXI.GazeToolkit.Validation.Serialization.Csv;
 using UXI.GazeToolkit.Validation.Serialization.Json;
+using UXI.Filters;
+using UXI.Serialization;
+using UXI.Serialization.Extensions;
+using UXI.GazeFilter.Validation.Serialization;
+using UXI.Filters.Configuration;
 
 namespace UXI.GazeFilter.Validation
 {
@@ -25,12 +30,14 @@ namespace UXI.GazeFilter.Validation
     }
 
 
+
     [Verb("angular", HelpText = "Performs angular evaluation of gaze data.", Hidden = false)]
     public class AngularOptions : ValidationOptions
     {
         [Option('d', "display", Default = null, HelpText = "Path to the input file with eye tracker display area changed events.", Required = false)]
         public string DisplayAreaFile { get; set; }
     }
+
 
 
     [Verb("pixel", HelpText = "Performs pixel evaluation of gaze data.", Hidden = false)]
@@ -47,38 +54,32 @@ namespace UXI.GazeFilter.Validation
     }
 
 
+
     static class Program
     {
         static int Main(string[] args)
         {
-            return new MultiFilterHost
+            return new MultiFilterHost<GazeFilterContext>
             (
-                (context, options) => Configure(context, options),
-                new MapGazeDataToValidationPointsFilter<ValidationOptions>(),
-                new FilterPipeline<GazeData, ValidationResult, AngularOptions>
-                (
-                    new MapGazeDataToValidationPointsFilter<AngularOptions>(),
-                    new AngularValidationFilter()
-                ),
-                new FilterPipeline<GazeData, ValidationResult, PixelOptions>
-                (
-                    new MapGazeDataToValidationPointsFilter<PixelOptions>(),
-                    new PixelValidationFilter()
-                )
+                configurations: new FilterConfiguration[]
+                {
+                    new ValidationDataSerializationFilterConfiguration()
+                },
+                filters: new IFilter[]
+                {
+                    new MapGazeDataToValidationPointsFilter<ValidationOptions>(),
+                    new FilterPipeline<AngularOptions>
+                    (
+                        new MapGazeDataToValidationPointsFilter<AngularOptions>(),
+                        new AngularValidationFilter()
+                    ),
+                    new FilterPipeline<PixelOptions>
+                    (
+                        new MapGazeDataToValidationPointsFilter<PixelOptions>(),
+                        new PixelValidationFilter()
+                    )
+                }
             ).Execute(args);
-        }
-
-        private static void Configure(FilterContext context, BaseOptions options)
-        {
-            context.Formats
-                   .FirstOrDefault(f => f.Format == UXI.Serialization.FileFormat.JSON)?
-                   .Configurations
-                   .Add(new JsonValidationDataConvertersSerializationConfiguration());
-
-            context.Formats
-                   .FirstOrDefault(f => f.Format == UXI.Serialization.FileFormat.CSV)?
-                   .Configurations
-                   .Add(new CsvValidationDataConvertersSerializationConfiguration());
         }
     }
 }

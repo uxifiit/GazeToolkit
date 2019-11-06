@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
+using UXI.Filters;
+using UXI.Filters.Configuration;
 using UXI.GazeFilter;
 using UXI.GazeToolkit;
 using UXI.GazeToolkit.Fixations;
@@ -14,7 +16,7 @@ namespace UXI.GazeFilter.DiscardFixations
     public class FixationsDiscardingOptions : BaseOptions, IFixationsDiscardingOptions
     {
         [Option('d', "min-duration", Default = 60, HelpText = "Minimum fixation duration.")]
-        public double MinimumFixationDurationLength
+        public double MinimumFixationDurationMilliseconds
         {
             get
             {
@@ -30,13 +32,14 @@ namespace UXI.GazeFilter.DiscardFixations
     }
 
 
+
     static class Program
     {
         static int Main(string[] args)
         {
-            return new SingleFilterHost<FixationsDiscardingOptions>
+            return new SingleFilterHost<GazeFilterContext, FixationsDiscardingOptions>
             (
-                new RelayFilter<EyeMovement, EyeMovement, FixationsDiscardingOptions>("Discard short fixations", (s, o) => s.DiscardShortFixations(o))
+                new RelayFilter<EyeMovement, EyeMovement, FixationsDiscardingOptions>("Discard short fixations", (s, o, _) => s.DiscardShortFixations(o))
             ).Execute(args);
         }
     }
