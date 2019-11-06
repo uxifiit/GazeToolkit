@@ -5,17 +5,15 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
+using UXI.Filters;
+using UXI.Filters.Configuration;
+using UXI.Filters.Serialization.Converters;
 using UXI.GazeToolkit;
-using UXI.Serialization.Configurations;
 
 namespace UXI.GazeFilter.Filter
 {
     public abstract class BaseFilterOptions : BaseOptions
     {
-        [Option("json-indent", Default = false, HelpText = "Use to indent JSON output.", Required = false)]
-        public bool IndentJsonOutput { get; set; }
-
-
         [Option("timestamp-from", Default = null, HelpText = "Minimum timestamp of the data. Must be in the same format as specified with the --timestamp-format option.", Required = false)]
         public string FromTimestampString { get; set; }
 
@@ -51,13 +49,32 @@ namespace UXI.GazeFilter.Filter
     {
         static int Main(string[] args)
         {
-            return new MultiFilterHost
+            return new MultiFilterHost<GazeFilterContext>
             (
-                Configure,
-                new RelayFilter<GazeData, GazeData, FilterGazeDataOptions>("Filter Gaze Data", (s, o) => FilterByTimestamps(s, o)),
-                new RelayFilter<EyeMovement, EyeMovement, FilterEyeMovementOptions>("Filter Eye Movement", (s, o) => FilterByTimestamps(s, o)),
-                new RelayFilter<SingleEyeGazeData, SingleEyeGazeData, FilterSingleEyeGazeDataOptions>("Filter Single Eye Gaze Data", (s, o) => FilterByTimestamps(s, o))
+                new FilterConfiguration[] 
+                {
+                    new RelayFilterConfiguration<BaseFilterOptions>(Configure)
+                },
+                new RelayFilter<GazeData, GazeData, FilterGazeDataOptions>("Filter Gaze Data", (s, o, _) => FilterByTimestamps(s, o)),
+                new RelayFilter<EyeMovement, EyeMovement, FilterEyeMovementOptions>("Filter Eye Movement", (s, o, _) => FilterByTimestamps(s, o)),
+                new RelayFilter<SingleEyeGazeData, SingleEyeGazeData, FilterSingleEyeGazeDataOptions>("Filter Single Eye Gaze Data", (s, o, _) => FilterByTimestamps(s, o))
             ).Execute(args);
+        }
+
+
+        private static void Configure(FilterContext context, BaseFilterOptions options)
+        {
+            ITimestampStringConverter timestampConverter = TimestampStringConverterResolver.Default.Resolve(options.TimestampFormat);
+
+            if (String.IsNullOrWhiteSpace(options.FromTimestampString) == false)
+            {
+                options.FromTimestamp = timestampConverter.Convert(options.FromTimestampString);
+            }
+
+            if (String.IsNullOrWhiteSpace(options.ToTimestampString) == false)
+            {
+                options.ToTimestamp = timestampConverter.Convert(options.ToTimestampString);
+            }
         }
 
 
@@ -77,36 +94,6 @@ namespace UXI.GazeFilter.Filter
             }
 
             return result;
-        }
-
-
-        private static void Configure(FilterContext context, BaseOptions options)
-        {
-            var filterOptions = (BaseFilterOptions)options;
-            if (filterOptions.IndentJsonOutput)
-            {
-                context.Formats
-                       .FirstOrDefault(f => f.Format == Serialization.FileFormat.JSON)?
-                       .Configurations
-                       .Add(new RelaySerializationConfiguration<Newtonsoft.Json.JsonSerializer>((serializer, access, _) =>
-                       {
-                           serializer.Formatting = Newtonsoft.Json.Formatting.Indented;
-
-                           return serializer;
-                       }));
-            }
-
-            var timestampConverter = context.Serialization.TimestampConverter;
-
-            if (String.IsNullOrWhiteSpace(filterOptions.FromTimestampString) == false)
-            {
-                filterOptions.FromTimestamp = timestampConverter.Convert(filterOptions.FromTimestampString);
-            }
-
-            if (String.IsNullOrWhiteSpace(filterOptions.ToTimestampString) == false)
-            {
-                filterOptions.ToTimestamp = timestampConverter.Convert(filterOptions.ToTimestampString);
-            }
         }
     }
 }

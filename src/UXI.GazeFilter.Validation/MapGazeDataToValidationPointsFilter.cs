@@ -11,6 +11,7 @@ using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Validation;
 using UXI.GazeToolkit.Extensions;
 using UXI.Serialization;
+using UXI.Filters;
 
 namespace UXI.GazeFilter.Validation
 {
@@ -22,25 +23,33 @@ namespace UXI.GazeFilter.Validation
 
         protected override void Initialize(TValidationOptions options, FilterContext context)
         {
-            //if (File.Exists(options.ValidationPointsFile) == false)
-            //{
-            //    Console.Error.WriteLine($"Validation points file not found at: {options.ValidationPointsFile}");
-            //    return null;
-            //}
-            var points = context.IO.ReadInput(options.ValidationPointsFile, FileFormat.CSV, typeof(ValidationPoint), context.Serialization)
-                                   .OfType<ValidationPoint>();
-
-            foreach (var point in points)
+            if (File.Exists(options.ValidationPointsFile) == false)
             {
-                _points.Add(point);
+                Console.Error.WriteLine($"Validation points file not found at: {options.ValidationPointsFile}");
             }
+            else
+            {
+                var points = context.IO
+                                    .ReadInput(options.ValidationPointsFile, FileFormat.CSV, typeof(ValidationPoint), null)
+                                    .OfType<ValidationPoint>();
 
-            _points.Sort((a, b) => a.StartTime.CompareTo(b.StartTime));
+                foreach (var point in points)
+                {
+                    _points.Add(point);
+                }
+
+                _points.Sort((a, b) => a.StartTime.CompareTo(b.StartTime));
+            }
         }
 
 
         protected override IObservable<ValidationPointData> Process(IObservable<GazeData> data, TValidationOptions options)
         {
+            if (_points.Any() == false)
+            {
+                return Observable.Empty<ValidationPointData>();
+            }
+
             return Observable.Create<ValidationPointData>(observer =>
             {
                 var points = _points.GetEnumerator();

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
+using UXI.Filters;
 using UXI.GazeToolkit;
 using UXI.GazeToolkit.Fixations.VelocityThreshold;
 using UXI.GazeToolkit.Smoothing;
@@ -20,6 +21,7 @@ namespace UXI.GazeFilter.ReduceNoise
     }
 
 
+
     [Verb("exponential")]
     public class ExponentialSmoothingOptions : BaseOptions, IExponentialSmoothingOptions
     {
@@ -30,14 +32,15 @@ namespace UXI.GazeFilter.ReduceNoise
     }
 
 
+
     static class Program
     {
         static int Main(string[] args)
         {
-            return new MultiFilterHost
+            return new MultiFilterHost<GazeFilterContext>
             (
-                new RelayFilter<SingleEyeGazeData, SingleEyeGazeData, MovingAverageSmoothingOptions>("Reduce noise - Moving average smoothing", (s, o) => s.ReduceNoise(o)),
-                new RelayFilter<SingleEyeGazeData, SingleEyeGazeData, ExponentialSmoothingOptions>("Reduce noise - Exponential smoothing", (s, o) => s.ReduceNoise(o))
+                new RelayFilter<SingleEyeGazeData, SingleEyeGazeData, MovingAverageSmoothingOptions>("Reduce noise - Moving average smoothing", (s, o, _) => s.ReduceNoise(o)),
+                new RelayFilter<SingleEyeGazeData, SingleEyeGazeData, ExponentialSmoothingOptions>("Reduce noise - Exponential smoothing", (s, o, _) => s.ReduceNoise(o))
             ).Execute(args);
         }
     }

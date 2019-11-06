@@ -11,6 +11,7 @@ using UXI.GazeToolkit.Serialization;
 using UXI.GazeToolkit.Validation;
 using UXI.GazeToolkit.Extensions;
 using UXI.GazeToolkit.Validation.Evaluations;
+using UXI.Filters;
 
 namespace UXI.GazeFilter.Validation
 {

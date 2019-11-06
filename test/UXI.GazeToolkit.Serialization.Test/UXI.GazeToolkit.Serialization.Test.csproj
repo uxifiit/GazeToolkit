@@ -43,8 +43,8 @@
       <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="UXI.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\UXI.Serialization.1.5.2\lib\net45\UXI.Serialization.dll</HintPath>
+    <Reference Include="UXI.Serialization, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\UXI.Serialization.2.0.1\lib\net45\UXI.Serialization.dll</HintPath>
     </Reference>
   </ItemGroup>
   <Choose>
@@ -62,8 +62,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Converters\TimestampFromTimeSpanConverterTest.cs" />
-    <Compile Include="Converters\TimestampStringConverterResolverTest.cs" />
+    <Compile Include="Csv\TypeConverters\DateTimeOffsetFromTicksTypeConverter.cs" />
     <Compile Include="Csv\Converters\EyeMovementCsvConverterTest.cs" />
     <Compile Include="Json\Converters\Point2ConverterTest.cs" />
     <Compile Include="Json\JsonDataWriterTest.cs" />

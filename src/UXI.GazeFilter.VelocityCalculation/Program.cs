@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
+using UXI.Filters;
 using UXI.GazeFilter;
 using UXI.GazeToolkit;
 using UXI.GazeToolkit.Fixations.VelocityThreshold;
@@ -16,30 +17,31 @@ namespace UXI.GazeFilter.VelocityCalculation
         public int? DataFrequency { get; set; }
 
 
-        [Option('w', "window-side", Default = VelocityCalculationRx.DefaultTimeWindowSideMilliseconds, SetName = "frequency", HelpText = "Time window length in milliseconds to use for measuring frequency of the eye tracking data")]
-        public double TimeWindowSideLength
+        [Option('w', "window-side", Default = VelocityCalculationRx.DefaultTimeWindowHalfDurationMilliseconds, SetName = "frequency", HelpText = "Time window length in milliseconds to use for measuring frequency of the eye tracking data")]
+        public double TimeWindowHalfDurationMilliseconds
         {
             get
             {
-                return TimeWindowSide.TotalMilliseconds;
+                return TimeWindowHalfDuration.TotalMilliseconds;
             }
             set
             {
-                TimeWindowSide = TimeSpan.FromMilliseconds(value);
+                TimeWindowHalfDuration = TimeSpan.FromMilliseconds(value);
             }
         }
 
-        public TimeSpan TimeWindowSide { get; private set; }
+        public TimeSpan TimeWindowHalfDuration { get; private set; }
     }
+
 
 
     static class Program
     {
         static int Main(string[] args)
         {
-            return new SingleFilterHost<VelocityCalculationOptions>
+            return new SingleFilterHost<GazeFilterContext, VelocityCalculationOptions>
             (
-                new RelayFilter<SingleEyeGazeData, EyeVelocity, VelocityCalculationOptions>("Eye velocity calculation", (s, o) => s.CalculateVelocities(o))
+                new RelayFilter<SingleEyeGazeData, EyeVelocity, VelocityCalculationOptions>("Eye velocity calculation", (s, o, _) => s.CalculateVelocities(o))
             ).Execute(args);
         }
     }

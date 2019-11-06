@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 using UXI.GazeFilter.Validation.Serialization.Csv.Converters;
 using UXI.GazeToolkit;
 using UXI.GazeToolkit.Serialization;
-using UXI.GazeToolkit.Serialization.Converters;
 using UXI.GazeToolkit.Serialization.Csv;
-using UXI.GazeToolkit.Serialization.Csv.TypeConverters;
 using UXI.GazeToolkit.Validation;
-using UXI.Serialization.Csv;
-using UXI.Serialization.Csv.Configurations;
+using UXI.Serialization.Formats.Csv;
+using UXI.Serialization.Formats.Csv.Configurations;
+using UXI.Filters.Serialization.Csv;
+using UXI.Filters.Serialization.Converters;
 
 namespace UXI.GazeFilter.Validation.Serialization.Csv
 {
@@ -98,11 +98,11 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [TestMethod]
         public void Write_SinglePointSingleData()
         {
-            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.CreateDefaultConverter() };
             var serialization = new CsvSerializationFactory
             (
-                new CsvDataConvertersSerializationConfiguration(),
-                new CsvTimestampSerializationConfiguration(),
+                new CsvGazeToolkitDataConvertersSerializationConfiguration(),
+                new CsvTimestampedDataSerializationConfiguration("Timestamp"),
+                new CsvTimestampSerializationConfiguration(TimestampStringConverterResolver.Default.CreateDefaultConverter()),
                 new CsvConvertersSerializationConfiguration(new ValidationPointDataCsvConverter())
             );
 
@@ -112,7 +112,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
             StringBuilder sb = new StringBuilder();
 
             using (var output = new StringWriter(sb) { NewLine = NewLineDelimiter })
-            using (var writer = serialization.CreateWriterForType(output, typeof(ValidationPointData), settings))
+            using (var writer = serialization.CreateWriterForType(output, typeof(ValidationPointData), null))
             {
                 foreach (var point in data)
                 {
@@ -130,11 +130,11 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [TestMethod]
         public void Write_SinglePointMultipleData()
         {
-            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.CreateDefaultConverter() };
             var serialization = new CsvSerializationFactory
             (
-                new CsvDataConvertersSerializationConfiguration(),
-                new CsvTimestampSerializationConfiguration(),
+                new CsvGazeToolkitDataConvertersSerializationConfiguration(),
+                new CsvTimestampedDataSerializationConfiguration("Timestamp"),
+                new CsvTimestampSerializationConfiguration(TimestampStringConverterResolver.Default.CreateDefaultConverter()),
                 new CsvConvertersSerializationConfiguration(new ValidationPointDataCsvConverter())
             );
 
@@ -144,7 +144,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
             StringBuilder sb = new StringBuilder();
 
             using (var output = new StringWriter(sb) { NewLine = NewLineDelimiter })
-            using (var writer = serialization.CreateWriterForType(output, typeof(ValidationPointData), settings))
+            using (var writer = serialization.CreateWriterForType(output, typeof(ValidationPointData), null))
             {
                 foreach (var point in data)
                 {
@@ -163,11 +163,11 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [TestMethod]
         public void Write_MultiplePointsMultipleData()
         {
-            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.CreateDefaultConverter() };
             var serialization = new CsvSerializationFactory
             (
-                new CsvDataConvertersSerializationConfiguration(),
-                new CsvTimestampSerializationConfiguration(),
+                new CsvGazeToolkitDataConvertersSerializationConfiguration(),
+                new CsvTimestampedDataSerializationConfiguration("Timestamp"),
+                new CsvTimestampSerializationConfiguration(TimestampStringConverterResolver.Default.CreateDefaultConverter()),
                 new CsvConvertersSerializationConfiguration(new ValidationPointDataCsvConverter())
             );
 
@@ -177,7 +177,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
             StringBuilder sb = new StringBuilder();
 
             using (var output = new StringWriter(sb) { NewLine = NewLineDelimiter })
-            using (var writer = serialization.CreateWriterForType(output, typeof(ValidationPointData), settings))
+            using (var writer = serialization.CreateWriterForType(output, typeof(ValidationPointData), null))
             {
                 foreach (var point in data)
                 {
@@ -195,11 +195,11 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
         [TestMethod]
         public void Write_NoRecord()
         {
-            var settings = new SerializationSettings() { TimestampConverter = TimestampStringConverterResolver.Default.CreateDefaultConverter() };
             var serialization = new CsvSerializationFactory
             (
-                new CsvDataConvertersSerializationConfiguration(),
-                new CsvTimestampSerializationConfiguration(),
+                new CsvGazeToolkitDataConvertersSerializationConfiguration(),
+                new CsvTimestampedDataSerializationConfiguration("Timestamp"),
+                new CsvTimestampSerializationConfiguration(TimestampStringConverterResolver.Default.CreateDefaultConverter()),
                 new CsvConvertersSerializationConfiguration(new ValidationPointDataCsvConverter())
             );
 
@@ -209,7 +209,7 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv
             StringBuilder sb = new StringBuilder();
 
             using (var output = new StringWriter(sb) { NewLine = NewLineDelimiter })
-            using (var writer = serialization.CreateWriterForType(output, typeof(ValidationPointData), settings))
+            using (var writer = serialization.CreateWriterForType(output, typeof(ValidationPointData), null))
             {
                 foreach (var point in data)
                 {
