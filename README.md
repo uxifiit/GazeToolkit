@@ -1,5 +1,6 @@
 ﻿# UXIsk GazeToolkit
 
+[![Build Status](https://dev.azure.com/uxifiit/GazeToolkit/_apis/build/status/uxifiit.GazeToolkit?branchName=master)](https://dev.azure.com/uxifiit/GazeToolkit/_build/latest?definitionId=6&branchName=master) [![UXI.GazeToolkit package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/875e4574-b18a-49ff-8cf1-55b220af2355/_apis/public/Packaging/Feeds/f25beb4b-f7d5-4466-9073-a54052469941/Packages/d722b395-dbe8-41c8-9dd3-d1fcbf733861/Badge)](https://dev.azure.com/uxifiit/UXI.Libs/_packaging?_a=package&feed=f25beb4b-f7d5-4466-9073-a54052469941&package=d722b395-dbe8-41c8-9dd3-d1fcbf733861&preferRelease=true)
 
 This repository contains `UXI.GazeToolkit` library for filtering and processing streams of gaze data, eye movement classification and data validations for .NET projects. Individual filters from the library are also available as separate console applications.
 
@@ -277,10 +278,13 @@ filter.exe gaze gaze.json --timestamp-format date --output gaze.csv
 
 
 The following libraries from this repository are available as NuGet packages:
-* `UXI.GazeToolkit`
-* `UXI.GazeToolkit.Serialization`
-* `UXI.GazeToolkit.Validation`
-* `UXI.GazeFilter`
+
+|Library |Package|
+|--------|:-----:|
+|UXI.GazeToolkit|[![UXI.GazeToolkit package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/875e4574-b18a-49ff-8cf1-55b220af2355/_apis/public/Packaging/Feeds/f25beb4b-f7d5-4466-9073-a54052469941/Packages/d722b395-dbe8-41c8-9dd3-d1fcbf733861/Badge)](https://dev.azure.com/uxifiit/UXI.Libs/_packaging?_a=package&feed=f25beb4b-f7d5-4466-9073-a54052469941&package=d722b395-dbe8-41c8-9dd3-d1fcbf733861&preferRelease=true)|
+|UXI.GazeToolkit.Serialization|[![UXI.GazeToolkit.Serialization package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/875e4574-b18a-49ff-8cf1-55b220af2355/_apis/public/Packaging/Feeds/f25beb4b-f7d5-4466-9073-a54052469941/Packages/d19b3e2d-813c-40d3-8a58-3381bd21822a/Badge)](https://dev.azure.com/uxifiit/UXI.Libs/_packaging?_a=package&feed=f25beb4b-f7d5-4466-9073-a54052469941&package=d19b3e2d-813c-40d3-8a58-3381bd21822a&preferRelease=true)|
+|UXI.GazeToolkit.Validation|[![UXI.GazeToolkit.Validation package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/875e4574-b18a-49ff-8cf1-55b220af2355/_apis/public/Packaging/Feeds/f25beb4b-f7d5-4466-9073-a54052469941/Packages/5c0d6bde-1556-40b2-908b-eba6d17fec24/Badge)](https://dev.azure.com/uxifiit/UXI.Libs/_packaging?_a=package&feed=f25beb4b-f7d5-4466-9073-a54052469941&package=5c0d6bde-1556-40b2-908b-eba6d17fec24&preferRelease=true)|
+|UXI.GazeFilter|[![UXI.GazeFilter package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/875e4574-b18a-49ff-8cf1-55b220af2355/_apis/public/Packaging/Feeds/f25beb4b-f7d5-4466-9073-a54052469941/Packages/e73b111c-0101-42fe-b1c6-5df5f6501fa8/Badge)](https://dev.azure.com/uxifiit/UXI.Libs/_packaging?_a=package&feed=f25beb4b-f7d5-4466-9073-a54052469941&package=e73b111c-0101-42fe-b1c6-5df5f6501fa8&preferRelease=true)|
 
 NuGet packages are available in the public Azure DevOps artifacts repository shared with [UXI.Libs](https://github.com/uxifiit/UXI.Libs):
 ```
