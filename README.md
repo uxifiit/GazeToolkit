@@ -220,7 +220,7 @@ i-vt.exe gaze.json ^
 Description of used parameters: 
 * `--timestamp-format` - format of timestamps in data, see [Flexible Timestamp Formatting](#Flexible-Timestamp-Formatting) above for more details. 
 * `--timestamp-field` - name of the timestamp field in data; if not specified, `Timestamp` is used.
-* `--format` - format of the input data; if ommitted, it is resolved from the input filename extension, or `JSON` is used, if the extension was not recognized or the input file was not specified (input is read from the standard input stream).
+* `--format` - format of the input data; if omitted, it is resolved from the input filename extension, or `JSON` is used, if the extension was not recognized or the input file was not specified (input is read from the standard input stream).
 * `--frequency` - frequency of input data in number of samples per second.
 * `--fillin` - enables interpolating missing data with max gap set in `--fillin-max-gap`.
 * `--select` - which eye to select from the input gaze data: `Left`, `Right`, `Average` (average of both or any eye with valid data in the sample) or `StrictAverage` (average only if data of both eyes are valid, otherwise it is invalid sample).
@@ -265,7 +265,7 @@ discard.exe --min-duration 60 --timestamp-format date > movements.json
 
 ### Using the CSV serialization format
 
-JSON is the default serialization format of gaze filters, but CSV can also be used. Filters can read data in one format and output in other too. Use `--format` for specifying input data format and `--output-format` for output data format. If the data is read from or written to a file with `.json` or `.csv` extension, the formatting options can be ommitted.
+JSON is the default serialization format of gaze filters, but CSV can also be used. Filters can read data in one format and output in other too. Use `--format` for specifying input data format and `--output-format` for output data format. If the data is read from or written to a file with `.json` or `.csv` extension, the formatting options can be omitted.
 
 The following line will execute `Filter` (see [Other Filters](#Other-Filters)) to read `GazeData` objects from `gaze.json` in JSON format with timestamps in `date` format and write them to `gaze.csv` in CSV format.
 
