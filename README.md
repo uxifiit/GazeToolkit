@@ -141,7 +141,7 @@ The main type of input data is raw gaze data in [GazeData](src/UXI.GazeToolkit/G
 
 #### Data Format
 Format your input data into JSON or CSV formats as below:
-```json
+```javascript
 [ 
     {
         "Timestamp": "2019-02-20T14:30:19.8526299+01:00",
