@@ -23,7 +23,7 @@ namespace UXI.GazeFilter
         public virtual string InputFilePath { get; set; }
 
 
-        [Option("format", Default = FileFormat.JSON, HelpText = "Data format of the input.")]
+        [Option("format", Default = FileFormat.Default, HelpText = "Data format of the input.")]
         public virtual FileFormat InputFileFormat { get; set; }
 
 
