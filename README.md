@@ -349,7 +349,7 @@ Use [Issues](issues) to request features, report bugs, or discuss ideas.
 
 ## License
 
-UXI.Filters is licensed under the 3-Clause BSD License - see [LICENSE.txt](LICENSE.txt) for details.
+UXI.GazeToolkit is licensed under the 3-Clause BSD License - see [LICENSE.txt](LICENSE.txt) for details.
 
 Copyright (c) 2019 Martin Konopka and Faculty of Informatics and Information Technologies, Slovak University of Technology in Bratislava.
 
