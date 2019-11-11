@@ -1,6 +1,6 @@
 ﻿# UXIsk GazeToolkit
 
-[![Build Status](https://dev.azure.com/uxifiit/GazeToolkit/_apis/build/status/uxifiit.GazeToolkit?branchName=master)](https://dev.azure.com/uxifiit/GazeToolkit/_build/latest?definitionId=6&branchName=master) [![UXI.GazeToolkit package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/875e4574-b18a-49ff-8cf1-55b220af2355/_apis/public/Packaging/Feeds/f25beb4b-f7d5-4466-9073-a54052469941/Packages/d722b395-dbe8-41c8-9dd3-d1fcbf733861/Badge)](https://dev.azure.com/uxifiit/UXI.Libs/_packaging?_a=package&feed=f25beb4b-f7d5-4466-9073-a54052469941&package=d722b395-dbe8-41c8-9dd3-d1fcbf733861&preferRelease=true)
+[![Build Status](https://dev.azure.com/uxifiit/GazeToolkit/_apis/build/status/uxifiit.GazeToolkit?branchName=master)](https://dev.azure.com/uxifiit/GazeToolkit/_build/latest?definitionId=6&branchName=master) [![UXI.GazeToolkit package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/905a1e2c-1aff-45b3-bc72-dba43be0a133/_apis/public/Packaging/Feeds/990007cf-a847-406c-9fa5-dec22ee2ccdc/Packages/957d4793-416c-45c7-9a01-770b67c9c237/Badge)](https://dev.azure.com/uxifiit/Packages/_packaging?_a=package&feed=990007cf-a847-406c-9fa5-dec22ee2ccdc&package=957d4793-416c-45c7-9a01-770b67c9c237&preferRelease=true)
 
 This repository contains `UXI.GazeToolkit` library for filtering and processing streams of gaze data, eye movement classification and data validations for .NET projects. Individual filters from the library are also available as separate console applications.
 
@@ -276,45 +276,42 @@ filter.exe gaze gaze.json --timestamp-format date --output gaze.csv
 
 ## Installation
 
-
 The following libraries from this repository are available as NuGet packages:
 
 |Library |Package|
 |--------|:-----:|
-|UXI.GazeToolkit|[![UXI.GazeToolkit package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/875e4574-b18a-49ff-8cf1-55b220af2355/_apis/public/Packaging/Feeds/f25beb4b-f7d5-4466-9073-a54052469941/Packages/d722b395-dbe8-41c8-9dd3-d1fcbf733861/Badge)](https://dev.azure.com/uxifiit/UXI.Libs/_packaging?_a=package&feed=f25beb4b-f7d5-4466-9073-a54052469941&package=d722b395-dbe8-41c8-9dd3-d1fcbf733861&preferRelease=true)|
-|UXI.GazeToolkit.Serialization|[![UXI.GazeToolkit.Serialization package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/875e4574-b18a-49ff-8cf1-55b220af2355/_apis/public/Packaging/Feeds/f25beb4b-f7d5-4466-9073-a54052469941/Packages/d19b3e2d-813c-40d3-8a58-3381bd21822a/Badge)](https://dev.azure.com/uxifiit/UXI.Libs/_packaging?_a=package&feed=f25beb4b-f7d5-4466-9073-a54052469941&package=d19b3e2d-813c-40d3-8a58-3381bd21822a&preferRelease=true)|
-|UXI.GazeToolkit.Validation|[![UXI.GazeToolkit.Validation package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/875e4574-b18a-49ff-8cf1-55b220af2355/_apis/public/Packaging/Feeds/f25beb4b-f7d5-4466-9073-a54052469941/Packages/5c0d6bde-1556-40b2-908b-eba6d17fec24/Badge)](https://dev.azure.com/uxifiit/UXI.Libs/_packaging?_a=package&feed=f25beb4b-f7d5-4466-9073-a54052469941&package=5c0d6bde-1556-40b2-908b-eba6d17fec24&preferRelease=true)|
-|UXI.GazeFilter|[![UXI.GazeFilter package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/875e4574-b18a-49ff-8cf1-55b220af2355/_apis/public/Packaging/Feeds/f25beb4b-f7d5-4466-9073-a54052469941/Packages/e73b111c-0101-42fe-b1c6-5df5f6501fa8/Badge)](https://dev.azure.com/uxifiit/UXI.Libs/_packaging?_a=package&feed=f25beb4b-f7d5-4466-9073-a54052469941&package=e73b111c-0101-42fe-b1c6-5df5f6501fa8&preferRelease=true)|
+|UXI.GazeToolkit|[![UXI.GazeToolkit package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/905a1e2c-1aff-45b3-bc72-dba43be0a133/_apis/public/Packaging/Feeds/990007cf-a847-406c-9fa5-dec22ee2ccdc/Packages/957d4793-416c-45c7-9a01-770b67c9c237/Badge)](https://dev.azure.com/uxifiit/Packages/_packaging?_a=package&feed=990007cf-a847-406c-9fa5-dec22ee2ccdc&package=957d4793-416c-45c7-9a01-770b67c9c237&preferRelease=true)|
+|UXI.GazeToolkit.Serialization|[![UXI.GazeToolkit.Serialization package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/905a1e2c-1aff-45b3-bc72-dba43be0a133/_apis/public/Packaging/Feeds/990007cf-a847-406c-9fa5-dec22ee2ccdc/Packages/04d67bd3-17ee-42fa-80a3-df52fd40e062/Badge)](https://dev.azure.com/uxifiit/Packages/_packaging?_a=package&feed=990007cf-a847-406c-9fa5-dec22ee2ccdc&package=04d67bd3-17ee-42fa-80a3-df52fd40e062&preferRelease=true)|
+|UXI.GazeToolkit.Validation|[![UXI.GazeToolkit.Validation package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/905a1e2c-1aff-45b3-bc72-dba43be0a133/_apis/public/Packaging/Feeds/990007cf-a847-406c-9fa5-dec22ee2ccdc/Packages/5996ef98-815f-4af5-8db4-4b5a5cd96a18/Badge)](https://dev.azure.com/uxifiit/Packages/_packaging?_a=package&feed=990007cf-a847-406c-9fa5-dec22ee2ccdc&package=5996ef98-815f-4af5-8db4-4b5a5cd96a18&preferRelease=true)|
+|UXI.GazeFilter|[![UXI.GazeFilter package in Public feed in Azure Artifacts](https://feeds.dev.azure.com/uxifiit/905a1e2c-1aff-45b3-bc72-dba43be0a133/_apis/public/Packaging/Feeds/990007cf-a847-406c-9fa5-dec22ee2ccdc/Packages/f593ab87-e7fe-464a-9e58-26a854f152e9/Badge)](https://dev.azure.com/uxifiit/Packages/_packaging?_a=package&feed=990007cf-a847-406c-9fa5-dec22ee2ccdc&package=f593ab87-e7fe-464a-9e58-26a854f152e9&preferRelease=true)|
 
-NuGet packages are available in the public Azure DevOps artifacts repository shared with [UXI.Libs](https://github.com/uxifiit/UXI.Libs):
+These NuGet packages are available in the public Azure DevOps artifacts repository for all UXIsk packages:
 ```
-https://pkgs.dev.azure.com/uxifiit/UXI.Libs/_packaging/Public/nuget/v3/index.json
+https://pkgs.dev.azure.com/uxifiit/Packages/_packaging/Public/nuget/v3/index.json
 ```
 
-
-### Add uxifiit/UXI.Libs package source
-First, add a new package source to the solution or Visual Studio. Choose the way that fits you the best:
+### Add UXIsk Packages to package sources
+First, add a new package source. Choose the way that fits you the best:
 * Add new package source in [Visual Studio settings](https://docs.microsoft.com/en-us/azure/devops/artifacts/nuget/consume?view=azure-devops).
-* Add new package source with the repository URL through command line:
+* Add new package source from command line:
 ```
-nuget source Add -Name "UXI.Libs Public Feed" -Source "https://pkgs.dev.azure.com/uxifiit/UXI.Libs/_packaging/Public/nuget/v3/index.json"
+nuget source Add -Name "UXIsk Packages" -Source "https://pkgs.dev.azure.com/uxifiit/Packages/_packaging/Public/nuget/v3/index.json"
 ```
-* Create `NuGet.config` file in your project's solution directory where you specify this package source:
-
+* Create or edit `NuGet.config` file in your project's solution directory where you specify this package source:
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <packageSources>
-    <add key="UXI.Libs Public Feed" value="https://pkgs.dev.azure.com/uxifiit/UXI.Libs/_packaging/Public/nuget/v3/index.json" />
+    <add key="UXIsk Packages" value="https://pkgs.dev.azure.com/uxifiit/Packages/_packaging/Public/nuget/v3/index.json" />
+    <!-- other package sources -->
   </packageSources>
   <disabledPackageSources />
 </configuration>
 ```
 
+### Install packages
 
-### Install UXIsk GazeToolkit packages
-
-Then install the package to your project using the Visual Studio "Manage NuGet Packages..." window or use the Package Manage Console:
+Use the Visual Studio "Manage NuGet Packages..." window or use the Package Manager Console:
 ```
 PM> Install-Package UXI.GazeToolkit
 ```
@@ -324,7 +321,6 @@ PM> Install-Package UXI.GazeToolkit.Serialization
 ```
 PM> Install-Package UXI.GazeToolkit.Validation
 ```
-
 ```
 PM> Install-Package UXI.GazeFilter
 ```
