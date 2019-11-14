@@ -18,7 +18,7 @@ namespace UXI.GazeToolkit.Serialization.Csv
         public string TimestampFieldName { get; set; }
 
 
-        protected override CsvSerializerContext Configure(CsvSerializerContext serializer, DataAccess acess, object settings)
+        protected override CsvSerializerContext Configure(CsvSerializerContext serializer, DataAccess acess, Type dataType, object settings)
         {
             SetupTimestampedDataSerialization(serializer, TimestampFieldName);
 

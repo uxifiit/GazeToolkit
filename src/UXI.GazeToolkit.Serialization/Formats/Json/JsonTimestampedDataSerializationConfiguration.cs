@@ -17,7 +17,7 @@ namespace UXI.GazeToolkit.Serialization.Json
         public string FieldName { get; set; }
 
 
-        protected override JsonSerializer Configure(JsonSerializer serializer, DataAccess acess, object settings)
+        protected override JsonSerializer Configure(JsonSerializer serializer, DataAccess acess, Type dataType, object settings)
         {
             SetupTimestampedDataSerialization(serializer, FieldName);
 

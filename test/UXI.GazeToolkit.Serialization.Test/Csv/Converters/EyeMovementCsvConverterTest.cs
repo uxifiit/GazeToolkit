@@ -22,7 +22,7 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
             var factory = new CsvSerializationFactory
             (
                 new CsvTimestampedDataSerializationConfiguration("Timestamp"),
-                new RelaySerializationConfiguration<CsvSerializerContext>((serializer, access, settings) =>
+                new RelaySerializationConfiguration<CsvSerializerContext>((serializer, access, dataType, settings) =>
                 {
                     serializer.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetFromTicksTypeConverter());
                     return serializer;
@@ -69,7 +69,7 @@ namespace UXI.GazeToolkit.Serialization.Csv.Converters
             (
                 new CsvTimestampedDataSerializationConfiguration("Timestamp"),
                 
-                new RelaySerializationConfiguration<CsvSerializerContext>((serializer, access, settings) =>
+                new RelaySerializationConfiguration<CsvSerializerContext>((serializer, access, dataType, settings) =>
                 {
                     serializer.Configuration.TypeConverterCache.AddConverter<DateTimeOffset>(new DateTimeOffsetFromTicksTypeConverter());
                     return serializer;

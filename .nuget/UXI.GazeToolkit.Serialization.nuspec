@@ -1,8 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>UXI.GazeToolkit.Serialization</id>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
     <title>UXI.GazeToolkit.Serialization</title>
     <authors>martinkonopka,uxifiit</authors>
     <owners>uxifiit</owners>
@@ -12,11 +12,11 @@
     <repository type="git" url="https://github.com/uxifiit/UXI.GazeToolkit" branch="$branch$" commit="$commit$" />
     <copyright>Copyright © 2019 Martin Konopka and Faculty of Informatics and Information Technologies, Slovak University of Technology in Bratislava</copyright>
     <description>Support for serialization of data types in UXI.GazeToolkit.</description>
-    <releaseNotes>Public release.</releaseNotes>
+    <releaseNotes>Updated with nev versions of UXI.Filters and UXI.Serialization.</releaseNotes>
     <tags>gaze toolkit fixations serialization csv json</tags>
     <dependencies>
       <dependency id="UXI.GazeToolkit" version="2.0.0" />
-      <dependency id="UXI.Serialization" version="2.0.1" />
+      <dependency id="UXI.Serialization" version="3.0.0" />
       <dependency id="CsvHelper" version="9.2.3" />
       <dependency id="Newtonsoft.Json" version="11.0.2" />
     </dependencies>
