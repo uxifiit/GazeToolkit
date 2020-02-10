@@ -41,23 +41,37 @@ namespace UXI.GazeFilter.Validation.Serialization.Csv.Converters
         {
             bool isNextRecord = false;
 
-            foreach (var sample in data.Data)
+            if (data.Data.Any())
             {
-                if (isNextRecord)
+                foreach (var sample in data.Data)
                 {
-                    writer.NextRecord();
+                    if (isNextRecord)
+                    {
+                        writer.NextRecord();
+                    }
+
+                    isNextRecord = true;
+
+                    writer.WriteField(data.Point.Validation);
+                    writer.WriteField(data.Point.Point);
+
+                    serializer.Serialize(writer, data.Point.Position);
+
+                    writer.WriteField(sample.Timestamp.Subtract(data.Point.StartTime).TotalMilliseconds);
+
+                    serializer.Serialize(writer, sample);
                 }
-
-                isNextRecord = true;
-
+            }
+            else
+            {
                 writer.WriteField(data.Point.Validation);
                 writer.WriteField(data.Point.Point);
 
                 serializer.Serialize(writer, data.Point.Position);
 
-                writer.WriteField(sample.Timestamp.Subtract(data.Point.StartTime).TotalMilliseconds);
+                writer.WriteField(null);
 
-                serializer.Serialize(writer, sample);
+                serializer.Serialize<GazeData>(writer, null);
             }
         }
     }
