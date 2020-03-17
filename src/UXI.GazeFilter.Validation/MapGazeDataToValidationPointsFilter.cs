@@ -90,10 +90,14 @@ namespace UXI.GazeFilter.Validation
                             observer.OnNext(new ValidationPointData(currentPoint, pointData));
                         }
                         observer.OnCompleted();
+
+                        points.Dispose();
                     });
                 }
                 else
                 {
+                    points.Dispose();
+
                     return Disposable.Empty;
                 }
             });
