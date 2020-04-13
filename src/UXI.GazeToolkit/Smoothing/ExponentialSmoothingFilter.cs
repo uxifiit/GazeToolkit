@@ -37,16 +37,16 @@ namespace UXI.GazeToolkit.Smoothing
             return gazeData.Scan((previous, current) =>
             {
                 return (current.Validity == EyeValidity.Valid && previous.Validity == EyeValidity.Valid)
-                ? new SingleEyeGazeData
-                  (
-                      EyeValidity.Valid,
-                      Smooth(previous.GazePoint2D, current.GazePoint2D),
-                      Smooth(previous.GazePoint3D, current.GazePoint3D),
-                      Smooth(previous.EyePosition3D, current.EyePosition3D),
-                      current.PupilDiameter,
-                      current.Timestamp
-                  )
-                : current;
+                        ? new SingleEyeGazeData
+                          (
+                              EyeValidity.Valid,
+                              Smooth(previous.GazePoint2D, current.GazePoint2D),
+                              Smooth(previous.GazePoint3D, current.GazePoint3D),
+                              Smooth(previous.EyePosition3D, current.EyePosition3D),
+                              ExponentialSmoothing.Smooth(previous.PupilDiameter, current.PupilDiameter, Alpha),
+                              current.Timestamp
+                          )
+                        : current;
             });
         }
 
