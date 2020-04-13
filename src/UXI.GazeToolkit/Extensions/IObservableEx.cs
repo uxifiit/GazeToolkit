@@ -151,11 +151,6 @@ namespace UXI.GazeToolkit.Extensions
  
                                      int count = buffer.Count;
  
-                                     //if (count != aggregate.Count)
-                                     //{
-                                     //    Console.WriteLine("xxxx");
-                                     //}
- 
                                      if (count % 2 == 1)
                                      {
                                          var current = buffer[count / 2];

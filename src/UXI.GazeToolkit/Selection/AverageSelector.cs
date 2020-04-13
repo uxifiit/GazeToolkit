@@ -11,8 +11,9 @@ namespace UXI.GazeToolkit.Selection
 {
     public sealed class AverageSelector : ISingleEyeGazeDataSelector
     {
-        private static readonly AverageSelector _instance = new AverageSelector();
-        public static AverageSelector Instance => _instance;
+        private static readonly Lazy<AverageSelector> _instance = new Lazy<AverageSelector>();
+
+        public static AverageSelector Instance => _instance.Value;
 
 
         private AverageSelector() { }

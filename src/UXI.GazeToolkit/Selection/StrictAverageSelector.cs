@@ -12,8 +12,9 @@ namespace UXI.GazeToolkit.Selection
 {
     public sealed class StrictAverageSelector : ISingleEyeGazeDataSelector
     {
-        private static readonly StrictAverageSelector _instance = new StrictAverageSelector();
-        public static StrictAverageSelector Instance => _instance;
+        private static readonly Lazy<StrictAverageSelector> _instance = new Lazy<StrictAverageSelector>();
+
+        public static StrictAverageSelector Instance => _instance.Value;
 
 
         private StrictAverageSelector() { }

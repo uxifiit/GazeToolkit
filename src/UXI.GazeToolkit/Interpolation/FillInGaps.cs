@@ -122,15 +122,15 @@ namespace UXI.GazeToolkit.Interpolation
         public static IObservable<GazeData> FillInGaps(this IObservable<GazeData> gazeData, TimeSpan maxGapDuration)
         {
             // split gaze data into 2 separate observables for each eye
-            var leftEye = LeftEyeSelector.Instance.SelectSingleEye(gazeData);
-            var rightEye = RightEyeSelector.Instance.SelectSingleEye(gazeData);
+            var leftEye  = gazeData.SelectEye(EyeSelectionStrategy.Left);
+            var rightEye = gazeData.SelectEye(EyeSelectionStrategy.Right);
 
             // fill in gaps with interpolation
             // then create EyeData instances to make sure that no other (derived) type is returned
-            var leftEyeWithFilledInGaps = FillInGaps(leftEye, maxGapDuration).Select(e => new EyeData(e));
+            var leftEyeWithFilledInGaps  = FillInGaps(leftEye,  maxGapDuration).Select(e => new EyeData(e));
             var rightEyeWithFilledInGaps = FillInGaps(rightEye, maxGapDuration).Select(e => new EyeData(e));
 
-            // combine separated samples for each eye into single sample with both eyes.
+            // combine separated samples of each eye back into the GazeData samples with both eyes and timestamp
             return Observable.Zip
             (
                 gazeData,

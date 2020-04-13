@@ -10,8 +10,9 @@ namespace UXI.GazeToolkit.Selection
 {
     public sealed class LeftEyeSelector : ISingleEyeGazeDataSelector
     {
-        private static readonly LeftEyeSelector _instance = new LeftEyeSelector();
-        public static LeftEyeSelector Instance => _instance;
+        private static readonly Lazy<LeftEyeSelector> _instance = new Lazy<LeftEyeSelector>();
+
+        public static LeftEyeSelector Instance => _instance.Value;
 
 
         private LeftEyeSelector() { }
