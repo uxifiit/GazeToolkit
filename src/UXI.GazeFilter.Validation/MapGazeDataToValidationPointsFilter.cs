@@ -50,56 +50,66 @@ namespace UXI.GazeFilter.Validation
                 return Observable.Empty<ValidationPointData>();
             }
 
+            var points = _points.ToList();
+
             return Observable.Create<ValidationPointData>(observer =>
             {
-                var points = _points.GetEnumerator();
-                if (points.MoveNext())
+                int index = -1;
+                var pointData = new List<GazeData>();
+                DateTimeOffset startTime = DateTimeOffset.MinValue;
+                DateTimeOffset endTime = DateTimeOffset.MinValue;
+
+                return data.Subscribe(gaze =>
                 {
-                    var currentPoint = points.Current;
-                    var pointData = new List<GazeData>();
-                    var startTime = currentPoint.StartTime.Add(TimeSpan.FromMilliseconds(800));
-                    var endTime = startTime.Add(TimeSpan.FromMilliseconds(1000));
+                    int newIndex = index;
 
-                    return data.Subscribe(gaze =>
+                    while (newIndex == -1
+                        || (newIndex < points.Count && gaze.Timestamp > startTime && gaze.Timestamp >= endTime))
                     {
-                        if (gaze.Timestamp >= startTime && gaze.Timestamp < endTime)
+                        newIndex++;
+                        if (newIndex < points.Count)
                         {
-                            pointData.Add(gaze);
+                            startTime = points[newIndex].StartTime.Add(TimeSpan.FromMilliseconds(800));
+                            endTime = startTime.Add(TimeSpan.FromMilliseconds(1000));
                         }
-                        else if (gaze.Timestamp > endTime)
-                        {
-                            observer.OnNext(new ValidationPointData(currentPoint, pointData));
-                            pointData = new List<GazeData>();
-                            currentPoint = null;
+                    }
 
-                            if (points.MoveNext())
-                            {
-                                currentPoint = points.Current;
-                                startTime = currentPoint.StartTime.Add(TimeSpan.FromMilliseconds(800));
-                                endTime = startTime.Add(TimeSpan.FromMilliseconds(1000));
-                            }
-                            else
-                            {
-                                observer.OnCompleted();
-                            }
-                        }
-                    }, () =>
+                    if (newIndex != index)
                     {
-                        if (currentPoint != null)
+                        if (index > -1 && index < points.Count)
                         {
-                            observer.OnNext(new ValidationPointData(currentPoint, pointData));
+                            observer.OnNext(new ValidationPointData(points[index], pointData));
                         }
+                        pointData.Clear();
+
+                        index = newIndex;
+                    }
+
+                    if (index >= points.Count)
+                    {
                         observer.OnCompleted();
-
-                        points.Dispose();
-                    });
-                }
-                else
+                    }
+                    else if (index > -1 && gaze.Timestamp >= startTime && gaze.Timestamp < endTime)
+                    {
+                        pointData.Add(gaze);
+                    }
+                }, () =>
                 {
-                    points.Dispose();
+                    // flush remaining points
+                    if (index < 0)
+                    {
+                        index = 0;
+                    }
 
-                    return Disposable.Empty;
-                }
+                    while (index < points.Count)
+                    {
+                        observer.OnNext(new ValidationPointData(points[index], pointData));
+                        index++;
+                        pointData.Clear();
+                    }
+
+                    observer.OnCompleted();
+                });
             });
         }
     }
