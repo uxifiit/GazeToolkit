@@ -189,8 +189,8 @@ Example values:
 * `date` - `2019-02-20T14:30:19.8526299+01:00`
 * `time` - `14:30:19.8526299`
 * `ticks:ns` (hundred nanoseconds) - `636862698198526299`
-* `ticks:us` (microseconds, e.g., from the epoch 01/01/1970) - `1550669419852629.9`
-* `ticks:ms` (milliseconds from the epoch 01/01/1970) - `1550669419852.63`
+* `ticks:us` (microseconds, e.g., from the epoch 01/01/1970) - `1550669419852630`
+* `ticks:ms` (milliseconds from the epoch 01/01/1970) - `1550669419853`
 
 Use `--timestamp-format` option in gaze filters to specify format and `--timestamp-field` to specify name of the field with timestamp in your data.
 
