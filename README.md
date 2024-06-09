@@ -178,45 +178,44 @@ Timestamp,LeftValidity,LeftGazePoint2DX,LeftGazePoint2DY,LeftGazePoint3DX,LeftGa
 **Note:** Eye data must be always specified and not `null`. If the eye was not tracked or recognized by the tracker, supply the same structure for eye data but with `Invalid` validity and `NaN` values for coordinates. For example for invalid tracking of the `RightEye`: 
 ```javascript
 {
-        "Timestamp": "2019-02-20T14:30:19.8526299+01:00",
-        "LeftEye": {
-            "Validity": "Valid",
-            "GazePoint2D": {
-                "X": 0.249588146805763,
-                "Y": 0.363745391368866
-            },
-            "GazePoint3D": {
-                "X": -130.047988891602,
-                "Y": 208.728134155273,
-                "Z": 59.1125564575195
-            },
-            "EyePosition3D": { 
-                "X": -41.76611328125,
-                "Y": 8.7668342590332, 
-                "Z": 661.870300292969
-            },
-            "PupilDiameter": 3.10238647460938
+    "Timestamp": "2019-02-20T14:30:19.8526299+01:00",
+    "LeftEye": {
+        "Validity": "Valid",
+        "GazePoint2D": {
+            "X": 0.249588146805763,
+            "Y": 0.363745391368866
         },
-        "RightEye": {
-            "Validity": "Invalid",
-            "GazePoint2D": {
-                "X": "NaN",
-                "Y": "NaN"
-            },
-            "GazePoint3D": {
-                "X": "NaN",
-                "Y": "NaN",
-                "Z": "NaN"
-            },
-            "EyePosition3D": { 
-                "X": "NaN"
-                "Y": "NaN", 
-                "Z": "NaN"
-            },
-            "PupilDiameter": "NaN"
-        }
+        "GazePoint3D": {
+            "X": -130.047988891602,
+            "Y": 208.728134155273,
+            "Z": 59.1125564575195
+        },
+        "EyePosition3D": { 
+            "X": -41.76611328125,
+            "Y": 8.7668342590332, 
+            "Z": 661.870300292969
+        },
+        "PupilDiameter": 3.10238647460938
     },
-    // other samples...
+    "RightEye": {
+        "Validity": "Invalid",
+        "GazePoint2D": {
+            "X": "NaN",
+            "Y": "NaN"
+        },
+        "GazePoint3D": {
+            "X": "NaN",
+            "Y": "NaN",
+            "Z": "NaN"
+        },
+        "EyePosition3D": { 
+            "X": "NaN"
+            "Y": "NaN", 
+            "Z": "NaN"
+        },
+        "PupilDiameter": "NaN"
+    }
+}
 ``` 
 
 #### Flexible Timestamp Formatting
