@@ -175,6 +175,49 @@ Format your input data into JSON or CSV formats as below:
 Timestamp,LeftValidity,LeftGazePoint2DX,LeftGazePoint2DY,LeftGazePoint3DX,LeftGazePoint3DY,LeftGazePoint3DZ,LeftEyePosition3DX,LeftEyePosition3DY,LeftEyePosition3DZ,LeftPupilDiameter,RightValidity,RightGazePoint2DX,RightGazePoint2DY,RightGazePoint3DX,RightGazePoint3DY,RightGazePoint3DZ,RightEyePosition3DX,RightEyePosition3DY,RightEyePosition3DZ,RightPupilDiameter
 2019-02-20T14:30:19.8526299+01:00,Valid,0.249588146805763,0.363745391368866,-130.047988891602,208.728134155273,59.1125564575195,-41.76611328125,8.7668342590332,661.870300292969,3.10238647460938,Valid,0.216417774558067,0.350670248270035,-147.382720947266,212.744323730469,60.574333190918,21.4870147705078,4.3505334854126,660.007873535156,3.25660705566406
 ```
+**Note:** Eye data must be always specified and not `null`. If the eye was not tracked or recognized by the tracker, supply the same structure for eye data but with `Invalid` validity and `NaN` values for coordinates. For example for invalid tracking of the `RightEye`: 
+```javascript
+{
+        "Timestamp": "2019-02-20T14:30:19.8526299+01:00",
+        "LeftEye": {
+            "Validity": "Valid",
+            "GazePoint2D": {
+                "X": 0.249588146805763,
+                "Y": 0.363745391368866
+            },
+            "GazePoint3D": {
+                "X": -130.047988891602,
+                "Y": 208.728134155273,
+                "Z": 59.1125564575195
+            },
+            "EyePosition3D": { 
+                "X": -41.76611328125,
+                "Y": 8.7668342590332, 
+                "Z": 661.870300292969
+            },
+            "PupilDiameter": 3.10238647460938
+        },
+        "RightEye": {
+            "Validity": "Invalid",
+            "GazePoint2D": {
+                "X": "NaN",
+                "Y": "NaN"
+            },
+            "GazePoint3D": {
+                "X": "NaN",
+                "Y": "NaN",
+                "Z": "NaN"
+            },
+            "EyePosition3D": { 
+                "X": "NaN"
+                "Y": "NaN", 
+                "Z": "NaN"
+            },
+            "PupilDiameter": "NaN"
+        }
+    },
+    // other samples...
+``` 
 
 #### Flexible Timestamp Formatting
 
